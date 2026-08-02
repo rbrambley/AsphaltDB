@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gauntlet Mode | Asphalt Legends Unite</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Asphalt DB
+      </a>
+      <div class="theme-switcher">
+        <label for="theme-select">Theme</label>
+        <select id="theme-select" aria-label="Theme">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="cars.html">Cars</a></li>
+          <li><a href="tracks.html">Tracks</a></li>
+          <li><a href="career.html">Career</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="gauntlet.html">Gauntlet</a></li>
+          <li><a href="evo.html">EVO</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main>
+
+    <section class="hero">
+      <h1>Gauntlet Mode</h1>
+      <p>Skill-based 5-race gauntlet across five 30-second track variations. Pick the right cars for short, twisty tracks and optimize your defense lineups.</p>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>Gauntlet Rules</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <ul>
+          <li><strong>Unlock:</strong> 70 Career Flags and at least 5 owned cars.</li>
+          <li><strong>Defense:</strong> Set 5 cars for 5 consecutive 30″ track variations (one car per track).</li>
+          <li><strong>Challenge:</strong> Race against 1 of 3 opponents; win 3 of 5 races to win the challenge.</li>
+          <li><strong>Leagues / Divisions:</strong> Matchmaking uses the combined rank of your top 5 owned cars.</li>
+          <li><strong>Refresh cost:</strong> 25,000 credits initially, increasing up to 200,000.</li>
+          <li><strong>Strategy:</strong> Short tracks favor <em>acceleration, handling, and nitro</em> over raw top speed.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>30″ Gauntlet Tracks</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <div class="search-bar"><input type="search" id="gauntlet-track-search" placeholder="Search track or environment…" /></div>
+        <div class="count" id="gauntlet-track-count">0 tracks</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th data-sort="trackName">Track Name</th><th data-sort="environment">Environment</th><th data-sort="length">Length</th><th data-sort="difficulty">Difficulty</th><th data-sort="hazards">Hazards</th><th data-sort="recClasses">Recommended Classes</th></tr>
+            </thead>
+            <tbody id="gauntlet-track-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>Best Cars for Short Tracks</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <div class="filters">
+          <div class="filter"><label for="gauntlet-class">Class</label><select id="gauntlet-class"><option value="All">All</option></select></div>
+        </div>
+        <p class="dashboard-intro">Sorted by a short-track score combining acceleration, handling, and nitro. Top speed matters less on 30″ variations.</p>
+        <div class="count" id="gauntlet-car-count">0 cars</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th data-sort="carName">Car Name</th><th data-sort="class">Class</th><th data-sort="rarity">Rarity</th><th data-sort="topSpeedMax" data-sort-type="num">Top Speed</th><th data-sort="accelerationMax" data-sort-type="num">Accel</th><th data-sort="handlingMax" data-sort-type="num">Handling</th><th data-sort="nitroMax" data-sort-type="num">Nitro</th><th data-sort="_sts" data-sort-type="num">Short-Track Score</th><th data-sort="rankMax" data-sort-type="num">Rank Max</th></tr>
+            </thead>
+            <tbody id="gauntlet-car-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>5-Car Lineup Builder</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Pick 5 cars you own to estimate your Gauntlet league based on combined max rank.</p>
+        <div class="lineup-slots" id="gauntlet-lineup"></div>
+        <div class="lineup-summary" id="gauntlet-summary">Combined rank: 0</div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    Data sourced from <a href="https://asphalt.fandom.com/" target="_blank" rel="noopener">Asphalt Fandom</a> and <a href="https://asphalt9.info/" target="_blank" rel="noopener">Asphalt9.info</a> — compiled for gameplay optimization.<br>
+    Car ranks from Asphalt Wiki; performance stats from Asphalt9.info. Rarity/upgrade fields are baseline placeholders pending community review.
+  </footer>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

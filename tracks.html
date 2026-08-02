@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracks Reference | Asphalt Legends Unite</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Asphalt DB
+      </a>
+      <div class="theme-switcher">
+        <label for="theme-select">Theme</label>
+        <select id="theme-select" aria-label="Theme">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="cars.html">Cars</a></li>
+          <li><a href="tracks.html">Tracks</a></li>
+          <li><a href="career.html">Career</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="gauntlet.html">Gauntlet</a></li>
+          <li><a href="evo.html">EVO</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main>
+
+    <h1 class="page-title">Tracks Reference</h1>
+    <p class="page-subtitle">Every location and route in Asphalt Legends Unite.</p>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="search-bar"><input type="search" id="tracks-search" placeholder="Search track or environment…" /></div>
+        <div class="filters">
+          <div class="filter"><label for="tracks-env">Environment</label><select id="tracks-env"><option value="All">All</option></select></div>
+        </div>
+        <div class="count" id="tracks-count">0 tracks</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th data-sort="trackName">Track Name</th><th data-sort="environment">Environment</th><th data-sort="length">Length</th><th data-sort="difficulty">Difficulty</th><th data-sort="recClasses">Recommended Classes</th><th data-sort="hazards">Hazards</th><th data-sort="notes">Notes</th></tr>
+            </thead>
+            <tbody id="tracks-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    Data sourced from <a href="https://asphalt.fandom.com/" target="_blank" rel="noopener">Asphalt Fandom</a> and <a href="https://asphalt9.info/" target="_blank" rel="noopener">Asphalt9.info</a> — compiled for gameplay optimization.<br>
+    Car ranks from Asphalt Wiki; performance stats from Asphalt9.info. Rarity/upgrade fields are baseline placeholders pending community review.
+  </footer>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
