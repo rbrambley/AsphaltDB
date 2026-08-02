@@ -301,6 +301,29 @@ td.wrap { white-space: normal; min-width: 140px; }
 .high-rank { background: var(--highrank) !important; }
 .rare-event { background: var(--rareevent) !important; }
 .better { color: var(--success); font-weight: 700; }
+.cal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: var(--shadow);
+}
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+.cal-header h4 { margin: 0; font-size: 1.05rem; }
+.cal-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.cal-card p { margin: 0.35rem 0; font-size: 0.9rem; }
+.cal-notes { color: var(--muted); font-size: 0.85rem; }
 .filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

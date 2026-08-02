@@ -25079,3 +25079,259 @@ const events = [
     "notes": "Major update events"
   }
 ];
+
+const calendarEvents = [
+  {
+    "eventName": "Easter Eggstravaganza",
+    "type": "Spotlight",
+    "featuredCars": "Bugatti Chiron Pur Sport, Automobili Pininfarina Battista Edizione Nino Farina, Lamborghini Invencible, Porsche Mission R & TVR Griffith",
+    "format": "Standard",
+    "startDate": "2025-04-14",
+    "endDate": "2025-04-28",
+    "rawDate": "April 14 \u2013 28, 2025",
+    "relatedUpdate": "rowspan=\"2\"|Korean Spring Update",
+    "notes": "-"
+  },
+  {
+    "eventName": "Speed Festival",
+    "type": "Spotlight",
+    "featuredCars": "Koenigsegg Agera RS, McLaren 650S GT3, Apollo IE, Lamborghini Diablo GT & Mazda Furai",
+    "format": "Standard",
+    "startDate": "2025-05-08",
+    "endDate": "2025-05-19",
+    "rawDate": "May 8 \u2013 19, 2025",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "Racing Around the World",
+    "type": "Spotlight",
+    "featuredCars": "SSC Ultimate Aero TT, Nissan GT-R Neon Edition, Porsche 911 GT2 RS Clubsport, Lamborghini Revuelto, Apex AP-0, Donkervoort D8 GTO Individual Series & DS Automobiles DS E-TENSE",
+    "format": "Special Event",
+    "startDate": "2025-05-29",
+    "endDate": "2025-06-26",
+    "rawDate": "May 29 \u2013 June 26, 2025",
+    "relatedUpdate": "rowspan=\"2\"|Pinnacle of Speed Update",
+    "notes": ""
+  },
+  {
+    "eventName": "Stars & Stripes Reignited",
+    "type": "Spotlight",
+    "featuredCars": "Hennessey Venom F5, Czinger 21C, BXR Bailey Blade GT1, Chrysler ME412, Glickenhaus 007S, Chevrolet Corvette ZR1, Ford GT Mk IV, Drako GTE, Chevrolet Corvette Stingray, Saleen S1, Glickenhaus 004C & Chevrolet Corvette C7.R",
+    "format": "Standard",
+    "startDate": "2025-07-03",
+    "endDate": "2025-07-14",
+    "rawDate": "July 3 \u2013 14, 2025",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "20 Years",
+    "type": "Spotlight",
+    "featuredCars": "Deus Vayanne, Bugatti Centodieci, Bugatti Chiron, Lamborghini Centenario, De Tomaso P72, Jaguar XJR-9, Ferrari F8 Tributo, Aston Martin Vulcan, Pagani Huayra R, Ferrari 488 Challenge Evo, McLaren Solus GT, Lamborghini Asterion, Ferrari Daytona SP3, McLaren GT, Arrinera Hussarya 33, Dodge Viper ACR, Volkswagen Electric R, Lamborghini Hurac\u00e1n Super Trofeo Evo, Alfa Romeo Giulia GTAm & Mitsubishi Lancer Evolution X",
+    "format": "Special Event",
+    "startDate": "2025-07-24",
+    "endDate": "2025-08-20",
+    "rawDate": "July 24 \u2013 August 20, 2025",
+    "relatedUpdate": "Legacy of Speed Update",
+    "notes": ""
+  },
+  {
+    "eventName": "Lego Technic",
+    "type": "Spotlight",
+    "featuredCars": "Aston Martin Valkyrie, Ferrari FXX K, Lego Technic Aston Martin Valkyrie, McLaren Senna GTR, Lego Technic McLaren Senna GTR, Lego Technic Ferrari FXXK, ''Lamborghini Revuelto'', Lego Technic Lamborghini Revuelto, Lego Technic Chevrolet Corvette Stingray & ''Chevrolet Corvette Stingray''",
+    "format": "Special Event",
+    "startDate": "2025-08-20",
+    "endDate": "2025-09-17",
+    "rawDate": "August 20 \u2013 September 17, 2025",
+    "relatedUpdate": "rowspan=\"2\"|Heatwave: Afterburn Update",
+    "notes": ""
+  },
+  {
+    "eventName": "Avenged Sevenfold",
+    "type": "Spotlight",
+    "featuredCars": "Ford Shelby Super Snake, ''Ford GT Mk IV'', Kepler Motion, ''McLaren GT'', ''Glickenhaus 004C'' & Porsche 911 Carrera RS 3.8",
+    "format": "Special Event",
+    "startDate": "2025-09-25",
+    "endDate": "2025-10-16",
+    "rawDate": "September 25 \u2013 October 16, 2025",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "hololive",
+    "type": "Spotlight",
+    "featuredCars": "Ford Mustang RTR Spec 5-FD, Lexus Electrified Sport Concept, Noble M600 Speedster, Vanda Electrics Dendrobium, Porsche 911 GT3 RS, Nissan GT-R50 Italdesign, Glickenhaus 003S & Honda Civic Type-R",
+    "format": "Special Event",
+    "startDate": "2025-10-16",
+    "endDate": "2025-11-13",
+    "rawDate": "October 16 \u2013 November 13, 2025",
+    "relatedUpdate": "rowspan=\"3\"|Phantom Riders Update",
+    "notes": ""
+  },
+  {
+    "eventName": "Tides of Madness",
+    "type": "Spotlight",
+    "featuredCars": "W Motors Lykan HyperSport Neon Edition & Porsche 918 Spyder",
+    "format": "Standard",
+    "startDate": "2025-10-31",
+    "endDate": "2025-11-08",
+    "rawDate": "October 31 \u2013 November 8, 2025",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "Black Friday",
+    "type": "Spotlight",
+    "featuredCars": "Koenigsegg CC850, Rimac Nevera Time Attack, Mercedes-Benz Vision One-Eleven, Lamborghini Temerario & Ferrari 296 GTB",
+    "format": "rowspan=\"2\"|Special Event",
+    "startDate": "2025-11-28",
+    "endDate": "2025-12-11",
+    "rawDate": "November 28 \u2013 December 11, 2025",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "Jingle All the Way",
+    "type": "Spotlight",
+    "featuredCars": "Bugatti Chiron Super Sport 300+, TRION NEMESIS, ''Glickenhaus 007S'', Porsche 911 Turbo 50 Years, Mercedes-Benz 2022 Showcar Vision AMG",
+    "format": "December 22, 2025 \u2013 January 8, 2026",
+    "startDate": null,
+    "endDate": null,
+    "rawDate": "Holiday Overdrive Update",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "DragonForce",
+    "type": "Spotlight",
+    "featuredCars": "''BXR Bailey Blade GT1'', Nilu27 NILU, Porsche 935 DragonForce Edition, Lotus Evija & Porsche 911 GTS Coup\u00e9",
+    "format": "Special Event",
+    "startDate": "2026-02-03",
+    "endDate": "2026-03-03",
+    "rawDate": "February 3 \u2013 March 3, 2026",
+    "relatedUpdate": "rowspan=\"3\"|Flames of Fortune Update",
+    "notes": ""
+  },
+  {
+    "eventName": "Festival of the Fire Horse",
+    "type": "Spotlight",
+    "featuredCars": "W Motors Fenyr SuperSport & Lamborghini SC18",
+    "format": "Standard",
+    "startDate": "2026-02-17",
+    "endDate": "2026-02-25",
+    "rawDate": "February 17 \u2013 25, 2026",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "Holi Fest",
+    "type": "Spotlight",
+    "featuredCars": "Zenvo TS1 GT Anniversary, Lamborghini Aut\u00e9ntica, Pagani Utopia Coup\u00e9, Lamborghini Gallardo LP 560-4 & Toyota GR Supra Racing Concept",
+    "format": "Special Event",
+    "startDate": "2026-03-03",
+    "endDate": "2026-03-30",
+    "rawDate": "March 3 \u2013 30, 2026",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "Porsche Selection",
+    "type": "Spotlight",
+    "featuredCars": "''Porsche 918 Spyder Asphalt Edition'', ''Porsche 918 Spyder'', Porsche Carrera GT, Porsche Panamera Turbo S & Porsche 718 Cayman",
+    "format": "Special Event",
+    "startDate": "2026-03-31",
+    "endDate": "2026-04-28",
+    "rawDate": "March 31 \u2013 April 28, 2026",
+    "relatedUpdate": "rowspan=\"2\"|Porsche of Legends Update",
+    "notes": ""
+  },
+  {
+    "eventName": "2026 Easter Eggstravaganza",
+    "type": "Spotlight",
+    "featuredCars": "''Bugatti Chiron Pur Sport'' & ''Automobili Pininfarina Battista Edizione Nino Farina''",
+    "format": "Standard",
+    "startDate": "2026-04-03",
+    "endDate": "2026-04-12",
+    "rawDate": "April 3 \u2013 12, 2026",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "hololive ''Last Chance!''",
+    "type": "Spotlight",
+    "featuredCars": "Aspark Owl, Ford Mustang RTR Spec 5-FD, ''Noble M600 Speedster'', ''Vanda Electrics Dendrobium'', ''Porsche 911 GT3 RS'', ''Nissan GT-R50 Italdesign'', ''Glickenhaus 003S'' & ''Honda Civic Type-R''",
+    "format": "Special Event",
+    "startDate": "2026-04-28",
+    "endDate": "2026-05-27",
+    "rawDate": "April 28 \u2013 May 27, 2026",
+    "relatedUpdate": "Road to Glory Update",
+    "notes": ""
+  },
+  {
+    "eventName": "Prototype Racing",
+    "type": "Spotlight",
+    "featuredCars": "Audi R18 e-tron quattro 2012, ''Glickenhaus 007S'', Peugeot 9x8, Lamborghini SC63 & BMW M Hybrid V8",
+    "format": "rowspan=\"2\"|Special Event",
+    "startDate": "2026-05-27",
+    "endDate": "2026-06-23",
+    "rawDate": "May 27 \u2013 June 23, 2026",
+    "relatedUpdate": "rowspan=\"3\"|Audi Season Update",
+    "notes": ""
+  },
+  {
+    "eventName": "Sonic 35th Anniversary",
+    "type": "Spotlight",
+    "featuredCars": "''W Motors Lykan Neon Edition'', ''SSC Ultimate Aero TT'', ''Nissan GT-R Neon Edition'', ''Porsche 911 GT2 RS Clubsport'', ''Apex AP-0'', ''Donkervoort D8 GTO Individual Series'' & ''DS Automobiles DS E-TENSE''",
+    "format": "June 18 \u2013 July 21, 2026",
+    "startDate": null,
+    "endDate": null,
+    "rawDate": "",
+    "relatedUpdate": "rowspan=\"3\"|Audi Season Update",
+    "notes": ""
+  },
+  {
+    "eventName": "2026 Stars & Stripes Reignited",
+    "type": "Spotlight",
+    "featuredCars": "Chevrolet Corvette Grand Sport 4th of July Edition, Ford Mustang RTR Spec 5 10th Anniv.",
+    "format": "Standard",
+    "startDate": "2026-07-03",
+    "endDate": "2026-07-12",
+    "rawDate": "July 3 - 12, 2026",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "JDM Turborfest",
+    "type": "Spotlight",
+    "featuredCars": "Nissan Skyline GT-R R34, Toyota Supra RZ Mark IV, Mazda RX-7 Spirit R",
+    "format": "Special Event + Drift Mode",
+    "startDate": "2026-07-21",
+    "endDate": "2026-08-19",
+    "rawDate": "July 21 - August 19, 2026",
+    "relatedUpdate": "rowspan=\"3\"|Touge Masters Update",
+    "notes": ""
+  },
+  {
+    "eventName": "PAC-MAN",
+    "type": "Spotlight",
+    "featuredCars": "''TVR Griffith'', ''Arrinera Hussarya 33'', Nissan R390 GT1,''Ford Mustang RTR Spec 5 10th Anniv.'', Porsche 718 Cayman PAC-MAN Edition",
+    "format": "TBD",
+    "startDate": null,
+    "endDate": null,
+    "rawDate": "TBD",
+    "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "IMSA",
+    "type": "Spotlight",
+    "featuredCars": "Aston Martin Valkyrie AMR Pro",
+    "format": "TBD",
+    "startDate": null,
+    "endDate": null,
+    "rawDate": "TBD",
+    "relatedUpdate": "''Aston Martin Valkyrie AMR Pro''<nowiki/>'s debut.",
+    "notes": ""
+  }
+];

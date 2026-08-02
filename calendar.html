@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recurring Events | Asphalt Legends Unite</title>
+  <title>Events Calendar | Asphalt Legends Unite</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -43,23 +43,44 @@
   </header>
   <main>
 
-    <h1 class="page-title">Recurring Events</h1>
-    <p class="page-subtitle">Daily, weekly and special limited-time events.</p>
+    <section class="hero">
+      <h1>Events Calendar</h1>
+      <p>Timeline of limited-time events with dates, featured cars, and rewards. Currently seeded from Fandom’s Spotlight list.</p>
+    </section>
 
-    <div class="card">
+    <section class="card">
+      <div class="card-header"><h2>Filters</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <div class="search-bar"><input type="search" id="events-search" placeholder="Search event, cars, track…" /></div>
-        <div class="count" id="events-count">0 events</div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th data-sort="eventName">Event Name</th><th data-sort="frequency">Frequency</th><th data-sort="eligibleCars">Eligible Cars</th><th data-sort="rewards">Rewards</th><th data-sort="track">Track</th><th data-sort="notes">Notes</th></tr>
-            </thead>
-            <tbody id="events-body"></tbody>
-          </table>
+        <div class="filters">
+          <div class="filter">
+            <label for="cal-status">Status</label>
+            <select id="cal-status">
+              <option value="all">All</option>
+              <option value="upcoming">Upcoming</option>
+              <option value="active">Active</option>
+              <option value="past">Past</option>
+            </select>
+          </div>
+          <div class="filter">
+            <label for="cal-type">Type</label>
+            <select id="cal-type"><option value="">All</option></select>
+          </div>
+          <div class="filter">
+            <label for="cal-search">Search</label>
+            <input type="text" id="cal-search" placeholder="Event or car..." />
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>Timeline</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <div class="count" id="cal-count">0 events</div>
+        <div id="cal-list"></div>
+      </div>
+    </section>
+
   </main>
   <footer>
     Data sourced from <a href="https://asphalt.fandom.com/" target="_blank" rel="noopener">Asphalt Fandom</a> and <a href="https://asphalt9.info/" target="_blank" rel="noopener">Asphalt9.info</a> — compiled for gameplay optimization.<br>

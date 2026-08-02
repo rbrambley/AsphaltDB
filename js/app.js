@@ -989,5 +989,73 @@
     if ($('#roi-table')) initUpgradeRoi();
     if ($('#roster-event')) initEventRoster();
     if ($('#compare-car-1')) initCompare();
+    if ($('#cal-list')) initCalendar();
   });
+
+  function initCalendar() {
+    const selStatus = $('#cal-status');
+    const selType = $('#cal-type');
+    const search = $('#cal-search');
+    const list = $('#cal-list');
+    const count = $('#cal-count');
+
+    const types = [...new Set(calendarEvents.map(e => e.type))].sort();
+    types.forEach(t => selType.add(new Option(t, t)));
+
+    function status(e) {
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      const start = e.startDate ? new Date(e.startDate) : null;
+      const end = e.endDate ? new Date(e.endDate) : null;
+      if (start && end) {
+        if (today < start) return 'upcoming';
+        if (today >= start && today <= end) return 'active';
+        return 'past';
+      }
+      return 'unknown';
+    }
+
+    function fmtDate(d) {
+      if (!d) return '—';
+      return new Date(d).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function render() {
+      const st = selStatus.value;
+      const type = selType.value;
+      const q = search.value.trim().toLowerCase();
+
+      let filtered = calendarEvents.map(e => Object.assign({}, e, { _status: status(e) }))
+        .filter(e => {
+          if (st !== 'all' && e._status !== st) return false;
+          if (type && e.type !== type) return false;
+          if (q && !e.eventName.toLowerCase().includes(q) && !e.featuredCars.toLowerCase().includes(q)) return false;
+          return true;
+        })
+        .sort((a, b) => (a.startDate || '').localeCompare(b.startDate || ''));
+
+      count.textContent = `${filtered.length} event${filtered.length === 1 ? '' : 's'}`;
+      if (!filtered.length) {
+        list.innerHTML = '<p class="empty-state">No events match your filters.</p>';
+        return;
+      }
+      list.innerHTML = filtered.map(e => {
+        const badge = e._status === 'active' ? '<span class="badge badge-epic">Active</span>' :
+          e._status === 'upcoming' ? '<span class="badge badge-uncommon">Upcoming</span>' :
+          e._status === 'past' ? '<span class="badge badge-common">Past</span>' : '';
+        return `<div class="cal-card">
+          <div class="cal-header"><h4>${e.eventName}</h4>${badge}</div>
+          <div class="cal-meta"><span>${e.type}</span> &middot; <span>${e.format}</span> &middot; <span>${fmtDate(e.startDate)} – ${fmtDate(e.endDate)}</span></div>
+          <p><strong>Featured cars:</strong> ${e.featuredCars || '—'}</p>
+          ${e.relatedUpdate ? `<p><strong>Update:</strong> ${e.relatedUpdate}</p>` : ''}
+          ${e.notes ? `<p class="cal-notes">${e.notes}</p>` : ''}
+        </div>`;
+      }).join('');
+    }
+
+    selStatus.addEventListener('change', render);
+    selType.addEventListener('change', render);
+    search.addEventListener('input', render);
+    render();
+  }
 })();
