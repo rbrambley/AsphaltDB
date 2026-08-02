@@ -822,8 +822,7 @@
         let av = a[sortKey], bv = b[sortKey];
         if (av == null) av = Infinity;
         if (bv == null) bv = Infinity;
-        const type = typeof av === 'number' ? 'num' : 'string';
-        return sortDir * compareValues(av, bv, type);
+        return compareValues(av, bv, sortDir);
       });
 
       count.textContent = `${list.length} car${list.length === 1 ? '' : 's'}`;
