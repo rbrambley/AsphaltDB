@@ -912,6 +912,66 @@
     render();
   }
 
+  function initCompare() {
+    const sel1 = $('#compare-car-1');
+    const sel2 = $('#compare-car-2');
+    const options = [...cars].sort((a, b) => a.carName.localeCompare(b.carName))
+      .map(c => `<option value="${esc(c.carName)}">${esc(c.carName)} (${c.class})</option>`).join('');
+    sel1.innerHTML = '<option value="">— Select car —</option>' + options;
+    sel2.innerHTML = '<option value="">— Select car —</option>' + options;
+
+    function render() {
+      const c1 = cars.find(c => c.carName === sel1.value);
+      const c2 = cars.find(c => c.carName === sel2.value);
+      const results = $('#compare-results');
+      if (!c1 || !c2) {
+        results.style.display = 'none';
+        return;
+      }
+      $('#compare-name-1').textContent = c1.carName;
+      $('#compare-name-2').textContent = c2.carName;
+
+      function fmtVal(v, key) {
+        if (v == null || v === '') return '—';
+        if (typeof v === 'number') return Number(v).toLocaleString(undefined, { maximumFractionDigits: 2 });
+        return v;
+      }
+
+      function row(label, key, invert = false) {
+        const v1 = c1[key], v2 = c2[key];
+        let cls1 = '', cls2 = '';
+        if (v1 != null && v2 != null && typeof v1 === 'number' && typeof v2 === 'number') {
+          if (!invert) {
+            if (v1 > v2) cls1 = 'better';
+            else if (v2 > v1) cls2 = 'better';
+          } else {
+            if (v1 < v2) cls1 = 'better';
+            else if (v2 < v1) cls2 = 'better';
+          }
+        }
+        return `<tr><td>${label}</td><td class="${cls1}">${fmtVal(v1, key)}</td><td class="${cls2}">${fmtVal(v2, key)}</td></tr>`;
+      }
+
+      $('#compare-body').innerHTML =
+        row('Class', 'class') +
+        row('Rarity', 'rarity') +
+        row('Max Rank', 'rankMax') +
+        row('Top Speed (Max)', 'topSpeedMax') +
+        row('Acceleration (Max)', 'accelerationMax') +
+        row('Handling (Max)', 'handlingMax') +
+        row('Nitro (Max)', 'nitroMax') +
+        row('Blueprint Count', 'blueprintCount') +
+        row('Total Upgrade Cost', 'totalUpgradeCost', true) +
+        `<tr><td>Recommended Tracks</td><td>${c1.recommendedTracks || '—'}</td><td>${c2.recommendedTracks || '—'}</td></tr>` +
+        `<tr><td>Notes</td><td>${c1.notes || '—'}</td><td>${c2.notes || '—'}</td></tr>`;
+
+      results.style.display = 'block';
+    }
+
+    sel1.addEventListener('change', render);
+    sel2.addEventListener('change', render);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initNav();
@@ -928,5 +988,6 @@
     if ($('#farm-car')) initFarming();
     if ($('#roi-table')) initUpgradeRoi();
     if ($('#roster-event')) initEventRoster();
+    if ($('#compare-car-1')) initCompare();
   });
 })();

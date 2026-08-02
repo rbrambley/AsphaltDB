@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Track ↔ Car Matchmaker | Asphalt Legends Unite</title>
+  <title>Car Comparison | Asphalt Legends Unite</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -43,28 +43,37 @@
   <main>
 
     <section class="hero">
-      <h1>Track ↔ Car Matchmaker</h1>
-      <p>Pick a track and see the best cars for each class based on the track’s length, difficulty, and hazards.</p>
+      <h1>Car Comparison</h1>
+      <p>Pick two cars and compare their stats side-by-side. Higher values are highlighted in green.</p>
     </section>
 
     <section class="card">
-      <div class="card-header"><h2>Select a Track</h2><span class="toggle">−</span></div>
+      <div class="card-header"><h2>Select Cars</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <div class="filters">
-          <div class="filter" style="flex: 1 1 100%;">
-            <label for="match-track">Track</label>
-            <select id="match-track"><option value="">— Choose a track —</option></select>
+          <div class="filter" style="flex: 1 1 45%;">
+            <label for="compare-car-1">Car 1</label>
+            <select id="compare-car-1"><option value="">— Select car —</option></select>
+          </div>
+          <div class="filter" style="flex: 1 1 45%;">
+            <label for="compare-car-2">Car 2</label>
+            <select id="compare-car-2"><option value="">— Select car —</option></select>
           </div>
         </div>
-        <div id="track-info" class="dashboard-intro" style="display:none;"></div>
       </div>
     </section>
 
-    <section class="card" id="results-card" style="display:none;">
-      <div class="card-header"><h2>Recommended Cars</h2><span class="toggle">−</span></div>
+    <section class="card" id="compare-results" style="display:none;">
+      <div class="card-header"><h2>Comparison</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <p class="dashboard-intro">Cars are scored using their max stats, weighted by track type. Only cars with complete stats are shown.</p>
-        <div id="match-results"></div>
+        <div class="table-wrap">
+          <table id="compare-table">
+            <thead>
+              <tr><th>Attribute</th><th id="compare-name-1" class="num">Car 1</th><th id="compare-name-2" class="num">Car 2</th></tr>
+            </thead>
+            <tbody id="compare-body"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 

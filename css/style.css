@@ -15,6 +15,7 @@
   --hover: #e3f2fd;
   --row-even: #f8fafc;
   --input-bg: #ffffff;
+  --success: #2f855a;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -33,6 +34,7 @@
     --hover: #1e3a5f;
     --row-even: #26334d;
     --input-bg: #111827;
+    --success: #68d391;
   }
 }
 :root[data-theme="dark"] {
@@ -51,6 +53,7 @@
   --hover: #1e3a5f;
   --row-even: #26334d;
   --input-bg: #111827;
+  --success: #68d391;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -280,6 +283,7 @@ td.wrap { white-space: normal; min-width: 140px; }
 .legendary { background: var(--legendary) !important; }
 .high-rank { background: var(--highrank) !important; }
 .rare-event { background: var(--rareevent) !important; }
+.better { color: var(--success); font-weight: 700; }
 .filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
