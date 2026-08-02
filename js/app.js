@@ -782,6 +782,74 @@
     });
   }
 
+  function initUpgradeRoi() {
+    const selClass = $('#roi-class');
+    const selRarity = $('#roi-rarity');
+    const search = $('#roi-search');
+    const body = $('#roi-body');
+    const count = $('#roi-count');
+    const table = $('#roi-table');
+    let sortKey = 'costPerRank';
+    let sortDir = 1;
+
+    function usable(c) {
+      return c.totalUpgradeCost && c.rankStock != null && c.rankMax != null &&
+        c.topSpeedStock != null && c.accelerationStock != null && c.handlingStock != null && c.nitroStock != null &&
+        c.topSpeedMax != null && c.accelerationMax != null && c.handlingMax != null && c.nitroMax != null;
+    }
+
+    function enrich(c) {
+      const rankGain = c.rankMax - c.rankStock;
+      const statGain = (c.topSpeedMax - c.topSpeedStock) + (c.accelerationMax - c.accelerationStock) +
+        (c.handlingMax - c.handlingStock) + (c.nitroMax - c.nitroStock);
+      return Object.assign({}, c, {
+        rankGain: rankGain,
+        costPerRank: rankGain > 0 ? Math.round(c.totalUpgradeCost / rankGain) : Infinity,
+        costPerStat: statGain > 0 ? Math.round(c.totalUpgradeCost / statGain) : Infinity
+      });
+    }
+
+    function render() {
+      const cls = selClass.value;
+      const rar = selRarity.value;
+      const q = search.value.trim().toLowerCase();
+      let list = cars.filter(usable).map(enrich).filter(c =>
+        (!cls || c.class === cls) &&
+        (!rar || c.rarity === rar) &&
+        (!q || c.carName.toLowerCase().includes(q))
+      );
+      list.sort((a, b) => {
+        let av = a[sortKey], bv = b[sortKey];
+        if (av == null) av = Infinity;
+        if (bv == null) bv = Infinity;
+        const type = typeof av === 'number' ? 'num' : 'string';
+        return sortDir * compareValues(av, bv, type);
+      });
+
+      count.textContent = `${list.length} car${list.length === 1 ? '' : 's'}`;
+      body.innerHTML = list.map(c =>
+        `<tr><td>${c.carName}</td><td>${c.class}</td>` +
+        `<td><span class="badge badge-${(c.rarity || '').toLowerCase()}">${c.rarity}</span></td>` +
+        `<td class="num">${fmt(c.rankStock)}</td><td class="num">${fmt(c.rankMax)}</td>` +
+        `<td class="num">${fmt(c.rankGain)}</td><td class="num">${c.totalUpgradeCost.toLocaleString()}</td>` +
+        `<td class="num">${c.costPerRank === Infinity ? '—' : c.costPerRank.toLocaleString()}</td>` +
+        `<td class="num">${c.costPerStat === Infinity ? '—' : c.costPerStat.toLocaleString()}</td></tr>`
+      ).join('');
+      setSortIndicators(table, sortKey, sortDir);
+    }
+
+    initSortHeaders(table, key => {
+      if (sortKey === key) sortDir = -sortDir;
+      else { sortKey = key; sortDir = 1; }
+      render();
+    });
+
+    selClass.addEventListener('change', render);
+    selRarity.addEventListener('change', render);
+    search.addEventListener('input', render);
+    render();
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initNav();
@@ -796,5 +864,6 @@
     if ($('#evo-body')) initEvo();
     if ($('#match-track')) initMatchmaker();
     if ($('#farm-car')) initFarming();
+    if ($('#roi-table')) initUpgradeRoi();
   });
 })();

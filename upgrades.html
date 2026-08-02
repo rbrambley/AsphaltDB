@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EVO Tuning | Asphalt Legends Unite</title>
+  <title>Upgrade ROI Calculator | Asphalt Legends Unite</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -41,43 +41,55 @@
   <main>
 
     <section class="hero">
-      <h1>EVO Tuning</h1>
-      <p>EVO Tuning unlocks an extra layer of upgrades for select cars. Max out an EVO-eligible car, then collect EVO items to build a unique, more powerful setup.</p>
+      <h1>Upgrade ROI Calculator</h1>
+      <p>Find the most cost-effective cars to upgrade. Lower cost per rank point = better value.</p>
     </section>
 
     <section class="card">
-      <div class="card-header"><h2>How EVO Tuning Works</h2><span class="toggle">−</span></div>
+      <div class="card-header"><h2>Filters</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <ul>
-          <li>Unlocks automatically when you fully star-up an EVO-eligible car.</li>
-          <li>Collect EVO items (engine, drivetrain, nitro, etc.) through the EVO Shop and events.</li>
-          <li>Each item has weight and stat boosts; total weight affects handling and performance.</li>
-          <li>Builds can be tailored to track type — e.g. acceleration for short Gauntlet tracks, top speed for long routes.</li>
-          <li>EVO cars are often featured in dedicated EVO Special Events and EVO Ranked competitions.</li>
-        </ul>
+        <div class="filters">
+          <div class="filter">
+            <label for="roi-class">Class</label>
+            <select id="roi-class"><option value="">All</option><option>D</option><option>C</option><option>B</option><option>A</option><option>S</option></select>
+          </div>
+          <div class="filter">
+            <label for="roi-rarity">Rarity</label>
+            <select id="roi-rarity"><option value="">All</option><option>Common</option><option>Uncommon</option><option>Rare</option><option>Epic</option><option>Legendary</option></select>
+          </div>
+          <div class="filter">
+            <label for="roi-search">Search</label>
+            <input type="text" id="roi-search" placeholder="Car name..." />
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="card">
-      <div class="card-header"><h2>EVO-Eligible Cars</h2><span class="toggle">−</span></div>
+      <div class="card-header"><h2>Value Rankings</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <div class="search-bar"><input type="search" id="evo-search" placeholder="Search EVO car…" /></div>
-        <div class="filters">
-          <div class="filter"><label for="evo-class">Class</label><select id="evo-class"><option value="All">All</option></select></div>
-          <div class="filter"><label for="evo-update">Added In</label><select id="evo-update"><option value="All">All</option></select></div>
-        </div>
-        <div class="count" id="evo-count">0 cars</div>
+        <div class="count" id="roi-count">0 cars</div>
         <div class="table-wrap">
-          <table>
+          <table id="roi-table">
             <thead>
-              <tr><th data-sort="carName">Car Name</th><th data-sort="class">Class</th><th data-sort="rarity">Rarity</th><th data-sort="rankMax" data-sort-type="num">Rank Max</th><th data-sort="evoInfo">Added In</th><th data-sort="notes">Notes</th></tr>
+              <tr>
+                <th data-sort="carName">Car</th>
+                <th data-sort="class">Class</th>
+                <th data-sort="rarity">Rarity</th>
+                <th data-sort="rankStock" data-sort-type="num">Stock Rank</th>
+                <th data-sort="rankMax" data-sort-type="num">Max Rank</th>
+                <th data-sort="rankGain" data-sort-type="num">Rank Gain</th>
+                <th data-sort="totalUpgradeCost" data-sort-type="num">Total Cost</th>
+                <th data-sort="costPerRank" data-sort-type="num">Cost / Rank</th>
+                <th data-sort="costPerStat" data-sort-type="num">Cost / Stat Point</th>
+              </tr>
             </thead>
-            <tbody id="evo-body"></tbody>
+            <tbody id="roi-body"></tbody>
           </table>
         </div>
-        <p class="dashboard-intro" style="margin-top:1rem;">Note: Lamborghini Murciélago LP 640 Roadster is also EVO-eligible (Holiday Overdrive update) but is not yet in our parsed car roster.</p>
       </div>
     </section>
+
   </main>
   <footer>
     Data sourced from <a href="https://asphalt.fandom.com/" target="_blank" rel="noopener">Asphalt Fandom</a> and <a href="https://asphalt9.info/" target="_blank" rel="noopener">Asphalt9.info</a> — compiled for gameplay optimization.<br>
