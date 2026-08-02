@@ -730,6 +730,58 @@
     });
   }
 
+  function initFarming() {
+    const sel = $('#farm-car');
+    const info = $('#farm-car-info');
+    const results = $('#farm-results');
+    const careerBody = $('#farm-career-body');
+    const eventsBody = $('#farm-events-body');
+
+    [...cars].sort((a, b) => a.carName.localeCompare(b.carName)).forEach(c => {
+      sel.add(new Option(`${c.carName} (${c.class})`, c.carName));
+    });
+
+    sel.addEventListener('change', () => {
+      const car = cars.find(c => c.carName === sel.value);
+      if (!car) {
+        info.style.display = 'none';
+        results.style.display = 'none';
+        return;
+      }
+
+      const bpInfo = car.blueprintCount ? ` — <strong>${fmt(car.blueprintCount)} blueprints</strong> total` : '';
+      const evoBadge = car.evoEligible ? ' <span class="badge badge-legendary">EVO</span>' : '';
+      info.innerHTML = `<strong>${car.carName}</strong> — Class ${car.class}, ${car.rarity || '—'}${bpInfo}${evoBadge}`;
+      info.style.display = 'block';
+
+      const carNameL = car.carName.toLowerCase();
+      const classL = 'class ' + car.class.toLowerCase();
+
+      const careerSources = careerSeasons.filter(s => {
+        const stage = s.stage.toLowerCase();
+        return stage.includes(carNameL) || stage.includes(classL);
+      }).sort((a, b) => a.chapter.localeCompare(b.chapter) || a.stage.localeCompare(b.stage));
+
+      $('#farm-career-count').textContent = `${careerSources.length} season${careerSources.length === 1 ? '' : 's'}`;
+      careerBody.innerHTML = careerSources.map(s => {
+        const tracks = [...new Set(careerRaces.filter(r => r.chapter === s.chapter && r.season === s.stage).map(r => r.track))].join(', ') || '—';
+        return `<tr><td>${s.chapter}</td><td>${s.stage}</td><td class="num">${s.races}</td><td class="num">${s.flags}</td><td>${tracks}</td></tr>`;
+      }).join('');
+
+      const eventSources = events.filter(e => {
+        const el = e.eligibleCars.toLowerCase();
+        return el.includes('all classes') || el.includes(classL) || el.includes(carNameL);
+      }).sort((a, b) => a.eventName.localeCompare(b.eventName));
+
+      $('#farm-events-count').textContent = `${eventSources.length} event${eventSources.length === 1 ? '' : 's'}`;
+      eventsBody.innerHTML = eventSources.map(e =>
+        `<tr><td>${e.eventName}</td><td>${e.frequency}</td><td>${e.track}</td><td>${e.rewards}</td><td>${e.notes}</td></tr>`
+      ).join('');
+
+      results.style.display = 'block';
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initNav();
@@ -743,5 +795,6 @@
     if ($('#gauntlet-lineup')) initGauntlet();
     if ($('#evo-body')) initEvo();
     if ($('#match-track')) initMatchmaker();
+    if ($('#farm-car')) initFarming();
   });
 })();

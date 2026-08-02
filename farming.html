@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Career Progression | Asphalt Legends Unite</title>
+  <title>Blueprint Farming Planner | Asphalt Legends Unite</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -39,26 +39,51 @@
   </header>
   <main>
 
-    <h1 class="page-title">Career Progression</h1>
-    <p class="page-subtitle">All six chapters, every season, and race-by-race details.</p>
+    <section class="hero">
+      <h1>Blueprint Farming Planner</h1>
+      <p>Pick a car and see every career season and recurring event that can drop its blueprints.</p>
+    </section>
 
-    <div class="card">
+    <section class="card">
+      <div class="card-header"><h2>Select a Car</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <div class="search-bar"><input type="search" id="career-search" placeholder="Search chapter or season…" /></div>
         <div class="filters">
-          <div class="filter"><label for="career-chapter">Chapter</label><select id="career-chapter"><option value="All">All</option></select></div>
+          <div class="filter" style="flex: 1 1 100%;">
+            <label for="farm-car">Car</label>
+            <select id="farm-car"><option value="">— Choose a car —</option></select>
+          </div>
         </div>
-        <div class="count" id="career-count">0 seasons</div>
+        <div id="farm-car-info" class="dashboard-intro" style="display:none;"></div>
+      </div>
+    </section>
+
+    <section class="card" id="farm-results" style="display:none;">
+      <div class="card-header"><h2>Farming Sources</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <h4>Career Seasons</h4>
+        <div class="count" id="farm-career-count">0 seasons</div>
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th data-sort="chapter">Chapter</th><th data-sort="stage">Season (Stage)</th><th data-sort="races" data-sort-type="num">Races</th><th data-sort="flags" data-sort-type="num">Flags</th><th>Details</th></tr>
+              <tr><th data-sort="chapter">Chapter</th><th data-sort="stage">Season</th><th data-sort="races" data-sort-type="num">Races</th><th data-sort="flags" data-sort-type="num">Flags</th><th>Tracks</th></tr>
             </thead>
-            <tbody id="career-body"></tbody>
+            <tbody id="farm-career-body"></tbody>
+          </table>
+        </div>
+
+        <h4 style="margin-top:1.25rem;">Events</h4>
+        <div class="count" id="farm-events-count">0 events</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th data-sort="eventName">Event</th><th data-sort="frequency">Frequency</th><th data-sort="track">Track</th><th data-sort="rewards">Rewards</th><th data-sort="notes">Notes</th></tr>
+            </thead>
+            <tbody id="farm-events-body"></tbody>
           </table>
         </div>
       </div>
-    </div>
+    </section>
+
   </main>
   <footer>
     Data sourced from <a href="https://asphalt.fandom.com/" target="_blank" rel="noopener">Asphalt Fandom</a> and <a href="https://asphalt9.info/" target="_blank" rel="noopener">Asphalt9.info</a> — compiled for gameplay optimization.<br>
