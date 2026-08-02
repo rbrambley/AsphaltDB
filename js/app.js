@@ -849,6 +849,69 @@
     render();
   }
 
+  function initEventRoster() {
+    const sel = $('#roster-event');
+    const info = $('#roster-event-info');
+    const results = $('#roster-results');
+    const body = $('#roster-body');
+    const table = $('#roster-table');
+    let sortKey = 'rankMax';
+    let sortDir = -1;
+
+    [...events].sort((a, b) => a.eventName.localeCompare(b.eventName)).forEach(e => {
+      sel.add(new Option(e.eventName, e.eventName));
+    });
+
+    function qualifies(c, e) {
+      const el = e.eligibleCars.toLowerCase();
+      if (el.includes('all classes')) return true;
+      if (el.includes('class ' + c.class.toLowerCase())) return true;
+      if (el.includes(c.carName.toLowerCase())) return true;
+      return false;
+    }
+
+    function render() {
+      const event = events.find(e => e.eventName === sel.value);
+      if (!event) {
+        info.style.display = 'none';
+        results.style.display = 'none';
+        return;
+      }
+      info.innerHTML = `<strong>${event.eventName}</strong><br>` +
+        `Track: ${event.track || '—'}<br>` +
+        `Frequency: ${event.frequency || '—'}<br>` +
+        `Eligible: ${event.eligibleCars || '—'}<br>` +
+        `Rewards: ${event.rewards || '—'}<br>` +
+        `Notes: ${event.notes || '—'}`;
+      info.style.display = 'block';
+
+      let list = cars.filter(c => qualifies(c, event));
+      list.sort((a, b) => {
+        let av = a[sortKey], bv = b[sortKey];
+        return compareValues(av, bv, sortDir);
+      });
+
+      $('#roster-count').textContent = `${list.length} car${list.length === 1 ? '' : 's'}`;
+      body.innerHTML = list.map(c =>
+        `<tr><td>${c.carName}</td><td>${c.class}</td>` +
+        `<td><span class="badge badge-${(c.rarity || '').toLowerCase()}">${c.rarity}</span></td>` +
+        `<td class="num">${fmt(c.rankMax)}</td>` +
+        `<td class="num">${fix(c.topSpeedMax)}</td><td class="num">${fix(c.accelerationMax)}</td>` +
+        `<td class="num">${fix(c.handlingMax)}</td><td class="num">${fix(c.nitroMax)}</td></tr>`
+      ).join('');
+      setSortIndicators(table, sortKey, sortDir);
+    }
+
+    initSortHeaders(table, key => {
+      if (sortKey === key) sortDir = -sortDir;
+      else { sortKey = key; sortDir = key === 'carName' || key === 'class' || key === 'rarity' ? 1 : -1; }
+      render();
+    });
+
+    sel.addEventListener('change', render);
+    render();
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initNav();
@@ -864,5 +927,6 @@
     if ($('#match-track')) initMatchmaker();
     if ($('#farm-car')) initFarming();
     if ($('#roi-table')) initUpgradeRoi();
+    if ($('#roster-event')) initEventRoster();
   });
 })();

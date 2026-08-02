@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blueprint Farming Planner | Asphalt Legends Unite</title>
+  <title>Event Eligibility Roster | Asphalt Legends Unite</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -42,45 +42,42 @@
   <main>
 
     <section class="hero">
-      <h1>Blueprint Farming Planner</h1>
-      <p>Pick a car and see every career season and recurring event that can drop its blueprints.</p>
+      <h1>Event Eligibility Roster</h1>
+      <p>Pick an event and see every car that qualifies, sorted by max rank.</p>
     </section>
 
     <section class="card">
-      <div class="card-header"><h2>Select a Car</h2><span class="toggle">−</span></div>
+      <div class="card-header"><h2>Select an Event</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <div class="filters">
           <div class="filter" style="flex: 1 1 100%;">
-            <label for="farm-car">Car</label>
-            <select id="farm-car"><option value="">— Choose a car —</option></select>
+            <label for="roster-event">Event</label>
+            <select id="roster-event"><option value="">— Choose an event —</option></select>
           </div>
         </div>
-        <div id="farm-car-info" class="dashboard-intro" style="display:none;"></div>
+        <div id="roster-event-info" class="dashboard-intro" style="display:none;"></div>
       </div>
     </section>
 
-    <section class="card" id="farm-results" style="display:none;">
-      <div class="card-header"><h2>Farming Sources</h2><span class="toggle">−</span></div>
+    <section class="card" id="roster-results" style="display:none;">
+      <div class="card-header"><h2>Eligible Cars</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <h4>Career Seasons</h4>
-        <div class="count" id="farm-career-count">0 seasons</div>
+        <div class="count" id="roster-count">0 cars</div>
         <div class="table-wrap">
-          <table>
+          <table id="roster-table">
             <thead>
-              <tr><th data-sort="chapter">Chapter</th><th data-sort="stage">Season</th><th data-sort="races" data-sort-type="num">Races</th><th data-sort="flags" data-sort-type="num">Flags</th><th>Tracks</th></tr>
+              <tr>
+                <th data-sort="carName">Car</th>
+                <th data-sort="class">Class</th>
+                <th data-sort="rarity">Rarity</th>
+                <th data-sort="rankMax" data-sort-type="num">Max Rank</th>
+                <th data-sort="topSpeedMax" data-sort-type="num">Top Speed</th>
+                <th data-sort="accelerationMax" data-sort-type="num">Acceleration</th>
+                <th data-sort="handlingMax" data-sort-type="num">Handling</th>
+                <th data-sort="nitroMax" data-sort-type="num">Nitro</th>
+              </tr>
             </thead>
-            <tbody id="farm-career-body"></tbody>
-          </table>
-        </div>
-
-        <h4 style="margin-top:1.25rem;">Events</h4>
-        <div class="count" id="farm-events-count">0 events</div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th data-sort="eventName">Event</th><th data-sort="frequency">Frequency</th><th data-sort="track">Track</th><th data-sort="rewards">Rewards</th><th data-sort="notes">Notes</th></tr>
-            </thead>
-            <tbody id="farm-events-body"></tbody>
+            <tbody id="roster-body"></tbody>
           </table>
         </div>
       </div>
