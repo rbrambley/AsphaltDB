@@ -660,6 +660,76 @@
     updateSummary();
   }
 
+  function initMatchmaker() {
+    const sel = $('#match-track');
+    const info = $('#track-info');
+    const resultsCard = $('#results-card');
+    const results = $('#match-results');
+
+    [...tracks].sort((a, b) => a.trackName.localeCompare(b.trackName)).forEach(t => {
+      sel.add(new Option(`${t.trackName} (${t.environment})`, t.trackName));
+    });
+
+    function weights(t) {
+      let top = 0.6, acc = 1.0, hand = 1.0, nitro = 0.8;
+      const len = (t.length || '').toLowerCase();
+      if (len.includes('short')) { top = 0.2; acc = 1.2; hand = 1.2; nitro = 1.0; }
+      else if (len.includes('medium')) { top = 0.8; acc = 1.0; hand = 1.0; nitro = 0.8; }
+      else if (len.includes('extra')) { top = 1.8; acc = 0.4; hand = 0.4; nitro = 0.4; }
+      else if (len.includes('long')) { top = 1.5; acc = 0.6; hand = 0.6; nitro = 0.6; }
+
+      const haz = (t.hazards || '').toLowerCase();
+      const diff = (t.difficulty || '').toLowerCase();
+      if (haz.includes('nitro')) nitro += 0.5;
+      if (haz.includes('technical') || diff.includes('hard')) hand += 0.3;
+      if (haz.includes('drift')) hand += 0.2;
+      return { top, acc, hand, nitro };
+    }
+
+    function score(c, w) {
+      if (c.topSpeedMax == null || c.accelerationMax == null || c.handlingMax == null || c.nitroMax == null) return null;
+      return Math.round(c.topSpeedMax * w.top + c.accelerationMax * w.acc + c.handlingMax * w.hand + c.nitroMax * w.nitro);
+    }
+
+    sel.addEventListener('change', () => {
+      const track = tracks.find(t => t.trackName === sel.value);
+      if (!track) {
+        info.style.display = 'none';
+        resultsCard.style.display = 'none';
+        return;
+      }
+      const w = weights(track);
+      info.innerHTML = `<strong>${track.trackName}</strong> — ${track.environment}, ${track.length || '—'}, ${track.difficulty || '—'} difficulty.<br>` +
+        `Hazards: ${track.hazards || '—'}<br>Recommended classes: ${track.recClasses || '—'}<br>` +
+        `Score weights — Top Speed: ${w.top.toFixed(1)}, Acceleration: ${w.acc.toFixed(1)}, Handling: ${w.hand.toFixed(1)}, Nitro: ${w.nitro.toFixed(1)}`;
+      info.style.display = 'block';
+
+      const classes = ['D', 'C', 'B', 'A', 'S'];
+      let html = '';
+      classes.forEach(cls => {
+        const list = cars.filter(c => c.class === cls && score(c, w) != null)
+          .sort((a, b) => score(b, w) - score(a, w))
+          .slice(0, 5);
+        html += `<h4>Class ${cls}</h4>`;
+        if (!list.length) {
+          html += `<p class="empty-state">No complete stat data for Class ${cls}.</p>`;
+        } else {
+          html += `<div class="table-wrap"><table><thead><tr><th>Rank</th><th>Car</th><th>Rarity</th><th>Top Speed</th><th>Accel</th><th>Handling</th><th>Nitro</th><th>Score</th></tr></thead><tbody>`;
+          list.forEach(c => {
+            html += `<tr><td class="num">${fmt(c.rankMax)}</td><td>${c.carName}</td>` +
+              `<td><span class="badge badge-${(c.rarity || '').toLowerCase()}">${c.rarity}</span></td>` +
+              `<td class="num">${fix(c.topSpeedMax)}</td><td class="num">${fix(c.accelerationMax)}</td>` +
+              `<td class="num">${fix(c.handlingMax)}</td><td class="num">${fix(c.nitroMax)}</td>` +
+              `<td class="num">${score(c, w)}</td></tr>`;
+          });
+          html += `</tbody></table></div>`;
+        }
+      });
+      results.innerHTML = html;
+      resultsCard.style.display = 'block';
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initNav();
@@ -672,5 +742,6 @@
     if ($('#dash-body')) initDashboard();
     if ($('#gauntlet-lineup')) initGauntlet();
     if ($('#evo-body')) initEvo();
+    if ($('#match-track')) initMatchmaker();
   });
 })();
