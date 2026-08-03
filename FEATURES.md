@@ -3,8 +3,8 @@
 A living list of possible enhancements. Items marked **Done** are already implemented; the rest are candidates for future work.
 
 ## Data completeness & accuracy
-- [ ] Re-import the car roster from a more complete source to capture missing vehicles (e.g., Lamborghini Murciélago LP 640 Roadster and other newer cars).
-- [ ] Backfill missing performance stats for cars that currently lack stock/max values.
+- [x] Re-import the car roster from a more complete source to capture missing vehicles (e.g., Lamborghini Murciélago LP 640 Roadster and other newer cars). — *Roster expanded to 349 cars from Asphalt9.info.*
+- [~] Backfill missing performance stats for cars that currently lack stock/max values. — *Most backfilled; newer cars still pending.*
 - [ ] Add EVO-specific data: EVO item slots, archetypes, max EVO rank, weight limits, and boost effects.
 - [ ] Add car thumbnails or icons for visual scanning.
 - [ ] Add release year for every car (currently missing for some).
@@ -17,20 +17,21 @@ A living list of possible enhancements. Items marked **Done** are already implem
 
 ## Correlation & analysis tools
 - [x] Best cars for short Gauntlet tracks.
-- [ ] **Track ↔ Car matchmaker** — for any track, recommend the top 3 cars per class based on length, hazards, and stat profile.
+- [x] **Track ↔ Car matchmaker** — for any track, recommend the top 3 cars per class based on length, hazards, and stat profile.
 - [ ] **Career race recommender** — show which owned cars meet the required rank for a given career race and which is statistically best.
-- [ ] **Blueprint farming planner** — for a selected car, list every career season and event that drops its blueprints, sorted by efficiency.
-- [ ] **Upgrade ROI calculator** — rank cars by stat/rank gain per credit spent, helping players prioritize garage upgrades.
-- [ ] **Event eligibility roster** — for any event, list every car that qualifies and highlight the statistically strongest options.
+- [x] **Blueprint farming planner** — for a selected car, list every career season and event that drops its blueprints, sorted by efficiency.
+- [x] **Upgrade ROI calculator** — rank cars by stat/rank gain per credit spent, helping players prioritize garage upgrades.
+- [x] **Event eligibility roster** — for any event, list every car that qualifies and highlight the statistically strongest options.
 - [ ] **Multiplayer tier list** — rank cars within each class for standard multiplayer and season series (MP2).
 - [ ] **Gauntlet lineup optimizer** — suggest the best 5-car defense roster for 30″ tracks, with EVO-aware recommendations.
 - [ ] **EVO build recommender** — suggest short-track vs. long-track EVO item builds for each EVO car.
 - [ ] **Club / Team Pursuit recommendations** — suggest car compositions for asymmetric team modes.
+- [x] **Side-by-side car comparison** — select two cars and compare all stats in one view, with better values highlighted.
 
 ## Game modes & events
 - [x] Gauntlet mode helper page (rules, 30″ tracks, short-track car ranking, lineup builder).
 - [x] EVO Tuning page (EVO rules + EVO-eligible car list).
-- [ ] Full limited-time event calendar (Grand Prix, Special Events, Car Hunts, Spotlights, Mayhem).
+- [x] Full limited-time event calendar (Grand Prix, Special Events, Car Hunts, Spotlights) — *live calendar with status filters; sourced from asphaltlegends.com and Fandom Spotlight.*
 - [ ] Grand Prix schedule with required cars and rewards.
 - [ ] Special Event mission breakdowns with car/star requirements per stage.
 - [ ] Car Hunt schedule with featured cars and dates.
@@ -40,7 +41,7 @@ A living list of possible enhancements. Items marked **Done** are already implem
 
 ## Player-owned garage tools
 - [ ] **Garage tracker** — let users mark which cars they own, star level, rank, and EVO progress.
-- [ ] **Side-by-side car comparison** — select two or more cars and compare all stats in one view.
+- [x] **Side-by-side car comparison** — select two cars and compare all stats in one view.
 - [ ] **Favorite/bookmark cars** for quick access.
 - [ ] **Build presets** — save and name custom EVO/build configurations.
 - [ ] **Export garage to CSV/JSON** for sharing or backup.
@@ -51,6 +52,7 @@ A living list of possible enhancements. Items marked **Done** are already implem
 - [x] Light / dark / system theme switcher with persistence.
 - [x] Collapsible card sections.
 - [x] Sortable and filterable tables on the dashboard.
+- [x] Compact hamburger navigation that works on all screen sizes.
 - [ ] Mobile card view alternative to wide tables.
 - [ ] Sticky first column on mobile tables.
 - [ ] Global search bar that searches cars, tracks, events, and career seasons from any page.
@@ -63,6 +65,6 @@ A living list of possible enhancements. Items marked **Done** are already implem
 ## Community & maintenance
 - [ ] "Report issue / Suggest edit" link per page.
 - [ ] Changelog / update log tied to game patches.
-- [ ] Automated data refresh pipeline from Asphalt Wiki / Asphalt9.info.
-- [ ] Data validation checks (missing ranks, duplicate cars, broken links).
+- [x] Automated data refresh pipeline from Fandom / asphaltlegends.com — *manual GitHub Actions workflow for calendar; car data still manual.*
+- [x] Data validation checks (missing ranks, duplicate cars, broken links) — *local scripts; CI not yet wired.*
 - [ ] GitHub Actions CI to verify links and JS syntax on every commit.
