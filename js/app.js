@@ -1027,7 +1027,11 @@
 
       let filtered = calendarEvents.map(e => Object.assign({}, e, { _status: status(e) }))
         .filter(e => {
-          if (st !== 'all' && e._status !== st) return false;
+          if (st === 'current') {
+            if (e._status !== 'upcoming' && e._status !== 'active') return false;
+          } else if (st !== 'all' && e._status !== st) {
+            return false;
+          }
           if (type && e.type !== type) return false;
           if (q && !e.eventName.toLowerCase().includes(q) && !e.featuredCars.toLowerCase().includes(q)) return false;
           return true;
