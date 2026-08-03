@@ -1,0 +1,49 @@
+name: Update Calendar Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      season_url:
+        description: 'asphaltlegends.com season news URL'
+        required: true
+        default: 'https://asphaltlegends.com/news/touge-masters'
+      refresh_spotlight:
+        description: 'Refresh Fandom Spotlight events'
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  update-calendar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Update calendar data
+        run: |
+          ARGS="--season-url ${{ github.event.inputs.season_url }}"
+          if [ "${{ github.event.inputs.refresh_spotlight }}" = "true" ]; then
+            ARGS="$ARGS --spotlight"
+          fi
+          python scripts/update_calendar.py $ARGS
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add js/data.js
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update calendar data from external sources [skip ci]"
+            git push
+          fi

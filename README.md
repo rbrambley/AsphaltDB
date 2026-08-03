@@ -12,8 +12,24 @@ A static, multi-page reference site for **Asphalt Legends Unite**.
 
 - Car stats: [Asphalt9.info](https://asphalt9.info/)
 - Career & track data: [Asphalt9.info](https://asphalt9.info/) and [Asphalt Fandom](https://asphalt.fandom.com/)
+- Calendar events: [Asphalt Fandom](https://asphalt.fandom.com/) and [asphaltlegends.com](https://asphaltlegends.com/)
 
 Rarity, blueprint source, unlock method, upgrade cost and recommended tracks are baseline placeholders derived from class; they should be reviewed and improved by the community.
+
+## Updating calendar data
+
+The calendar can be refreshed from the latest online sources:
+
+1. Go to **Actions → Update Calendar Data → Run workflow**.
+2. Paste the current asphaltlegends.com season URL (e.g., `https://asphaltlegends.com/news/touge-masters`).
+3. Choose whether to refresh the Fandom Spotlight list.
+4. Click **Run workflow**. The workflow will update `js/data.js` and push the changes.
+
+Or run locally:
+
+```bash
+python scripts/update_calendar.py --season-url https://asphaltlegends.com/news/touge-masters --spotlight
+```
 
 ## Hosting
 
