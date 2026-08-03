@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Garage | Asphalt Legends Unite</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <title>Cars Database | Asphalt Legends Unite</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -45,33 +45,47 @@
   </header>
   <main>
 
-    <h1 class="page-title">Cars Database</h1>
-    <p class="page-subtitle">Stock and max tuning stats for every class D–S car in Asphalt Legends Unite.</p>
+    <section class="hero">
+      <h1>My Garage</h1>
+      <p>Cars imported from your screenshots. This data is committed to the repository so it works on every device.</p>
+    </section>
 
-    <div class="card">
+    <section class="card">
+      <div class="card-header"><h2>How to update</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <div class="search-bar"><input type="search" id="cars-search" placeholder="Search car or manufacturer…" /></div>
-        <div class="filters">
-          <div class="filter"><label for="cars-class">Class</label><select id="cars-class"><option value="All">All</option></select></div>
-          <div class="filter"><label for="cars-manufacturer">Manufacturer</label><select id="cars-manufacturer"><option value="All">All</option></select></div>
-          <div class="filter"><label for="cars-rarity">Rarity</label><select id="cars-rarity"><option value="All">All</option></select></div>
-          <div class="filter"><label for="cars-evo">EVO</label><select id="cars-evo"><option value="All">All</option><option value="yes">Yes</option><option value="no">No</option></select></div>
-        </div>
-        <div class="count" id="cars-count">0 cars</div>
+        <ol>
+          <li>Save car-detail screenshots to <code>garage-screenshots/</code>.</li>
+          <li>Run <code>python scripts/update_garage.py</code> locally (requires Tesseract).</li>
+          <li>Review the generated <code>js/garage_data.js</code> and commit it.</li>
+          <li>Push to GitHub — the live site will use the updated garage.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>Owned Cars</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <div class="count" id="garage-count">0 cars</div>
         <div class="table-wrap">
-          <table>
+          <table id="garage-table">
             <thead>
               <tr>
-                <th data-sort="carName">Car Name</th><th data-sort="class">Class</th><th data-sort="manufacturer">Manufacturer</th><th data-sort="releaseYear" data-sort-type="num">Year</th><th data-sort="rarity">Rarity</th><th data-sort="evoEligible">EVO</th>
-                <th>Top Speed (Stock/Max)</th><th>Acceleration (Stock/Max)</th><th>Handling (Stock/Max)</th><th>Nitro (Stock/Max)</th>
-                <th data-sort="rankMax" data-sort-type="num">Rank (Stock/Max)</th><th>Blueprint Source</th><th>Unlock Method</th><th>Upgrade Cost</th><th>Recommended Tracks</th><th>Notes</th>
+                <th data-sort="carName">Car</th>
+                <th data-sort="class">Class</th>
+                <th data-sort="rankCurrent" data-sort-type="num">Rank</th>
+                <th data-sort="stars" data-sort-type="num">Stars</th>
+                <th data-sort="topSpeed" data-sort-type="num">Top Speed</th>
+                <th data-sort="acceleration" data-sort-type="num">Accel</th>
+                <th data-sort="handling" data-sort-type="num">Handling</th>
+                <th data-sort="nitro" data-sort-type="num">Nitro</th>
               </tr>
             </thead>
-            <tbody id="cars-body"></tbody>
+            <tbody id="garage-body"></tbody>
           </table>
         </div>
       </div>
-    </div>
+    </section>
+
   </main>
   <footer>
     Data sourced from <a href="https://asphalt.fandom.com/" target="_blank" rel="noopener">Asphalt Fandom</a> and <a href="https://asphalt9.info/" target="_blank" rel="noopener">Asphalt9.info</a> — compiled for gameplay optimization.<br>

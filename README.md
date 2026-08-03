@@ -16,6 +16,40 @@ A static, multi-page reference site for **Asphalt Legends Unite**.
 
 Rarity, blueprint source, unlock method, upgrade cost and recommended tracks are baseline placeholders derived from class; they should be reviewed and improved by the community.
 
+## My Garage (OCR from screenshots)
+
+You can import your actual in-game garage from screenshots. The parsed data is committed to `js/garage_data.js` so it is available on the live site and on any device.
+
+### One-time setup
+
+1. Install Tesseract OCR: https://github.com/UB-Mannheim/tesseract/wiki
+2. Make sure `tesseract.exe` is on your PATH, or edit `scripts/update_garage.py` to set `pytesseract.pytesseract.tesseract_cmd` to the full path.
+3. Install the Python dependencies:
+
+```bash
+pip install pytesseract pillow
+```
+
+### Updating your garage
+
+1. Save car-detail screenshots to `garage-screenshots/` (PNG or JPG).
+2. Run the update script:
+
+```bash
+python scripts/update_garage.py
+```
+
+3. Review `js/garage_data.js` and the optional `garage_review.json` for any low-confidence parses.
+4. Commit and push:
+
+```bash
+git add js/garage_data.js
+git commit -m "Update garage data"
+git push
+```
+
+The `garage-screenshots/` folder should not be committed — screenshots stay local and are only used for OCR.
+
 ## Updating calendar data
 
 The calendar can be refreshed from the latest online sources:

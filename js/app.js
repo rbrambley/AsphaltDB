@@ -990,6 +990,7 @@
     if ($('#roster-event')) initEventRoster();
     if ($('#compare-car-1')) initCompare();
     if ($('#cal-list')) initCalendar();
+    if ($('#garage-body')) initGarage();
   });
 
   function initCalendar() {
@@ -1060,6 +1061,40 @@
     selStatus.addEventListener('change', render);
     selType.addEventListener('change', render);
     search.addEventListener('input', render);
+    render();
+  }
+
+  function initGarage() {
+    const table = $('#garage-body').closest('table');
+    let sortKey = '', sortDir = 1;
+
+    function render() {
+      const data = garage && garage.length ? [...garage] : [];
+      if (sortKey) data.sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
+      $('#garage-count').textContent = `${data.length} car${data.length === 1 ? '' : 's'}`;
+      if (!data.length) {
+        $('#garage-body').innerHTML = '<tr><td colspan="8" class="empty-state">No cars in garage. Run the local OCR script to import screenshots.</td></tr>';
+        setSortIndicators(table, sortKey, sortDir);
+        return;
+      }
+      renderTable('garage-body', data, (c, row) => {
+        row.appendChild(makeCell(c.carName));
+        row.appendChild(makeCell(c.class));
+        row.appendChild(makeCell(c.rankCurrent != null && c.rankMax != null ? `${c.rankCurrent.toLocaleString()} / ${c.rankMax.toLocaleString()}` : '—', 'num'));
+        row.appendChild(makeCell(c.stars != null ? c.stars : '—', 'num'));
+        row.appendChild(makeCell(c.topSpeed != null ? c.topSpeed : '—', 'num'));
+        row.appendChild(makeCell(c.acceleration != null ? c.acceleration : '—', 'num'));
+        row.appendChild(makeCell(c.handling != null ? c.handling : '—', 'num'));
+        row.appendChild(makeCell(c.nitro != null ? c.nitro : '—', 'num'));
+      });
+      setSortIndicators(table, sortKey, sortDir);
+    }
+
+    initSortHeaders(table, key => {
+      sortDir = sortKey === key ? -sortDir : 1;
+      sortKey = key;
+      render();
+    });
     render();
   }
 })();
