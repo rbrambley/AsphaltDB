@@ -45,13 +45,25 @@ def normalize_name(s):
     return s.strip().lower()
 
 
+def token_sort(s):
+    return ' '.join(sorted(normalize_name(s).split()))
+
+
+def no_space(s):
+    return re.sub(r'[^A-Za-z0-9]', '', s).lower()
+
+
 def match_car_name(ocr_name, cars, threshold=0.7):
     best = None
     best_ratio = 0
-    ocr_norm = normalize_name(ocr_name)
+    ocr_token = token_sort(ocr_name)
+    ocr_nospace = no_space(ocr_name)
     for c in cars:
-        car_norm = normalize_name(c['carName'])
-        ratio = difflib.SequenceMatcher(None, ocr_norm, car_norm).ratio()
+        car_token = token_sort(c['carName'])
+        car_nospace = no_space(c['carName'])
+        token_ratio = difflib.SequenceMatcher(None, ocr_token, car_token).ratio()
+        nospace_ratio = difflib.SequenceMatcher(None, ocr_nospace, car_nospace).ratio()
+        ratio = max(token_ratio, nospace_ratio)
         if ratio > best_ratio:
             best_ratio = ratio
             best = c
