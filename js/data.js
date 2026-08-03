@@ -25487,5 +25487,170 @@ const calendarEvents = [
     "featuredCars": "",
     "relatedUpdate": "Raw Circuit",
     "notes": ""
+  },
+  {
+    "eventName": "JDM Turbofest Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-21",
+    "endDate": "2026-08-19",
+    "rawDate": "21/7 - 19/8",
+    "featuredCars": "Time to DRIFT aboard the Nissan Skyline GTR R34, the Toyota Supra RZ Mark IV and the Mazda RX-7 Spirit R.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "EVO Mercedes-Benz C11 Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-21",
+    "endDate": "2026-08-04",
+    "rawDate": "21/7 - 4/8",
+    "featuredCars": "Time to maxout the Mercedes-Benz C11 and unlock their EVO customizations.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "EVO Lamborghini Murcielago LP 64 Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-23",
+    "endDate": "2026-08-06",
+    "rawDate": "23/7 - 6/8",
+    "featuredCars": "And the Murcielago makes a comback in our EVO events! Another run to continue unlocking EVO customizations.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Mercedes-Benz AMG GT Black Series GrandPrix",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-28",
+    "endDate": "2026-08-14",
+    "rawDate": "28/7 - 14/8",
+    "featuredCars": "Compete against other Legends! Only the Champions can earn the Key.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Drive Syndicate 17 - Midnight Division",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-30",
+    "endDate": "2026-09-04",
+    "rawDate": "30/7 - 4/9",
+    "featuredCars": "The story continues as we join the Syndicate at Mount Fuji, aboard the Tushek Aeon R, the Jannarelly AElla-60, the Mercedes-AMG C63 DTM, the Formula E Gen 3 EVO Championship Edition, the Hennessy Venom GT, and the Lamborghini Countach LPI 800-4.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Tushek TS 900 H Racer Pro Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-08-03",
+    "endDate": "2026-08-18",
+    "rawDate": "3/8 - 18/8",
+    "featuredCars": "Grace the tarmac aboard the Tushek TS 900 H, alongside the Automobili Pininfarina Battista, the Ajlani Drakuma, the Torino Design Super Sport, and the BXR Bailey Blade GT1.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "FV Frangivento Asfan\u00e9 Special Hunt",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-08-10",
+    "endDate": "2026-08-25",
+    "rawDate": "10/8 - 25/8",
+    "featuredCars": "And the last special event of the season will give you a chance to hunt down the FV Frangivento Asfan\u00e9.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Asphalt Birthday",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-24",
+    "endDate": "2026-07-30",
+    "rawDate": "24/7 - 30/7",
+    "featuredCars": "Come celebrate another year on the track aboard the Koenigsegg Jesko!",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "The Beautiful Game",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-28",
+    "endDate": "2026-08-01",
+    "rawDate": "28/7 - 1/8",
+    "featuredCars": "Whether you call it football or soccer, we\u2019ll still let you join the race with either the Renault R.S. 01, the Praga R1, or the Toyota GR Supra Racing Concept.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Lotus Evija Star Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-28",
+    "endDate": "2026-08-08",
+    "rawDate": "28/7 - 8/8",
+    "featuredCars": "Get your missing blueprints before the Epic Hunt starts.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Friends Unite",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-30",
+    "endDate": "2026-08-05",
+    "rawDate": "30/7 - 5/8",
+    "featuredCars": "Get your friends together for National Friendship Day and get behind the wheel of the Lamborghini SIan FKP 37 or the Porsche 911 Carrera RS 3.8",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Summer Sports",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-08-05",
+    "endDate": "2026-08-10",
+    "rawDate": "5/8 - 10/8",
+    "featuredCars": "Fancy going for a run in the sun? Me niether. So let\u2019s race instead with the Ferrari 488 Challenge EVO, the Lotus Evora Sport 410, and the Volkswagen XL Sport Concept.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Lotus Evija Epic Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-08-08",
+    "endDate": "2026-08-19",
+    "rawDate": "8/8 - 19/8",
+    "featuredCars": "We\u2019re hunting the wabbit, I mean, the Epic Import Parts!",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Bentley Continental GT3 TLE",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-08-10",
+    "endDate": "2026-08-15",
+    "rawDate": "10/8 - 15/8",
+    "featuredCars": "With a side of Bentley Continental GT3.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "W Motors Fenyr SuperSport TLE",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-08-14",
+    "endDate": "2026-08-19",
+    "rawDate": "14/8 - 19/8",
+    "featuredCars": "Make that two with a W Motors Fenyr SuperSport.",
+    "relatedUpdate": "Touge Masters",
+    "notes": ""
   }
 ];
