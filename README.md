@@ -32,7 +32,7 @@ pip install pytesseract pillow
 
 ### Updating your garage
 
-1. Save car-detail screenshots to `garage-screenshots/` (PNG or JPG).
+1. Save car-detail screenshots to `garage-screenshots/` (PNG or JPG). The filenames do not matter — the script reads the car name from the image.
 2. Run the update script:
 
 ```bash
@@ -40,6 +40,8 @@ python scripts/update_garage.py
 ```
 
 3. Review `js/garage_data.js` and the optional `garage_review.json` for any low-confidence parses.
+
+The script merges by the car's matched name, so re-scanning the same car updates its entry. The most recent screenshot (by file modification time) wins if a car appears more than once.
 4. Commit and push:
 
 ```bash

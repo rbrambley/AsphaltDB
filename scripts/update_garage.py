@@ -60,6 +60,10 @@ def match_car_name(ocr_name, cars, threshold=0.7):
     return None, best_ratio
 
 
+def slugify(name):
+    return re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
+
+
 def parse_words(image) -> List[dict]:
     """Run Tesseract and return a list of word boxes with text and coordinates."""
     data = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
@@ -113,7 +117,7 @@ def find_name(words, width, height, cars):
         name_parts.append(' '.join(w['text'] for w in line))
     raw_name = ' '.join(name_parts)
     matched, conf = match_car_name(raw_name, cars)
-    return matched or raw_name, name_parts
+    return matched, raw_name, name_parts
 
 
 def find_rank(words, width, height):
@@ -184,7 +188,7 @@ def parse_image(path, cars):
     if not words:
         return None
 
-    matched_name, raw_name = find_name(words, width, height, cars)
+    matched_name, raw_name, _ = find_name(words, width, height, cars)
     rank, class_letter = find_rank(words, width, height)
     blueprint = find_blueprint(words)
     top_speed = find_stat(words, 'SPEED', width, height)
@@ -192,10 +196,11 @@ def parse_image(path, cars):
     handling = find_stat(words, 'HANDLING', width, height)
     nitro = find_stat(words, 'NITRO', width, height)
 
+    car_name = matched_name if matched_name else raw_name
     result = {
-        'id': Path(path).stem,
-        'carName': matched_name,
-        'matchedCar': matched_name,
+        'id': slugify(car_name),
+        'carName': car_name,
+        'matchedCar': matched_name if matched_name else raw_name,
         'class': class_letter,
         'rankCurrent': rank['rankCurrent'] if rank else None,
         'rankMax': rank['rankMax'] if rank else None,
@@ -241,10 +246,12 @@ def main():
 
     cars = load_cars()
     existing = load_existing_garage()
-    by_image = {entry['imageName']: entry for entry in existing}
+    by_id = {entry['id']: entry for entry in existing}
     review = []
 
-    images = sorted(input_dir.glob('*.png')) + sorted(input_dir.glob('*.jpg')) + sorted(input_dir.glob('*.jpeg'))
+    images = list(input_dir.glob('*.png')) + list(input_dir.glob('*.jpg')) + list(input_dir.glob('*.jpeg'))
+    # Process oldest first, newest last, so the most recent screenshot wins for a given car
+    images.sort(key=lambda p: p.stat().st_mtime)
     if not images:
         print(f'No .png/.jpg images found in {input_dir}')
         return
@@ -264,21 +271,22 @@ def main():
             continue
 
         # Preserve manually-set stars if OCR did not detect them
-        if img_path.name in by_image and by_image[img_path.name].get('stars') and parsed['stars'] is None:
-            parsed['stars'] = by_image[img_path.name]['stars']
+        if parsed['id'] in by_id and by_id[parsed['id']].get('stars') and parsed['stars'] is None:
+            parsed['stars'] = by_id[parsed['id']]['stars']
 
-        by_image[img_path.name] = parsed
+        by_id[parsed['id']] = parsed
         print(f'  -> {parsed["carName"]} ({parsed["class"]})')
 
-        # Flag for review if any key field is missing
-        if not parsed['rankCurrent'] or not parsed['topSpeed'] or parsed['carName'] not in [c['carName'] for c in cars]:
+        # Flag for review if any key field is missing or the car was not matched
+        car_names = {c['carName'] for c in cars}
+        if not parsed['rankCurrent'] or not parsed['topSpeed'] or parsed['carName'] not in car_names:
             review.append({
                 'imageName': img_path.name,
                 'parsedName': parsed['carName'],
                 'message': 'Low-confidence parse; check in garage.html and correct if needed.'
             })
 
-    garage = sorted(by_image.values(), key=lambda e: e['carName'])
+    garage = sorted(by_id.values(), key=lambda e: e['carName'])
     save_garage(garage)
 
     if review:
