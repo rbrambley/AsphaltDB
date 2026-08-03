@@ -25333,5 +25333,159 @@ const calendarEvents = [
     "rawDate": "TBD",
     "relatedUpdate": "''Aston Martin Valkyrie AMR Pro''<nowiki/>'s debut.",
     "notes": ""
+  },
+  {
+    "eventName": "Nissan Z GT4 Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-06-26",
+    "endDate": "2026-07-11",
+    "rawDate": "26/6 - 11/7",
+    "featuredCars": "First onto the circuit will be the Nissan Z GT4, followed by the Alfa Romeo Giulia GTAm, the Ferrari Roma, the ATS Automobili Corsa RR Turbo, the Mercedes-Benz CLK-GTR, the Porsche 911 Turbo 50 years, and the Lamborghini Aventador SVJ Roadster.",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "4th of July Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-03",
+    "endDate": "2026-07-12",
+    "rawDate": "3/7 - 12/7",
+    "featuredCars": "Celebrate the 4th of July aboard two american classics: the Chevrolet Grand Sport 4th of July Edition and the Ford Mustang RTR Spec 5 10th Anniversary.",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Bentley Speed 8 GrandPrix",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-06",
+    "endDate": "2026-07-23",
+    "rawDate": "6/7 - 23/7",
+    "featuredCars": "Unlock the latest Bentley by proving yourself on the track! (The start date is pure coincidence)",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Bugatti Mistral Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-08",
+    "endDate": "2026-07-23",
+    "rawDate": "8/7 - 23/7",
+    "featuredCars": "The Bugatti Mistral returns, with a guard of honor including the McLaren GT, the Lamborghini Huracan EVO Spyder, the Apollo IE, the Ford Team Fordzilla P1, the De Tomaso P72, and the Rimac Concept S.",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Lamborghini Veneno Unleashed",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-13",
+    "endDate": "2026-07-28",
+    "rawDate": "13/7 - 28/7",
+    "featuredCars": "Unleash the Lamborghini Veneno upon the circuit alongside the Mercedes-Benz SLR McLaren, the Maserati MC20, the Ferrari LaFerrari Aperta, and the Ford Shelby Super Snake.",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Ginetta Akula Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-14",
+    "endDate": "2026-07-29",
+    "rawDate": "14/7 - 29/7",
+    "featuredCars": "The Ginetta Akula makes its grand debut with the Praga Bohema, the McLaren 765LT . the Toyota GR Super Sport Concept, the Citroen GT by Citroen, and the Pagani Utopia Coupe.",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Aston Martin V12 Speedster Star Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-06-29",
+    "endDate": "2026-07-10",
+    "rawDate": "29/6 - 10/7",
+    "featuredCars": "Time to chase after the blueprints for this classy british speedster.",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Racing Across France",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-02",
+    "endDate": "2026-07-07",
+    "rawDate": "2/7 - 7/7",
+    "featuredCars": "Leave the cyclists behind abourd the Bugatti Veyron 16.4 Grand Sport Vitesse.",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Gaming Galore",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-07",
+    "endDate": "2026-07-12",
+    "rawDate": "7/7 - 12/7",
+    "featuredCars": "As if we ever needed an excuse to game, enjoy national video game day aboard the Maserati MC20 GT2",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Aston Martin V12 Speedster Epic",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-09",
+    "endDate": "2026-07-21",
+    "rawDate": "9/7 - 21/7",
+    "featuredCars": "When the stars begin to fall, you know it\u2019s time to chase those Epic Import parts!",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Lucky Number 7",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-13",
+    "endDate": "2026-07-17",
+    "rawDate": "13/7 - 17/7",
+    "featuredCars": "Do I feel lucky? Well, do you, Legend? Only one way to find out and it\u2019s driving the Saleen S7 Twin Turbo.",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "World Emoji Day",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-17",
+    "endDate": "2026-07-22",
+    "rawDate": "17/7 - 22/7",
+    "featuredCars": "Celebrate the Gen Z alphabet aboard the Lamborghini Murcielago LP 640 Roadster.",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Porsche Mission R Car Hunt",
+    "type": "Car Hunt",
+    "format": "",
+    "startDate": "2026-06-23",
+    "endDate": "2026-07-06",
+    "rawDate": "23/6 - 6/7",
+    "featuredCars": "",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
+  },
+  {
+    "eventName": "Jaguar XE SV Project 8 Car Hunt",
+    "type": "Car Hunt",
+    "format": "",
+    "startDate": "2026-07-07",
+    "endDate": "2026-07-21",
+    "rawDate": "7/7 - 21/7",
+    "featuredCars": "",
+    "relatedUpdate": "Raw Circuit",
+    "notes": ""
   }
 ];
