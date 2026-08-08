@@ -1422,7 +1422,7 @@
     if ($('#home-stats')) initHome();
     if ($('#cars-body')) initCars();
     if ($('#tracks-body')) initTracks();
-    if ($('#career-body')) initCareer();
+    if ($('#career-race-body')) initCareer();
     if ($('#events-body')) initEvents();
     if ($('#dash-body')) initDashboard();
     if ($('#gauntlet-lineup')) initGauntlet();
