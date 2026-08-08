@@ -195,10 +195,30 @@
   }
 
   function applySearchFromUrl() {
-    const q = new URLSearchParams(location.search).get('search');
-    if (!q) return;
-    const input = $('#cars-search') || $('#tracks-search') || $('#career-search') || $('#events-search') || $('#evo-search') || $('#roi-search') || $('#cal-search');
-    if (input) { input.value = q; input.dispatchEvent(new Event('input')); }
+    const params = new URLSearchParams(location.search);
+    const q = params.get('search');
+    if (q) {
+      const input = $('#cars-search') || $('#tracks-search') || $('#career-search') || $('#events-search') || $('#evo-search') || $('#roi-search') || $('#cal-search');
+      if (input) { input.value = q; input.dispatchEvent(new Event('input')); }
+    }
+    const rec = params.get('rec');
+    if (rec) {
+      const selRec = $('#tracks-rec') || $('#cars-rec');
+      if (selRec && [...selRec.options].some(o => o.value === rec)) {
+        selRec.value = rec;
+        selRec.dispatchEvent(new Event('input'));
+        selRec.dispatchEvent(new Event('change'));
+      }
+    }
+    const track = params.get('track');
+    if (track) {
+      const selTrack = $('#cars-track');
+      if (selTrack && [...selTrack.options].some(o => o.value === track)) {
+        selTrack.value = track;
+        selTrack.dispatchEvent(new Event('input'));
+        selTrack.dispatchEvent(new Event('change'));
+      }
+    }
   }
 
   function initGlobalSearch() {
@@ -347,7 +367,6 @@
         if (d.includes('technical')) return diff.includes('hard') || haz.includes('technical');
         if (d.includes('short') || d.includes('sprint')) return len.includes('short');
         if (d.includes('long') || d.includes('speed')) return len.includes('long') || len.includes('extra');
-        if (d.includes('mixed')) return true;
         return false;
       });
     }).map(t => t.trackName);
@@ -388,11 +407,12 @@
     const trackToDesc = new Map();
     tracks.forEach(t => {
       const descs = new Set();
-      recs.forEach(desc => { if (recTrackSets[desc].has(t.trackName)) descs.add(desc); });
+      recs.forEach(desc => {
+        const matched = recTrackSets[desc];
+        if (matched.size && matched.size < tracks.length && matched.has(t.trackName)) descs.add(desc);
+      });
       trackToDesc.set(t.trackName, descs);
     });
-    const urlTrack = new URLSearchParams(location.search).get('track');
-    if (urlTrack && [...selTrack.options].some(o => o.value === urlTrack)) selTrack.value = urlTrack;
 
     const table = $('#cars-body').closest('table');
     const headRow = table.querySelector('thead tr');
@@ -501,8 +521,6 @@
     });
     const recs = [...recSet].sort();
     recs.forEach(v => selRec.add(new Option(v, v)));
-    const urlRec = new URLSearchParams(location.search).get('rec');
-    if (urlRec && [...selRec.options].some(o => o.value === urlRec)) selRec.value = urlRec;
 
     let sortKey = '', sortDir = 1;
     const table = $('#tracks-body').closest('table');
