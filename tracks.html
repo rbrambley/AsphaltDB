@@ -45,8 +45,31 @@
   </header>
   <main>
 
-    <h1 class="page-title">Tracks Reference</h1>
-    <p class="page-subtitle">Every location and route in Asphalt Legends Unite.</p>
+    <section class="hero">
+      <h1>Tracks Reference</h1>
+      <p>Every location and route in Asphalt Legends Unite. Pick a track below to see the top 3 cars per class.</p>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>Find Best Cars for a Track</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <div class="filters">
+          <div class="filter" style="flex: 1 1 100%;">
+            <label for="match-track">Track</label>
+            <select id="match-track"><option value="">— Choose a track —</option></select>
+          </div>
+        </div>
+        <div id="track-info" class="dashboard-intro" style="display:none;"></div>
+      </div>
+    </section>
+
+    <section class="card" id="results-card" style="display:none;">
+      <div class="card-header"><h2>Recommended Cars</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Cars are scored using their max stats, weighted by track type. Only cars with complete stats are shown.</p>
+        <div id="match-results"></div>
+      </div>
+    </section>
 
     <div class="card">
       <div class="card-body">
