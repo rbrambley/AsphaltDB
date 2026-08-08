@@ -332,27 +332,54 @@
   }
 
   // ---------- Cars ----------
+
+  function getTrackNamesForRecommended(desc) {
+    if (!desc || desc === '—') return [];
+    const descs = desc.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+    if (!descs.length) return [];
+    return tracks.filter(t => {
+      const len = (t.length || '').toLowerCase();
+      const haz = (t.hazards || '').toLowerCase();
+      const diff = (t.difficulty || '').toLowerCase();
+      return descs.some(d => {
+        if (d.includes('nitro')) return haz.includes('nitro');
+        if (d.includes('drift')) return haz.includes('drift');
+        if (d.includes('technical')) return diff.includes('hard') || haz.includes('technical');
+        if (d.includes('short') || d.includes('sprint')) return len.includes('short');
+        if (d.includes('long') || d.includes('speed')) return len.includes('long') || len.includes('extra');
+        if (d.includes('mixed')) return true;
+        return false;
+      });
+    }).map(t => t.trackName);
+  }
+
   function initCars() {
     const search = $('#cars-search');
     const selClass = $('#cars-class');
     const selMfr = $('#cars-manufacturer');
     const selRarity = $('#cars-rarity');
     const selEvo = $('#cars-evo');
+    const selUnlock = $('#cars-unlock');
+    const selRec = $('#cars-rec');
+    const selFav = $('#cars-fav');
 
     const classes = [...new Set(cars.map(c => c.class))].sort();
     const mfrs = [...new Set(cars.map(c => c.manufacturer))].sort();
     const rarities = [...new Set(cars.map(c => c.rarity))].sort();
+    const unlocks = [...new Set(cars.map(c => c.unlockMethod).filter(Boolean))].sort();
+    const recSet = new Set();
+    cars.forEach(c => {
+      (c.recommendedTracks || '').split(',').forEach(t => {
+        const s = t.trim();
+        if (s && s !== '—') recSet.add(s);
+      });
+    });
+    const recs = [...recSet].sort();
     classes.forEach(v => selClass.add(new Option(v, v)));
     mfrs.forEach(v => selMfr.add(new Option(v, v)));
     rarities.forEach(v => selRarity.add(new Option(v, v)));
-
-    // Favorite filter
-    const filters = $('.filters');
-    const favWrap = document.createElement('div');
-    favWrap.className = 'filter fav-filter';
-    favWrap.innerHTML = '<label for="cars-fav">Favorites</label><select id="cars-fav"><option value="All">All</option><option value="fav">Favorites only</option></select>';
-    filters.appendChild(favWrap);
-    const selFav = $('#cars-fav');
+    unlocks.forEach(v => selUnlock.add(new Option(v, v)));
+    recs.forEach(v => selRec.add(new Option(v, v)));
 
     const table = $('#cars-body').closest('table');
     const headRow = table.querySelector('thead tr');
@@ -368,15 +395,20 @@
       const mfr = selMfr.value;
       const rarity = selRarity.value;
       const evo = selEvo.value;
+      const unlock = selUnlock.value;
+      const rec = selRec.value;
       const fav = selFav.value;
       const faves = new Set(getFavorites());
       let filtered = cars.filter(c => {
         const evoOk = evo === 'All' || (evo === 'yes' && c.evoEligible) || (evo === 'no' && !c.evoEligible);
+        const recOk = rec === 'All' || ((c.recommendedTracks || '').split(',').some(s => s.trim() === rec));
         return (!q || c.carName.toLowerCase().includes(q) || c.manufacturer.toLowerCase().includes(q)) &&
                (cls === 'All' || c.class === cls) &&
                (mfr === 'All' || c.manufacturer === mfr) &&
                (rarity === 'All' || c.rarity === rarity) &&
+               (unlock === 'All' || c.unlockMethod === unlock) &&
                (fav === 'All' || faves.has(c.carName)) &&
+               recOk &&
                evoOk;
       });
       if (sortKey) filtered = [...filtered].sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
@@ -398,7 +430,10 @@
         row.appendChild(makeCell(c.blueprintSource, 'wrap'));
         row.appendChild(makeCell(c.unlockMethod, 'wrap'));
         row.appendChild(makeCell(c.upgradeCost, 'wrap'));
-        row.appendChild(makeCell(c.recommendedTracks, 'wrap'));
+        const recTd = makeCell(c.recommendedTracks, 'wrap');
+        const recTrackNames = getTrackNamesForRecommended(c.recommendedTracks);
+        if (recTrackNames.length) recTd.title = recTrackNames.join(', ');
+        row.appendChild(recTd);
         row.appendChild(makeCell(c.notes, 'wrap'));
         const favTd = makeCell('');
         favTd.appendChild(makeFavButton(c.carName));
@@ -412,7 +447,7 @@
       sortKey = key;
       render();
     });
-    [search, selClass, selMfr, selRarity, selEvo, selFav].forEach(el => el.addEventListener('input', render));
+    [search, selClass, selMfr, selRarity, selEvo, selUnlock, selRec, selFav].forEach(el => el.addEventListener('input', render));
     render();
   }
 
