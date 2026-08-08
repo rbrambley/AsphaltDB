@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <title>Event Eligibility Roster | Asphalt Legends Unite</title>
+  <title>Season Pass Tracker | Asphalt Legends Unite</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -41,7 +41,6 @@
           <button class="nav-group-title" aria-expanded="false" aria-controls="nav-tools">Tools</button>
           <ul id="nav-tools" class="nav-group-list">
             <li><a href="gauntlet.html">Gauntlet</a></li>
-
             <li><a href="compare.html">Compare</a></li>
             <li><a href="evo.html">EVO</a></li>
           </ul>
@@ -66,56 +65,41 @@
     </div>
   </header>
   <main>
+    <h1 class="page-title">Season Pass Tracker</h1>
+    <p class="page-subtitle">Track special missions and find the best tracks and cars to complete them.</p>
 
-    <section class="hero">
-      <h1>Event Eligibility Roster</h1>
-      <p>Pick an event and see every car that qualifies, sorted by max rank.</p>
-    </section>
-
-    <section class="card">
-      <div class="card-header"><h2>Select an Event</h2><span class="toggle">−</span></div>
+    <div class="card">
       <div class="card-body">
+        <h2>Add mission</h2>
         <div class="filters">
-          <div class="filter" style="flex: 1 1 100%;">
-            <label for="roster-event">Event</label>
-            <select id="roster-event"><option value="">— Choose an event —</option></select>
-          </div>
+          <div class="filter"><label for="sp-condition">Condition</label><select id="sp-condition"><option value="">Select condition</option></select></div>
+          <div class="filter"><label for="sp-target">Target</label><input type="text" id="sp-target" placeholder="e.g. 4" /></div>
+          <div class="filter"><label for="sp-sp">SP</label><input type="text" id="sp-sp" placeholder="e.g. 60" /></div>
+          <div class="filter"><label for="sp-class">Class</label><select id="sp-class"><option value="">Any</option></select></div>
+          <div class="filter"><label for="sp-track-length">Track Length</label><select id="sp-track-length"><option value="">Any</option></select></div>
+          <div class="filter"><label for="sp-track">Track</label><select id="sp-track"><option value="">Select track</option><option value="__other__">Other / new track</option></select><input type="text" id="sp-track-custom" placeholder="Enter new track" style="display:none; margin-top:0.4rem;" /></div>
+          <div class="filter"><label for="sp-car">Car</label><select id="sp-car"><option value="">Select car</option><option value="__other__">Other / new car</option></select><input type="text" id="sp-car-custom" placeholder="Enter new car" style="display:none; margin-top:0.4rem;" /></div>
         </div>
-        <div id="roster-event-info" class="dashboard-intro" style="display:none;"></div>
-      </div>
-    </section>
+        <button id="sp-add" class="btn">Add mission</button>
 
-    <section class="card" id="roster-results" style="display:none;">
-      <div class="card-header"><h2>Eligible Cars</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <div class="count" id="roster-count">0 cars</div>
+        <div class="count" id="sp-count">0 missions</div>
         <div class="table-wrap">
-          <table id="roster-table">
+          <table>
             <thead>
-              <tr>
-                <th data-sort="carName">Car</th>
-                <th data-sort="class">Class</th>
-                <th data-sort="rarity">Rarity</th>
-                <th data-sort="rankMax" data-sort-type="num">Max Rank</th>
-                <th data-sort="topSpeedMax" data-sort-type="num">Top Speed</th>
-                <th data-sort="accelerationMax" data-sort-type="num">Acceleration</th>
-                <th data-sort="handlingMax" data-sort-type="num">Handling</th>
-                <th data-sort="nitroMax" data-sort-type="num">Nitro</th>
-              </tr>
+              <tr><th>Done</th><th>Condition</th><th>Target</th><th>SP</th><th>Track</th><th>Car</th><th></th></tr>
             </thead>
-            <tbody id="roster-body"></tbody>
+            <tbody id="sp-body"></tbody>
           </table>
         </div>
       </div>
-    </section>
-
+    </div>
   </main>
   <footer>
     Data sourced from <a href="https://asphalt.fandom.com/" target="_blank" rel="noopener">Asphalt Fandom</a> and <a href="https://asphalt9.info/" target="_blank" rel="noopener">Asphalt9.info</a> — compiled for gameplay optimization.<br>
     Car ranks from Asphalt Wiki; performance stats from Asphalt9.info. Rarity/upgrade fields are baseline placeholders pending community review.
   </footer>
   <script src="js/data.js"></script>
-  <script src="js/garage_data.js"></script>
+  <script src="js/missions.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

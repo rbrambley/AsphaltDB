@@ -1,4 +1,4 @@
-const CACHE_NAME = 'asphalt-db-v20';
+const CACHE_NAME = 'asphalt-db-v21';
 const PRECACHE = [
   './',
   'index.html',
@@ -6,6 +6,7 @@ const PRECACHE = [
   'tracks.html',
   'career.html',
   'events.html',
+  'seasonpass.html',
   'garage.html',
   'calendar.html',
   'compare.html',
@@ -19,6 +20,7 @@ const PRECACHE = [
   'favicon.svg',
   'js/app.js',
   'js/data.js',
+  'js/missions.js',
   'js/garage_data.js',
   'manifest.json'
 ];

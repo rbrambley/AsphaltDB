@@ -591,6 +591,117 @@
     render();
   }
 
+  // ---------- Season Pass Tracker ----------
+  function initSeasonPass() {
+    const conditionSelect = $('#sp-condition');
+    const targetInput = $('#sp-target');
+    const spInput = $('#sp-sp');
+    const classSelect = $('#sp-class');
+    const lengthSelect = $('#sp-track-length');
+    const trackSelect = $('#sp-track');
+    const trackCustom = $('#sp-track-custom');
+    const carSelect = $('#sp-car');
+    const carCustom = $('#sp-car-custom');
+    const addBtn = $('#sp-add');
+    const body = $('#sp-body');
+    const count = $('#sp-count');
+
+    missionConditions.forEach(c => conditionSelect.add(new Option(c.label, c.id)));
+    [...new Set(cars.map(c => c.class))].sort().forEach(v => classSelect.add(new Option(v, v)));
+    ['Short', 'Medium', 'Long', 'Extra Long'].forEach(v => lengthSelect.add(new Option(v, v)));
+
+    const allTracks = [...new Set(tracks.map(t => t.trackName))].sort();
+    const allCars = [...new Set(cars.map(c => c.carName))].sort();
+
+    function populateTracks() {
+      const cond = missionConditions.find(c => c.id === conditionSelect.value);
+      const len = lengthSelect.value;
+      const filtered = allTracks.filter(name => {
+        const t = tracks.find(tr => tr.trackName === name);
+        if (!t) return false;
+        if (len && t.length !== len) return false;
+        if (cond && cond.noJumps) return !(t.hazards || '').toLowerCase().includes('jumps');
+        if (cond && cond.id === 'jumps') return (t.hazards || '').toLowerCase().includes('jumps');
+        return true;
+      });
+      trackSelect.innerHTML = '<option value="">Select track</option><option value="__other__">Other / new track</option>';
+      filtered.forEach(name => trackSelect.add(new Option(name, name)));
+    }
+
+    function populateCars() {
+      const cls = classSelect.value;
+      const filtered = allCars.filter(name => {
+        const c = cars.find(car => car.carName === name);
+        return !cls || (c && c.class === cls);
+      });
+      carSelect.innerHTML = '<option value="">Select car</option><option value="__other__">Other / new car</option>';
+      filtered.forEach(name => carSelect.add(new Option(name, name)));
+    }
+
+    conditionSelect.addEventListener('input', populateTracks);
+    lengthSelect.addEventListener('input', populateTracks);
+    classSelect.addEventListener('input', populateCars);
+
+    trackSelect.addEventListener('input', () => { trackCustom.style.display = trackSelect.value === '__other__' ? 'block' : 'none'; });
+    carSelect.addEventListener('input', () => { carCustom.style.display = carSelect.value === '__other__' ? 'block' : 'none'; });
+
+    let missions = JSON.parse(localStorage.getItem('sp-missions') || '[]');
+
+    function render() {
+      count.textContent = `${missions.length} mission${missions.length === 1 ? '' : 's'}`;
+      body.innerHTML = '';
+      missions.forEach((m, i) => {
+        const condLabel = (missionConditions.find(c => c.id === m.condition) || {}).label || m.condition;
+        const row = document.createElement('tr');
+        row.innerHTML = `<td><input type="checkbox" class="sp-status" data-i="${i}" ${m.done ? 'checked' : ''}></td>` +
+                        `<td>${condLabel}</td>` +
+                        `<td>${m.target || '—'}</td>` +
+                        `<td>${m.sp || '—'}</td>` +
+                        `<td>${m.track || '—'}</td>` +
+                        `<td>${m.car || '—'}</td>` +
+                        `<td><button class="btn sp-del" data-i="${i}">Delete</button></td>`;
+        body.appendChild(row);
+      });
+      $$('.sp-status').forEach(cb => cb.addEventListener('change', e => {
+        missions[+e.target.dataset.i].done = e.target.checked;
+        save();
+      }));
+      $$('.sp-del').forEach(btn => btn.addEventListener('click', e => {
+        missions.splice(+e.target.dataset.i, 1);
+        save();
+        render();
+      }));
+    }
+
+    function save() { localStorage.setItem('sp-missions', JSON.stringify(missions)); }
+
+    addBtn.addEventListener('click', () => {
+      const track = trackSelect.value === '__other__' ? trackCustom.value.trim() : trackSelect.value;
+      const car = carSelect.value === '__other__' ? carCustom.value.trim() : carSelect.value;
+      if (!conditionSelect.value || !track) return;
+      missions.push({
+        condition: conditionSelect.value,
+        target: targetInput.value.trim(),
+        sp: spInput.value.trim(),
+        track,
+        car,
+        done: false
+      });
+      save();
+      render();
+      targetInput.value = '';
+      spInput.value = '';
+      trackSelect.value = '';
+      trackCustom.value = '';
+      carSelect.value = '';
+      carCustom.value = '';
+      trackCustom.style.display = 'none';
+      carCustom.style.display = 'none';
+    });
+
+    render();
+  }
+
   // ---------- Events ----------
   function initEvents() {
     const search = $('#events-search');
@@ -1423,6 +1534,7 @@
     if ($('#cars-body')) initCars();
     if ($('#tracks-body')) initTracks();
     if ($('#career-race-body')) initCareer();
+    if ($('#sp-body')) initSeasonPass();
     if ($('#events-body')) initEvents();
     if ($('#dash-body')) initDashboard();
     if ($('#gauntlet-lineup')) initGauntlet();
