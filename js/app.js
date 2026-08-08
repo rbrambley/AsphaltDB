@@ -1196,8 +1196,8 @@
     }
 
     for (let i = 0; i < 5; i++) {
-      $(`#gauntlet-opp-${i}`).addEventListener('input', recommendAll);
-      $(`#gauntlet-track-${i}`).addEventListener('input', recommendAll);
+      $(`#gauntlet-opp-${i}`).addEventListener('change', recommendAll);
+      $(`#gauntlet-track-${i}`).addEventListener('change', recommendAll);
       $(`#gauntlet-slot-${i}`).addEventListener('change', updateSummary);
       $(`.gauntlet-use-one[data-i="${i}"]`).addEventListener('click', () => useOne(i));
     }
