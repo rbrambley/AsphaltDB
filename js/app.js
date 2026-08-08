@@ -593,17 +593,15 @@
 
   // ---------- Season Pass Mission Solver ----------
   function initSeasonPass() {
-    const passInput = $('#sp-pass');
     const conditionSelect = $('#sp-condition');
     const classSelect = $('#sp-class');
-    const targetInput = $('#sp-target');
     const locationsInput = $('#sp-locations');
     const modeInput = $('#sp-mode');
     const solveBtn = $('#sp-solve');
     const results = $('#sp-results');
     const tracksBody = $('#sp-tracks-body');
-    const carsBody = $('#sp-cars-body');
-    const racesBody = $('#sp-races-body');
+    const carsList = $('#sp-cars-list');
+    const carsCount = $('#sp-cars-count');
 
     missionConditions.forEach(c => conditionSelect.add(new Option(c.label, c.id)));
     [...new Set(cars.map(c => c.class))].sort().forEach(v => classSelect.add(new Option(v, v)));
@@ -635,19 +633,26 @@
       const matchedCars = cars.filter(c => !cls || c.class === cls)
         .sort((a, b) => a.carName.localeCompare(b.carName));
 
-      const matchedRaces = careerRaces.filter(r => {
-        return trackNames.has(r.track) && (!mode || r.mode.toLowerCase().includes(mode));
+      const raceMap = new Map();
+      careerRaces.forEach(r => {
+        if (trackNames.has(r.track) && (!mode || r.mode.toLowerCase().includes(mode))) {
+          if (!raceMap.has(r.track)) raceMap.set(r.track, []);
+          raceMap.get(r.track).push(r);
+        }
       });
 
       results.style.display = 'block';
+      carsCount.textContent = `${matchedCars.length} car${matchedCars.length === 1 ? '' : 's'} match the class`;
+      carsList.textContent = matchedCars.map(c => c.carName).join(', ') || '—';
+
       $('#sp-tracks-count').textContent = `${matchedTracks.length} track${matchedTracks.length === 1 ? '' : 's'}`;
-      tracksBody.innerHTML = matchedTracks.map(t => `<tr><td>${t.trackName}</td><td>${t.environment}</td><td>${t.length}</td><td>${t.hazards || '—'}</td></tr>`).join('');
-
-      $('#sp-cars-count').textContent = `${matchedCars.length} car${matchedCars.length === 1 ? '' : 's'}`;
-      carsBody.innerHTML = matchedCars.map(c => `<tr><td>${c.carName}</td><td>${c.class}</td><td>${c.rarity || '—'}</td><td>${c.maxRank || c.rank || '—'}</td></tr>`).join('');
-
-      $('#sp-races-count').textContent = `${matchedRaces.length} race${matchedRaces.length === 1 ? '' : 's'}`;
-      racesBody.innerHTML = matchedRaces.map(r => `<tr><td>${r.chapter}</td><td>${r.season}</td><td>${r.race}</td><td>${r.rank}</td><td>${r.mode}</td><td>${r.track}</td><td>${r.credits}</td><td>${r.rep}</td></tr>`).join('');
+      tracksBody.innerHTML = matchedTracks.map(t => {
+        const races = raceMap.get(t.trackName) || [];
+        const racesHtml = races.length
+          ? races.map(r => `${r.chapter} &rsaquo; ${r.season} &rsaquo; Race ${r.race} (${r.mode})`).join('<br>')
+          : '—';
+        return `<tr><td>${t.trackName}</td><td>${t.environment}</td><td>${t.length}</td><td>${t.hazards || '—'}</td><td>${racesHtml}</td></tr>`;
+      }).join('');
     }
 
     solveBtn.addEventListener('click', solve);
