@@ -762,7 +762,7 @@
                matchesSearch(c, q);
       });
 
-      const linkActive = trackFilter !== 'All' || eventFilter !== 'All';
+      const linkActive = classFilter !== 'All' || mfrFilter !== 'All' || rarityFilter !== 'All' || evoFilter !== 'All' || ownedFilter !== 'All' || trackFilter !== 'All' || eventFilter !== 'All' || q;
       let results = [];
       if (linkActive) {
         const filteredCareer = filterCareer(filteredCars, trackFilter);
