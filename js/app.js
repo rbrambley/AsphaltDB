@@ -430,9 +430,26 @@
         row.appendChild(makeCell(c.blueprintSource, 'wrap'));
         row.appendChild(makeCell(c.unlockMethod, 'wrap'));
         row.appendChild(makeCell(c.upgradeCost, 'wrap'));
-        const recTd = makeCell(c.recommendedTracks, 'wrap');
+        const recTd = document.createElement('td');
+        recTd.className = 'wrap';
         const recTrackNames = getTrackNamesForRecommended(c.recommendedTracks);
-        if (recTrackNames.length) recTd.title = recTrackNames.join(', ');
+        if (c.recommendedTracks) {
+          const parts = c.recommendedTracks.split(',').map(s => s.trim()).filter(s => s && s !== '—');
+          if (parts.length) {
+            parts.forEach((part, i) => {
+              const a = document.createElement('a');
+              a.href = 'tracks.html?rec=' + encodeURIComponent(part);
+              a.textContent = part;
+              recTd.appendChild(a);
+              if (i < parts.length - 1) recTd.appendChild(document.createTextNode(', '));
+            });
+            if (recTrackNames.length) recTd.title = recTrackNames.join(', ');
+          } else {
+            recTd.textContent = c.recommendedTracks;
+          }
+        } else {
+          recTd.textContent = '—';
+        }
         row.appendChild(recTd);
         row.appendChild(makeCell(c.notes, 'wrap'));
         const favTd = makeCell('');
@@ -455,8 +472,20 @@
   function initTracks() {
     const search = $('#tracks-search');
     const selEnv = $('#tracks-env');
+    const selRec = $('#tracks-rec');
     const envs = [...new Set(tracks.map(t => t.environment))].sort();
     envs.forEach(v => selEnv.add(new Option(v, v)));
+    const recSet = new Set();
+    cars.forEach(c => {
+      (c.recommendedTracks || '').split(',').forEach(t => {
+        const s = t.trim();
+        if (s && s !== '—') recSet.add(s);
+      });
+    });
+    const recs = [...recSet].sort();
+    recs.forEach(v => selRec.add(new Option(v, v)));
+    const urlRec = new URLSearchParams(location.search).get('rec');
+    if (urlRec && [...selRec.options].some(o => o.value === urlRec)) selRec.value = urlRec;
 
     let sortKey = '', sortDir = 1;
     const table = $('#tracks-body').closest('table');
@@ -464,9 +493,12 @@
     function render() {
       const q = search.value.toLowerCase();
       const env = selEnv.value;
+      const rec = selRec.value;
+      const recNames = rec === 'All' ? null : new Set(getTrackNamesForRecommended(rec));
       let filtered = tracks.filter(t => {
         return (!q || t.trackName.toLowerCase().includes(q) || t.environment.toLowerCase().includes(q)) &&
-               (env === 'All' || t.environment === env);
+               (env === 'All' || t.environment === env) &&
+               (rec === 'All' || (recNames && recNames.has(t.trackName)));
       });
       if (sortKey) filtered = [...filtered].sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
       $('#tracks-count').textContent = `${filtered.length} track${filtered.length === 1 ? '' : 's'}`;
@@ -500,6 +532,7 @@
     });
     search.addEventListener('input', render);
     selEnv.addEventListener('change', render);
+    selRec.addEventListener('change', render);
     render();
   }
 

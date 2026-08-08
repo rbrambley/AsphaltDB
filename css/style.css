@@ -352,6 +352,7 @@ th {
   white-space: nowrap;
   position: sticky;
   top: 0;
+  z-index: 2;
 }
 tbody tr:nth-child(even) { background: var(--row-even); }
 tbody tr:hover { background: var(--hover); }
@@ -532,6 +533,8 @@ footer {
   margin-top: 2rem;
 }
 footer a { color: var(--primary-light); }
+.table-wrap td a { color: var(--primary); text-decoration: underline; }
+.table-wrap td a:hover { color: var(--accent); }
 .lineup-slots {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -619,6 +622,8 @@ footer a { color: var(--primary-light); }
 .table-wrap td:first-child { position: sticky; left: 0; z-index: 1; }
 .table-wrap th:first-child { background: var(--primary-light); z-index: 3; }
 .table-wrap td:first-child { background: var(--card); }
+.table-wrap tbody tr:nth-child(even) td:first-child { background: var(--row-even); }
+.table-wrap tbody tr:hover td:first-child { background: var(--hover); }
 
 /* Favorite star */
 .fav-btn {
