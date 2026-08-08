@@ -555,6 +555,12 @@
     const selChapter = $('#career-chapter');
     const chapters = [...new Set(careerSeasons.map(s => s.chapter))].sort();
     chapters.forEach(v => selChapter.add(new Option(v, v)));
+    const trackByName = new Map(tracks.map(t => [t.trackName, t]));
+
+    function trackType(name) {
+      const t = trackByName.get(name);
+      return t ? t.length : '—';
+    }
 
     let sortKey = '', sortDir = 1;
     const table = $('#career-body').closest('table');
@@ -577,17 +583,55 @@
         const detailRow = document.createElement('tr');
         detailRow.className = 'expand-row';
         detailRow.style.display = 'none';
-        detailRow.innerHTML = `<td colspan="5"><div class="table-wrap"><table class="detail-table"><thead><tr><th>Race</th><th>Rank</th><th>Mode</th><th>Track</th><th>Blueprint</th><th>Credits</th><th>Rep</th></tr></thead><tbody class="detail-body"></tbody></table></div></td>`;
+        detailRow.innerHTML = `<td colspan="5">
+          <div class="filters">
+            <div class="filter"><label>Mode</label><input type="search" class="mode-filter" placeholder="Filter mode..."></div>
+            <div class="filter"><label>Track</label><input type="search" class="track-filter" placeholder="Filter track..."></div>
+            <div class="filter"><label>Track Type</label><input type="search" class="type-filter" placeholder="Filter track type..."></div>
+            <div class="filter"><label>Credits</label><input type="search" class="credits-filter" placeholder="Filter credits..."></div>
+          </div>
+          <div class="table-wrap">
+            <table class="detail-table">
+              <thead><tr><th>Race</th><th>Rank</th><th>Mode</th><th>Track</th><th>Track Type</th><th>Blueprint</th><th>Credits</th><th>Rep</th></tr></thead>
+              <tbody class="detail-body"></tbody>
+            </table>
+          </div>
+        </td>`;
         tbody.appendChild(detailRow);
+
+        const races = careerRaces.filter(r => r.chapter === s.chapter && r.season === s.stage);
+        const filters = {
+          mode: detailRow.querySelector('.mode-filter'),
+          track: detailRow.querySelector('.track-filter'),
+          type: detailRow.querySelector('.type-filter'),
+          credits: detailRow.querySelector('.credits-filter')
+        };
+        const body = detailRow.querySelector('.detail-body');
+
+        function renderRaces() {
+          const mq = filters.mode.value.toLowerCase();
+          const tq = filters.track.value.toLowerCase();
+          const yq = filters.type.value.toLowerCase();
+          const cq = filters.credits.value.toLowerCase();
+          const list = races.filter(r => {
+            const type = trackType(r.track).toLowerCase();
+            return (!mq || r.mode.toLowerCase().includes(mq)) &&
+                   (!tq || r.track.toLowerCase().includes(tq)) &&
+                   (!yq || type.includes(yq)) &&
+                   (!cq || r.credits.toLowerCase().includes(cq));
+          });
+          body.innerHTML = list.map(r => `<tr><td>${r.race}</td><td>${r.rank}</td><td>${r.mode}</td><td>${r.track}</td><td>${trackType(r.track)}</td><td>${r.blueprint}</td><td>${r.credits}</td><td>${r.rep}</td></tr>`).join('');
+          if (btn) btn.textContent = `Hide races (${list.length})`;
+        }
+
+        Object.values(filters).forEach(input => input.addEventListener('input', renderRaces));
 
         const btn = row.querySelector('.expand-btn');
         btn.addEventListener('click', () => {
           const shown = detailRow.style.display !== 'none';
           if (!shown) {
-            const races = careerRaces.filter(r => r.chapter === s.chapter && r.season === s.stage);
-            const body = detailRow.querySelector('.detail-body');
-            body.innerHTML = races.map(r => `<tr><td>${r.race}</td><td>${r.rank}</td><td>${r.mode}</td><td>${r.track}</td><td>${r.blueprint}</td><td>${r.credits}</td><td>${r.rep}</td></tr>`).join('');
-            btn.textContent = `Hide races (${races.length})`;
+            Object.values(filters).forEach(f => f.value = '');
+            renderRaces();
             detailRow.style.display = 'table-row';
           } else {
             detailRow.style.display = 'none';
