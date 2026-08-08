@@ -1394,7 +1394,7 @@
     if ($('#dash-body')) initDashboard();
     if ($('#gauntlet-lineup')) initGauntlet();
     if ($('#evo-body')) initEvo();
-    if ($('#match-track')) initMatchmaker();
+    if ($('#match-results')) initMatchmaker();
     if ($('#farm-car')) initFarming();
     if ($('#roi-table')) initUpgradeRoi();
     if ($('#roster-event')) initEventRoster();
