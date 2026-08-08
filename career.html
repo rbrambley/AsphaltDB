@@ -71,6 +71,27 @@
 
     <div class="card">
       <div class="card-body">
+        <h2>Search all races</h2>
+        <div class="filters">
+          <div class="filter"><label for="career-mode">Mode</label><input type="search" id="career-mode" placeholder="Mode" /></div>
+          <div class="filter"><label for="career-track">Track</label><input type="search" id="career-track" placeholder="Track" /></div>
+          <div class="filter"><label for="career-type">Track Type</label><input type="search" id="career-type" placeholder="Track type" /></div>
+          <div class="filter"><label for="career-credits">Credits</label><input type="search" id="career-credits" placeholder="Credits" /></div>
+        </div>
+        <div class="count" id="career-race-count">0 races</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Chapter</th><th>Season</th><th>Race</th><th>Rank</th><th>Mode</th><th>Track</th><th>Track Type</th><th>Blueprint</th><th>Credits</th><th>Rep</th></tr>
+            </thead>
+            <tbody id="career-race-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
         <div class="search-bar"><input type="search" id="career-search" placeholder="Search chapter or season…" /></div>
         <div class="filters">
           <div class="filter"><label for="career-chapter">Chapter</label><select id="career-chapter"><option value="All">All</option></select></div>
