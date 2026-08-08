@@ -641,9 +641,22 @@
       const carParams = new URLSearchParams();
       if (cls) carParams.set('class', cls);
 
+      const maxClassRank = cls
+        ? cars.filter(c => c.class === cls).reduce((m, c) => {
+            const r = parseInt(String(c.rankMax).replace(/,/g, ''), 10) || 0;
+            return r > m ? r : m;
+          }, 0)
+        : 0;
+
+      function rankOk(r) {
+        if (!cls || !maxClassRank) return true;
+        const raceRank = parseInt(String(r.rank || '0').replace(/,/g, ''), 10) || 0;
+        return raceRank <= maxClassRank;
+      }
+
       const raceMap = new Map();
       careerRaces.forEach(r => {
-        if (trackNames.has(r.track) && (!mode || r.mode.toLowerCase().includes(mode))) {
+        if (trackNames.has(r.track) && rankOk(r) && (!mode || r.mode.toLowerCase().includes(mode))) {
           if (!raceMap.has(r.track)) raceMap.set(r.track, []);
           raceMap.get(r.track).push(r);
         }
