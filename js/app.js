@@ -362,11 +362,12 @@
       const haz = (t.hazards || '').toLowerCase();
       const diff = (t.difficulty || '').toLowerCase();
       return descs.some(d => {
-        if (d.includes('nitro')) return haz.includes('nitro');
+        if (d.includes('nitro')) return len.includes('long') || len.includes('extra');
         if (d.includes('drift')) return haz.includes('drift');
         if (d.includes('technical')) return diff.includes('hard') || haz.includes('technical');
         if (d.includes('short') || d.includes('sprint')) return len.includes('short');
         if (d.includes('long') || d.includes('speed')) return len.includes('long') || len.includes('extra');
+        if (d.includes('mixed')) return len.includes('medium');
         return false;
       });
     }).map(t => t.trackName);
