@@ -551,9 +551,14 @@
 
   // ---------- Career ----------
   function initCareer() {
-    const search = $('#career-search');
     const selChapter = $('#career-chapter');
-    const chapters = [...new Set(careerSeasons.map(s => s.chapter))].sort();
+    const seasonInput = $('#career-season');
+    const modeInput = $('#career-mode');
+    const trackInput = $('#career-track');
+    const typeInput = $('#career-type');
+    const creditsInput = $('#career-credits');
+    const raceBody = $('#career-race-body');
+    const chapters = [...new Set(careerRaces.map(r => r.chapter))].sort();
     chapters.forEach(v => selChapter.add(new Option(v, v)));
     const trackByName = new Map(tracks.map(t => [t.trackName, t]));
 
@@ -562,62 +567,18 @@
       return t ? t.length : '—';
     }
 
-    let sortKey = '', sortDir = 1;
-    const table = $('#career-body').closest('table');
-
     function render() {
-      const q = search.value.toLowerCase();
       const ch = selChapter.value;
-      let filtered = careerSeasons.filter(s => {
-        return (!q || s.chapter.toLowerCase().includes(q) || s.stage.toLowerCase().includes(q)) &&
-               (ch === 'All' || s.chapter === ch);
-      });
-      if (sortKey) filtered = [...filtered].sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
-      $('#career-count').textContent = `${filtered.length} season${filtered.length === 1 ? '' : 's'}`;
-      const tbody = $('#career-body');
-      tbody.innerHTML = '';
-      filtered.forEach(s => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>${s.chapter}</td><td>${s.stage}</td><td class="num">${s.races}</td><td class="num">${s.flags}</td><td><button class="btn expand-btn" data-season="${encodeURIComponent(s.stage)}">Show races</button></td>`;
-        tbody.appendChild(row);
-        const detailRow = document.createElement('tr');
-        detailRow.className = 'expand-row';
-        detailRow.style.display = 'none';
-        detailRow.innerHTML = `<td colspan="5"><div class="table-wrap"><table class="detail-table"><thead><tr><th>Race</th><th>Rank</th><th>Mode</th><th>Track</th><th>Track Type</th><th>Blueprint</th><th>Credits</th><th>Rep</th></tr></thead><tbody class="detail-body"></tbody></table></div></td>`;
-        tbody.appendChild(detailRow);
-
-        const races = careerRaces.filter(r => r.chapter === s.chapter && r.season === s.stage);
-        const body = detailRow.querySelector('.detail-body');
-
-        const btn = row.querySelector('.expand-btn');
-        btn.addEventListener('click', () => {
-          const shown = detailRow.style.display !== 'none';
-          if (!shown) {
-            body.innerHTML = races.map(r => `<tr><td>${r.race}</td><td>${r.rank}</td><td>${r.mode}</td><td>${r.track}</td><td>${trackType(r.track)}</td><td>${r.blueprint}</td><td>${r.credits}</td><td>${r.rep}</td></tr>`).join('');
-            btn.textContent = `Hide races (${races.length})`;
-            detailRow.style.display = 'table-row';
-          } else {
-            detailRow.style.display = 'none';
-            btn.textContent = 'Show races';
-          }
-        });
-      });
-    }
-
-    const modeInput = $('#career-mode');
-    const trackInput = $('#career-track');
-    const typeInput = $('#career-type');
-    const creditsInput = $('#career-credits');
-    const raceBody = $('#career-race-body');
-
-    function renderRaces() {
+      const sq = seasonInput.value.toLowerCase();
       const mq = modeInput.value.toLowerCase();
       const tq = trackInput.value.toLowerCase();
       const yq = typeInput.value.toLowerCase();
       const cq = creditsInput.value.toLowerCase();
       const list = careerRaces.filter(r => {
         const type = trackType(r.track).toLowerCase();
-        return (!mq || r.mode.toLowerCase().includes(mq)) &&
+        return (ch === 'All' || r.chapter === ch) &&
+               (!sq || r.season.toLowerCase().includes(sq)) &&
+               (!mq || r.mode.toLowerCase().includes(mq)) &&
                (!tq || r.track.toLowerCase().includes(tq)) &&
                (!yq || type.includes(yq)) &&
                (!cq || r.credits.toLowerCase().includes(cq));
@@ -626,16 +587,8 @@
       raceBody.innerHTML = list.map(r => `<tr><td>${r.chapter}</td><td>${r.season}</td><td>${r.race}</td><td>${r.rank}</td><td>${r.mode}</td><td>${r.track}</td><td>${trackType(r.track)}</td><td>${r.blueprint}</td><td>${r.credits}</td><td>${r.rep}</td></tr>`).join('');
     }
 
-    initSortHeaders(table, key => {
-      sortDir = sortKey === key ? -sortDir : 1;
-      sortKey = key;
-      render();
-    });
-    search.addEventListener('input', render);
-    selChapter.addEventListener('change', render);
-    [modeInput, trackInput, typeInput, creditsInput].forEach(el => el.addEventListener('input', renderRaces));
+    [selChapter, seasonInput, modeInput, trackInput, typeInput, creditsInput].forEach(el => el.addEventListener('input', render));
     render();
-    renderRaces();
   }
 
   // ---------- Events ----------
