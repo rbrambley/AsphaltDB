@@ -519,7 +519,7 @@
         if (s && s !== '—') recSet.add(s);
       });
     });
-    const recs = [...recSet].sort();
+    const recs = [...recSet].filter(desc => getTrackNamesForRecommended(desc).length > 0).sort();
     recs.forEach(v => selRec.add(new Option(v, v)));
 
     let sortKey = '', sortDir = 1;
