@@ -200,6 +200,15 @@
         selTrack.dispatchEvent(new Event('change'));
       }
     }
+    const cls = params.get('class');
+    if (cls) {
+      const selClass = $('#cars-class');
+      if (selClass && [...selClass.options].some(o => o.value === cls)) {
+        selClass.value = cls;
+        selClass.dispatchEvent(new Event('input'));
+        selClass.dispatchEvent(new Event('change'));
+      }
+    }
   }
 
   function initGlobalSearch() {
@@ -629,9 +638,8 @@
         .sort((a, b) => a.trackName.localeCompare(b.trackName));
       const trackNames = new Set(matchedTracks.map(t => t.trackName));
 
-      const matchedCars = cars.filter(c => !cls || c.class === cls)
-        .sort((a, b) => a.carName.localeCompare(b.carName));
-      const carsHtml = matchedCars.map(c => c.carName).join('<br>') || '—';
+      const carParams = new URLSearchParams();
+      if (cls) carParams.set('class', cls);
 
       const raceMap = new Map();
       careerRaces.forEach(r => {
@@ -648,7 +656,10 @@
         const racesHtml = races.length
           ? races.map(r => `${r.chapter} &rsaquo; ${r.season} &rsaquo; Race ${r.race} (${r.mode})`).join('<br>')
           : '—';
-        return `<tr><td>${t.trackName}</td><td>${t.environment}</td><td>${t.length}</td><td>${t.hazards || '—'}</td><td>${racesHtml}</td><td>${carsHtml}</td></tr>`;
+        const linkParams = new URLSearchParams(carParams);
+        linkParams.set('track', t.trackName);
+        const carsLink = `cars.html?${linkParams.toString()}`;
+        return `<tr><td>${t.trackName}</td><td>${t.environment}</td><td>${t.length}</td><td>${t.hazards || '—'}</td><td>${racesHtml}</td><td><a class="btn" href="${carsLink}">View cars</a></td></tr>`;
       }).join('');
     }
 
