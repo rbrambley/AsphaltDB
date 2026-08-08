@@ -1485,7 +1485,7 @@
     if ($('#cars-body')) initCars();
     if ($('#tracks-body')) initTracks();
     if ($('#career-race-body')) initCareer();
-    if ($('#sp-body')) initSeasonPass();
+    if ($('#sp-solve')) initSeasonPass();
     if ($('#events-body')) initEvents();
     if ($('#dash-body')) initDashboard();
     if ($('#gauntlet-lineup')) initGauntlet();
