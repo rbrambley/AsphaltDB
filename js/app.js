@@ -1119,84 +1119,72 @@
   }
 
   function initGauntlet() {
-    const trackSearch = $('#gauntlet-track-search');
-    const gauntletTracks = tracks.filter(t => t.length === 'Short');
-    let trackSortKey = '', trackSortDir = 1;
-    const trackTable = $('#gauntlet-track-body').closest('table');
-
-    function renderTracks() {
-      const q = trackSearch.value.toLowerCase();
-      let filtered = gauntletTracks.filter(t => t.trackName.toLowerCase().includes(q) || t.environment.toLowerCase().includes(q));
-      if (trackSortKey) filtered = [...filtered].sort((a, b) => compareValues(a[trackSortKey], b[trackSortKey], trackSortDir));
-      $('#gauntlet-track-count').textContent = `${filtered.length} track${filtered.length === 1 ? '' : 's'}`;
-      $('#gauntlet-track-body').innerHTML = filtered.map(t =>
-        `<tr><td>${t.trackName}</td><td>${t.environment}</td><td>${t.length}</td><td>${t.difficulty}</td><td>${t.hazards}</td><td>${t.recClasses}</td></tr>`
-      ).join('');
-      setSortIndicators(trackTable, trackSortKey, trackSortDir);
+    const trackOptions = tracks.filter(t => t.length === 'Short').sort((a, b) => a.trackName.localeCompare(b.trackName));
+    for (let i = 0; i < 5; i++) {
+      const sel = $(`#gauntlet-track-${i}`);
+      trackOptions.forEach(t => sel.add(new Option(`${t.trackName} (${t.environment})`, t.trackName)));
     }
+    trackOptions.slice(0, 5).forEach((t, i) => { $(`#gauntlet-track-${i}`).value = t.trackName; });
 
-    initSortHeaders(trackTable, key => {
-      trackSortDir = trackSortKey === key ? -trackSortDir : 1;
-      trackSortKey = key;
-      renderTracks();
-    });
-    trackSearch.addEventListener('input', renderTracks);
-    renderTracks();
+    const carBody = $('#gauntlet-car-body');
+    const carCount = $('#gauntlet-car-count');
+    const slots = $('#gauntlet-lineup');
+    const summary = $('#gauntlet-summary');
 
-    const selClass = $('#gauntlet-class');
-    [...new Set(cars.map(c => c.class))].sort().forEach(v => selClass.add(new Option(v, v)));
-
-    function shortTrackScore(c) {
-      if (c.accelerationMax == null || c.handlingMax == null || c.nitroMax == null) return null;
-      return Math.round(c.accelerationMax * 1.2 + c.handlingMax * 1.2 + c.nitroMax);
-    }
-
-    let carSortKey = '', carSortDir = 1;
-    const carTable = $('#gauntlet-car-body').closest('table');
-
-    function renderCars() {
-      const cls = selClass.value;
-      let filtered = cars.filter(c => c.accelerationMax != null && c.handlingMax != null && c.nitroMax != null && (cls === 'All' || c.class === cls));
-      filtered = filtered.map(c => Object.assign(c, { _sts: shortTrackScore(c) }));
-      if (carSortKey) {
-        filtered = [...filtered].sort((a, b) => compareValues(a[carSortKey], b[carSortKey], carSortDir));
-      } else {
-        filtered.sort((a, b) => (b._sts || 0) - (a._sts || 0) || (b.rankMax || 0) - (a.rankMax || 0));
-      }
-      $('#gauntlet-car-count').textContent = `${filtered.length} car${filtered.length === 1 ? '' : 's'}`;
-      $('#gauntlet-car-body').innerHTML = filtered.map(c =>
-        `<tr><td>${c.carName}</td><td>${c.class}</td><td><span class="badge badge-${(c.rarity || '').toLowerCase()}">${c.rarity}</span></td>` +
-        `<td class="num">${fix(c.topSpeedMax)}</td><td class="num">${fix(c.accelerationMax)}</td>` +
-        `<td class="num">${fix(c.handlingMax)}</td><td class="num">${fix(c.nitroMax)}</td>` +
-        `<td class="num">${c._sts}</td><td class="num">${fmt(c.rankMax)}</td></tr>`
-      ).join('');
-      setSortIndicators(carTable, carSortKey, carSortDir);
-    }
-
-    initSortHeaders(carTable, key => {
-      carSortDir = carSortKey === key ? -carSortDir : 1;
-      carSortKey = key;
-      renderCars();
-    });
-    selClass.addEventListener('change', renderCars);
-    renderCars();
-
-    const lineup = $('#gauntlet-lineup');
     const carOptions = cars.filter(c => c.rankMax != null).sort((a, b) => a.carName.localeCompare(b.carName))
-      .map(c => `<option value="${c.rankMax}">${esc(c.carName)} (${c.class}, ${fmt(c.rankMax)})</option>`).join('');
+      .map(c => `<option value="${esc(c.carName)}">${esc(c.carName)} (${c.class}, ${fmt(c.rankMax)})</option>`).join('');
     for (let i = 0; i < 5; i++) {
       const div = document.createElement('div');
       div.className = 'filter';
       div.innerHTML = `<label for="gauntlet-slot-${i}">Slot ${i + 1}</label><select id="gauntlet-slot-${i}"><option value="">— Select car —</option>${carOptions}</select>`;
-      lineup.appendChild(div);
+      slots.appendChild(div);
+    }
+
+    function gauntletScore(c) {
+      if (c.topSpeedMax == null || c.accelerationMax == null || c.handlingMax == null || c.nitroMax == null) return 0;
+      return Math.round(c.topSpeedMax + c.accelerationMax * 1.2 + c.handlingMax * 0.5 + c.nitroMax * 0.3);
+    }
+
+    function topCars() {
+      return cars.filter(c => c.rankMax != null)
+        .map(c => Object.assign({}, c, { _gs: gauntletScore(c) }))
+        .sort((a, b) => b._gs - a._gs || (b.rankMax || 0) - (a.rankMax || 0));
+    }
+
+    function renderCars() {
+      const scored = topCars();
+      carCount.textContent = `${scored.length} cars`;
+      const top = scored.slice(0, 5);
+      carBody.innerHTML = top.map(c =>
+        `<tr><td>${c.carName}</td><td>${c.class}</td>` +
+        `<td class="num">${fix(c.topSpeedMax)}</td><td class="num">${fix(c.accelerationMax)}</td>` +
+        `<td class="num">${fix(c.handlingMax)}</td><td class="num">${fix(c.nitroMax)}</td>` +
+        `<td class="num">${c._gs}</td><td class="num">${fmt(c.rankMax)}</td></tr>`
+      ).join('');
+      return top;
     }
 
     function updateSummary() {
       let total = 0;
-      for (let i = 0; i < 5; i++) total += Number($(`#gauntlet-slot-${i}`).value) || 0;
-      $('#gauntlet-summary').textContent = `Combined max rank: ${total.toLocaleString()}`;
+      for (let i = 0; i < 5; i++) {
+        const name = $(`#gauntlet-slot-${i}`).value;
+        const car = cars.find(c => c.carName === name);
+        total += (car && car.rankMax) ? Number(car.rankMax) : 0;
+      }
+      summary.textContent = `Combined max rank: ${total.toLocaleString()}`;
     }
+
     for (let i = 0; i < 5; i++) $(`#gauntlet-slot-${i}`).addEventListener('change', updateSummary);
+
+    $('#gauntlet-use-top').addEventListener('click', () => {
+      const top = renderCars();
+      for (let i = 0; i < 5; i++) {
+        if (top[i]) $(`#gauntlet-slot-${i}`).value = top[i].carName;
+      }
+      updateSummary();
+    });
+
+    renderCars();
     updateSummary();
   }
 

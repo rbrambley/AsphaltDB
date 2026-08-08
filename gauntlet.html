@@ -41,7 +41,6 @@
           <button class="nav-group-title" aria-expanded="false" aria-controls="nav-tools">Tools</button>
           <ul id="nav-tools" class="nav-group-list">
             <li><a href="gauntlet.html">Gauntlet</a></li>
-
             <li><a href="compare.html">Compare</a></li>
             <li><a href="evo.html">EVO</a></li>
           </ul>
@@ -66,58 +65,38 @@
     </div>
   </header>
   <main>
-
     <section class="hero">
       <h1>Gauntlet Mode</h1>
-      <p>Skill-based 5-race gauntlet across five 30-second track variations. Pick the right cars for short, twisty tracks and optimize your defense lineups.</p>
+      <p>Pick 5 short tracks, then choose the 5 fastest accelerating and top-speed cars with handling and nitro as a bonus.</p>
     </section>
 
     <section class="card">
-      <div class="card-header"><h2>Gauntlet Rules</h2><span class="toggle">−</span></div>
+      <div class="card-header"><h2>Your 5 Gauntlet Tracks</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <ul>
-          <li><strong>Unlock:</strong> 70 Career Flags and at least 5 owned cars.</li>
-          <li><strong>Defense:</strong> Set 5 cars for 5 consecutive 30″ track variations (one car per track).</li>
-          <li><strong>Challenge:</strong> Race against 1 of 3 opponents; win 3 of 5 races to win the challenge.</li>
-          <li><strong>Leagues / Divisions:</strong> Matchmaking uses the combined rank of your top 5 owned cars.</li>
-          <li><strong>Refresh cost:</strong> 25,000 credits initially, increasing up to 200,000.</li>
-          <li><strong>Strategy:</strong> Short tracks favor <em>acceleration, handling, and nitro</em> over raw top speed.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="card-header"><h2>30″ Gauntlet Tracks</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <div class="search-bar"><input type="search" id="gauntlet-track-search" placeholder="Search track or environment…" /></div>
-        <div class="count" id="gauntlet-track-count">0 tracks</div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th data-sort="trackName">Track Name</th><th data-sort="environment">Environment</th><th data-sort="length">Length</th><th data-sort="difficulty">Difficulty</th><th data-sort="hazards">Hazards</th><th data-sort="recClasses">Recommended Classes</th></tr>
-            </thead>
-            <tbody id="gauntlet-track-body"></tbody>
-          </table>
+        <div class="filters" id="gauntlet-track-slots">
+          <div class="filter"><label for="gauntlet-track-0">Track 1</label><select id="gauntlet-track-0"><option value="">— Select track —</option></select></div>
+          <div class="filter"><label for="gauntlet-track-1">Track 2</label><select id="gauntlet-track-1"><option value="">— Select track —</option></select></div>
+          <div class="filter"><label for="gauntlet-track-2">Track 3</label><select id="gauntlet-track-2"><option value="">— Select track —</option></select></div>
+          <div class="filter"><label for="gauntlet-track-3">Track 4</label><select id="gauntlet-track-3"><option value="">— Select track —</option></select></div>
+          <div class="filter"><label for="gauntlet-track-4">Track 5</label><select id="gauntlet-track-4"><option value="">— Select track —</option></select></div>
         </div>
       </div>
     </section>
 
-    <section class="card">
-      <div class="card-header"><h2>Best Cars for Short Tracks</h2><span class="toggle">−</span></div>
+    <section class="card" id="gauntlet-picks">
+      <div class="card-header"><h2>Suggested Cars for Your Tracks</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <div class="filters">
-          <div class="filter"><label for="gauntlet-class">Class</label><select id="gauntlet-class"><option value="All">All</option></select></div>
-        </div>
-        <p class="dashboard-intro">Sorted by a short-track score combining acceleration, handling, and nitro. Top speed matters less on 30″ variations.</p>
+        <p class="dashboard-intro">Sorted by top speed and acceleration, with smaller handling and nitro bonuses.</p>
         <div class="count" id="gauntlet-car-count">0 cars</div>
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th data-sort="carName">Car Name</th><th data-sort="class">Class</th><th data-sort="rarity">Rarity</th><th data-sort="topSpeedMax" data-sort-type="num">Top Speed</th><th data-sort="accelerationMax" data-sort-type="num">Accel</th><th data-sort="handlingMax" data-sort-type="num">Handling</th><th data-sort="nitroMax" data-sort-type="num">Nitro</th><th data-sort="_sts" data-sort-type="num">Short-Track Score</th><th data-sort="rankMax" data-sort-type="num">Rank Max</th></tr>
+              <tr><th>Car</th><th>Class</th><th>Top Speed</th><th>Accel</th><th>Handling</th><th>Nitro</th><th>Score</th><th>Rank Max</th></tr>
             </thead>
             <tbody id="gauntlet-car-body"></tbody>
           </table>
         </div>
+        <button id="gauntlet-use-top" class="btn" style="margin-top:1rem;">Use top 5 in lineup</button>
       </div>
     </section>
 
@@ -126,7 +105,7 @@
       <div class="card-body">
         <p class="dashboard-intro">Pick 5 cars you own to estimate your Gauntlet league based on combined max rank.</p>
         <div class="lineup-slots" id="gauntlet-lineup"></div>
-        <div class="lineup-summary" id="gauntlet-summary">Combined rank: 0</div>
+        <div class="lineup-summary" id="gauntlet-summary">Combined max rank: 0</div>
       </div>
     </section>
   </main>
