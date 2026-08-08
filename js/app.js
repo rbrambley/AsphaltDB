@@ -361,6 +361,7 @@
     const selEvo = $('#cars-evo');
     const selUnlock = $('#cars-unlock');
     const selRec = $('#cars-rec');
+    const selTrack = $('#cars-track');
     const selFav = $('#cars-fav');
 
     const classes = [...new Set(cars.map(c => c.class))].sort();
@@ -380,6 +381,18 @@
     rarities.forEach(v => selRarity.add(new Option(v, v)));
     unlocks.forEach(v => selUnlock.add(new Option(v, v)));
     recs.forEach(v => selRec.add(new Option(v, v)));
+    const trackNames = [...new Set(tracks.map(t => t.trackName))].sort();
+    trackNames.forEach(v => selTrack.add(new Option(v, v)));
+    const recTrackSets = {};
+    recs.forEach(desc => { recTrackSets[desc] = new Set(getTrackNamesForRecommended(desc)); });
+    const trackToDesc = new Map();
+    tracks.forEach(t => {
+      const descs = new Set();
+      recs.forEach(desc => { if (recTrackSets[desc].has(t.trackName)) descs.add(desc); });
+      trackToDesc.set(t.trackName, descs);
+    });
+    const urlTrack = new URLSearchParams(location.search).get('track');
+    if (urlTrack && [...selTrack.options].some(o => o.value === urlTrack)) selTrack.value = urlTrack;
 
     const table = $('#cars-body').closest('table');
     const headRow = table.querySelector('thead tr');
@@ -397,11 +410,14 @@
       const evo = selEvo.value;
       const unlock = selUnlock.value;
       const rec = selRec.value;
+      const track = selTrack.value;
       const fav = selFav.value;
       const faves = new Set(getFavorites());
       let filtered = cars.filter(c => {
         const evoOk = evo === 'All' || (evo === 'yes' && c.evoEligible) || (evo === 'no' && !c.evoEligible);
         const recOk = rec === 'All' || ((c.recommendedTracks || '').split(',').some(s => s.trim() === rec));
+        const trackAllowedDescs = track === 'All' ? null : trackToDesc.get(track);
+        const trackOk = track === 'All' || (trackAllowedDescs && (c.recommendedTracks || '').split(',').some(s => trackAllowedDescs.has(s.trim())));
         return (!q || c.carName.toLowerCase().includes(q) || c.manufacturer.toLowerCase().includes(q)) &&
                (cls === 'All' || c.class === cls) &&
                (mfr === 'All' || c.manufacturer === mfr) &&
@@ -409,6 +425,7 @@
                (unlock === 'All' || c.unlockMethod === unlock) &&
                (fav === 'All' || faves.has(c.carName)) &&
                recOk &&
+               trackOk &&
                evoOk;
       });
       if (sortKey) filtered = [...filtered].sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
@@ -464,7 +481,7 @@
       sortKey = key;
       render();
     });
-    [search, selClass, selMfr, selRarity, selEvo, selUnlock, selRec, selFav].forEach(el => el.addEventListener('input', render));
+    [search, selClass, selMfr, selRarity, selEvo, selUnlock, selRec, selTrack, selFav].forEach(el => el.addEventListener('input', render));
     render();
   }
 
@@ -520,6 +537,11 @@
           if (resultsCard) resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
         actions.appendChild(btn);
+        const carsLink = document.createElement('a');
+        carsLink.className = 'btn';
+        carsLink.href = 'cars.html?track=' + encodeURIComponent(t.trackName);
+        carsLink.textContent = 'Cars';
+        actions.appendChild(carsLink);
         row.appendChild(actions);
       });
       setSortIndicators(table, sortKey, sortDir);
