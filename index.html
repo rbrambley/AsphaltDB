@@ -61,14 +61,18 @@
     <section class="card">
       <div class="card-header"><h2>Unified Dashboard</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <p class="dashboard-intro">Filter by car class, manufacturer, track, or event to see a cross-referenced list of cars, career seasons and recurring events.</p>
+        <p class="dashboard-intro">Search or filter to cross-reference cars, tracks, career seasons and recurring events. Results work in a table on desktop and as cards on mobile.</p>
         <div class="filters">
+          <div class="filter filter-wide"><label for="dash-search">Search</label><input type="search" id="dash-search" placeholder="Car, manufacturer, track, event, season…" /></div>
           <div class="filter"><label for="dash-class">Car Class</label><select id="dash-class"><option value="All">All</option></select></div>
           <div class="filter"><label for="dash-manufacturer">Manufacturer</label><select id="dash-manufacturer"><option value="All">All</option></select></div>
+          <div class="filter"><label for="dash-rarity">Rarity</label><select id="dash-rarity"><option value="All">All</option></select></div>
+          <div class="filter"><label for="dash-evo">EVO</label><select id="dash-evo"><option value="All">All</option><option value="yes">EVO only</option><option value="no">Non-EVO</option></select></div>
+          <div class="filter"><label for="dash-owned">Garage</label><select id="dash-owned"><option value="All">All cars</option><option value="owned">Owned only</option></select></div>
           <div class="filter"><label for="dash-track">Track</label><select id="dash-track"><option value="All">All</option></select></div>
           <div class="filter"><label for="dash-event">Event</label><select id="dash-event"><option value="All">All</option></select></div>
         </div>
-        <div class="count" id="dash-count">Select at least one filter to see results.</div>
+        <div class="count" id="dash-count">Showing all cars. Use the search or filters above to narrow results.</div>
         <div class="legend">
           <span><span class="swatch swatch-legendary"></span> Legendary</span>
           <span><span class="swatch swatch-highrank"></span> High rank (>3500)</span>
@@ -77,11 +81,12 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th data-sort="carName">Car Name</th><th data-sort="class">Class</th><th data-sort="items" data-sort-type="num">Linked Items</th><th>Actions</th></tr>
+              <tr><th data-sort="carName">Car Name</th><th data-sort="class">Class</th><th data-sort="manufacturer">Manufacturer</th><th data-sort="rarity">Rarity</th><th data-sort="rankMax" data-sort-type="num">Rank Max</th><th data-sort="items" data-sort-type="num">Linked Items</th><th>Actions</th></tr>
             </thead>
-            <tbody id="dash-body"><tr><td colspan="4" class="empty-state">Use the filters above to combine cars, tracks, career seasons and events.</td></tr></tbody>
+            <tbody id="dash-body"><tr><td colspan="7" class="empty-state">Loading dashboard…</td></tr></tbody>
           </table>
         </div>
+        <div class="dash-pagination" id="dash-pagination"></div>
       </div>
     </section>
   </main>

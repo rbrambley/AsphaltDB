@@ -568,9 +568,15 @@ footer a { color: var(--primary-light); }
   .table-wrap td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); }
   .table-wrap td:last-child { border-bottom: none; }
   .table-wrap td::before { content: attr(data-label); color: var(--muted); font-weight: 600; font-size: 0.8rem; margin-right: 1rem; }
-  .table-wrap .expand-row, .table-wrap .expand-row td { display: none; }
+  .expand-row td { padding: 0; border-bottom: none; }
+  .table-wrap .detail-table td { padding: 0.4rem 0.6rem; }
   #global-search-input { width: 100%; }
 }
+
+/* Dashboard pagination */
+.dash-pagination { display: flex; justify-content: center; align-items: center; gap: 0.75rem; margin-top: 1rem; }
+.dash-page-info { color: var(--muted); font-size: 0.85rem; }
+.filter-wide { grid-column: 1 / -1; }
 
 /* Garage editor */
 .garage-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1rem; }

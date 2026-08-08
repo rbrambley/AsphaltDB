@@ -228,14 +228,18 @@
 
   function initMobileCards() {
     function label(table) {
-      const ths = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
-      table.querySelectorAll('tbody tr').forEach(tr => {
+      const head = table.tHead || table.querySelector('thead');
+      if (!head) return;
+      const ths = Array.from(head.rows[0].cells).map(th => th.textContent.trim());
+      const tbody = table.tBodies[0] || table.querySelector('tbody');
+      if (!tbody) return;
+      Array.from(tbody.rows).forEach(tr => {
         if (tr.classList.contains('expand-row')) return;
-        Array.from(tr.children).forEach((td, i) => { if (ths[i]) td.setAttribute('data-label', ths[i]); });
+        Array.from(tr.cells).forEach((td, i) => { if (ths[i]) td.setAttribute('data-label', ths[i]); });
       });
     }
     $$('.table-wrap table').forEach(table => {
-      const tbody = table.querySelector('tbody');
+      const tbody = table.tBodies[0] || table.querySelector('tbody');
       if (tbody) new MutationObserver(() => label(table)).observe(tbody, { childList: true, subtree: true });
       label(table);
     });
@@ -595,10 +599,10 @@
       if (i.type === 'career') {
         const reward = [i.credits, i.rep ? i.rep + ' rep' : ''].filter(Boolean).join(' / ');
         html += `<tr data-type="${esc('career')}" data-name="${esc(i.season)}" data-chapter="${esc(i.chapter)}" data-track="${esc(i.track)}" data-race="${esc(i.race)}" data-rank="${esc(i.rank)}" data-mode="${esc(i.mode)}" data-reward="${esc(reward)}">`;
-        html += `<td>Career</td><td>${i.season}</td><td>${i.chapter}</td><td>${i.track}</td><td class="num">${i.race}</td><td class="num">${i.rank}</td><td>${i.mode}</td><td>${reward || '—'}</td></tr>`;
+        html += `<td data-label="Type">Career</td><td data-label="Season / Event">${i.season}</td><td data-label="Chapter">${i.chapter}</td><td data-label="Track">${i.track}</td><td data-label="Race" class="num">${i.race}</td><td data-label="Rank" class="num">${i.rank}</td><td data-label="Mode">${i.mode}</td><td data-label="Reward">${reward || '—'}</td></tr>`;
       } else if (i.type === 'event') {
         html += `<tr data-type="${esc('event')}" data-name="${esc(i.eventName)}" data-chapter="" data-track="${esc(i.track)}" data-race="" data-rank="" data-mode="" data-reward="${esc(i.reward)}">`;
-        html += `<td>Event</td><td>${i.eventName}</td><td>—</td><td>${i.track}</td><td>—</td><td>—</td><td>—</td><td>${i.reward}</td></tr>`;
+        html += `<td data-label="Type">Event</td><td data-label="Season / Event">${i.eventName}</td><td data-label="Chapter">—</td><td data-label="Track">${i.track}</td><td data-label="Race">—</td><td data-label="Rank">—</td><td data-label="Mode">—</td><td data-label="Reward">${i.reward}</td></tr>`;
       }
     });
     html += '</tbody></table></div>';
@@ -650,90 +654,217 @@
 
   function initDashboard() {
 
+    const search = $('#dash-search');
     const selClass = $('#dash-class');
     const selMfr = $('#dash-manufacturer');
+    const selRarity = $('#dash-rarity');
+    const selEvo = $('#dash-evo');
+    const selOwned = $('#dash-owned');
     const selTrack = $('#dash-track');
     const selEvent = $('#dash-event');
 
     [...new Set(cars.map(c => c.class))].sort().forEach(v => selClass.add(new Option(v, v)));
     [...new Set(cars.map(c => c.manufacturer))].sort().forEach(v => selMfr.add(new Option(v, v)));
+    [...new Set(cars.map(c => c.rarity))].sort().forEach(v => selRarity.add(new Option(v, v)));
     [...new Set(tracks.map(t => t.trackName))].sort().forEach(v => selTrack.add(new Option(v, v)));
     [...new Set(events.map(e => e.eventName))].sort().forEach(v => selEvent.add(new Option(v, v)));
 
-    let sortKey = '', sortDir = 1;
     const dashTable = $('#dash-body').closest('table');
+    const PAGE_SIZE = 25;
+    let sortKey = 'rankMax';
+    let sortDir = -1;
+    let page = 1;
+    let groupArray = [];
+
+    function readUrl() {
+      const p = new URLSearchParams(location.search);
+      if (p.has('dash-search')) search.value = p.get('dash-search');
+      if (p.get('dash-class')) selClass.value = p.get('dash-class');
+      if (p.get('dash-manufacturer')) selMfr.value = p.get('dash-manufacturer');
+      if (p.get('dash-rarity')) selRarity.value = p.get('dash-rarity');
+      if (p.get('dash-evo')) selEvo.value = p.get('dash-evo');
+      if (p.get('dash-owned')) selOwned.value = p.get('dash-owned');
+      if (p.get('dash-track')) selTrack.value = p.get('dash-track');
+      if (p.get('dash-event')) selEvent.value = p.get('dash-event');
+      const pg = parseInt(p.get('dash-page') || '1', 10);
+      page = isNaN(pg) || pg < 1 ? 1 : pg;
+    }
+
+    function updateUrl() {
+      const p = new URLSearchParams();
+      const q = search.value.trim();
+      if (q) p.set('dash-search', q);
+      if (selClass.value !== 'All') p.set('dash-class', selClass.value);
+      if (selMfr.value !== 'All') p.set('dash-manufacturer', selMfr.value);
+      if (selRarity.value !== 'All') p.set('dash-rarity', selRarity.value);
+      if (selEvo.value !== 'All') p.set('dash-evo', selEvo.value);
+      if (selOwned.value !== 'All') p.set('dash-owned', selOwned.value);
+      if (selTrack.value !== 'All') p.set('dash-track', selTrack.value);
+      if (selEvent.value !== 'All') p.set('dash-event', selEvent.value);
+      if (page > 1) p.set('dash-page', page);
+      const qs = p.toString();
+      const newUrl = location.pathname + (qs ? '?' + qs : '');
+      history.replaceState(null, '', newUrl);
+    }
+
+    function matchesSearch(car, q) {
+      if (!q) return true;
+      const m = q.toLowerCase();
+      return car.carName.toLowerCase().includes(m) ||
+             car.manufacturer.toLowerCase().includes(m) ||
+             car.class.toLowerCase().includes(m) ||
+             (car.rarity || '').toLowerCase().includes(m) ||
+             (String(car.rankMax) || '').includes(m);
+    }
+
+    function renderPagination(total, totalPages) {
+      const wrap = $('#dash-pagination');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      if (totalPages <= 1) return;
+      const info = document.createElement('span');
+      info.className = 'dash-page-info';
+      info.textContent = `Page ${page} of ${totalPages}`;
+      const prev = document.createElement('button');
+      prev.className = 'btn';
+      prev.textContent = 'Prev';
+      prev.disabled = page === 1;
+      prev.addEventListener('click', () => { if (page > 1) { page--; render(); updateUrl(); } });
+      const next = document.createElement('button');
+      next.className = 'btn';
+      next.textContent = 'Next';
+      next.disabled = page === totalPages;
+      next.addEventListener('click', () => { if (page < totalPages) { page++; render(); updateUrl(); } });
+      wrap.appendChild(prev);
+      wrap.appendChild(info);
+      wrap.appendChild(next);
+    }
 
     function render() {
+      const q = search.value.toLowerCase().trim();
       const classFilter = selClass.value;
       const mfrFilter = selMfr.value;
+      const rarityFilter = selRarity.value;
+      const evoFilter = selEvo.value;
+      const ownedFilter = selOwned.value;
       const trackFilter = selTrack.value;
       const eventFilter = selEvent.value;
-      const active = classFilter !== 'All' || mfrFilter !== 'All' || trackFilter !== 'All' || eventFilter !== 'All';
 
-      const filteredCars = filterCars(classFilter, mfrFilter);
-      const filteredCareer = filterCareer(filteredCars, trackFilter);
-      const filteredEvents = filterEvents(trackFilter, eventFilter);
-      const results = active ? combineResults(filteredCars, filteredCareer, filteredEvents) : [];
+      const ownedNames = ownedFilter === 'owned' ? new Set(getCombinedGarage().map(g => g.carName.toLowerCase())) : null;
+
+      const filteredCars = cars.filter(c => {
+        const evoOk = evoFilter === 'All' || (evoFilter === 'yes' && c.evoEligible) || (evoFilter === 'no' && !c.evoEligible);
+        const ownedOk = ownedFilter === 'All' || (ownedNames && ownedNames.has(c.carName.toLowerCase()));
+        return (classFilter === 'All' || c.class === classFilter) &&
+               (mfrFilter === 'All' || c.manufacturer === mfrFilter) &&
+               (rarityFilter === 'All' || c.rarity === rarityFilter) &&
+               evoOk && ownedOk &&
+               matchesSearch(c, q);
+      });
+
+      const linkActive = trackFilter !== 'All' || eventFilter !== 'All';
+      let results = [];
+      if (linkActive) {
+        const filteredCareer = filterCareer(filteredCars, trackFilter);
+        const filteredEvents = filterEvents(trackFilter, eventFilter);
+        results = combineResults(filteredCars, filteredCareer, filteredEvents);
+      }
+
+      const groups = {};
+      if (linkActive) {
+        results.forEach(r => {
+          if (!groups[r.carName]) groups[r.carName] = { carName: r.carName, class: r.class, items: [], _car: r._car };
+          groups[r.carName].items.push(r);
+        });
+      } else {
+        filteredCars.forEach(c => {
+          groups[c.carName] = { carName: c.carName, class: c.class, items: [], _car: c };
+        });
+      }
+
+      groupArray = Object.values(groups);
+
+      if (q && linkActive) {
+        groupArray = groupArray.filter(g => matchesSearch(g._car, q) || g.items.some(i =>
+          (i.eventName && i.eventName.toLowerCase().includes(q)) ||
+          (i.season && i.season.toLowerCase().includes(q)) ||
+          (i.track && i.track.toLowerCase().includes(q)) ||
+          (i.notes && i.notes.toLowerCase().includes(q))
+        ));
+      }
+
+      if (sortKey === 'items') {
+        groupArray.sort((a, b) => compareValues(a.items.length, b.items.length, sortDir));
+      } else if (sortKey) {
+        groupArray.sort((a, b) => {
+          const va = a._car && a._car[sortKey] != null ? a._car[sortKey] : a[sortKey];
+          const vb = b._car && b._car[sortKey] != null ? b._car[sortKey] : b[sortKey];
+          return compareValues(va, vb, sortDir);
+        });
+      }
+
+      const total = groupArray.length;
+      const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      page = Math.min(page, totalPages);
+      const start = (page - 1) * PAGE_SIZE;
+      const pageGroups = groupArray.slice(start, start + PAGE_SIZE);
 
       const tbody = $('#dash-body');
       tbody.innerHTML = '';
-      if (!active) {
-        $('#dash-count').textContent = 'Select at least one filter to see results.';
-        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Use the filters above to combine cars, tracks, career seasons and events.</td></tr>';
+      if (!total) {
+        $('#dash-count').textContent = 'No results match your query.';
+        tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Try different search or filters.</td></tr>';
+        renderPagination(0, 1);
         return;
       }
 
-      // Group results by car name
-      const groups = {};
-      results.forEach(r => {
-        if (!groups[r.carName]) {
-          groups[r.carName] = { carName: r.carName, class: r.class, items: [], car: r._car };
-        }
-        groups[r.carName].items.push(r);
-      });
-      let groupArray = Object.values(groups);
-      if (sortKey === 'items') {
-        groupArray = groupArray.sort((a, b) => compareValues(a.items.length, b.items.length, sortDir));
-      } else if (sortKey) {
-        groupArray = groupArray.sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
-      }
-      $('#dash-count').textContent = `${groupArray.length} car${groupArray.length === 1 ? '' : 's'} • ${results.length} linked event${results.length === 1 ? '' : 's'}`;
+      $('#dash-count').textContent = `${total} car${total === 1 ? '' : 's'}` + (linkActive ? ` • ${results.length} linked item${results.length === 1 ? '' : 's'}` : '') + ` (page ${page} of ${totalPages})`;
 
-      groupArray.forEach(g => {
-        const car = g.car;
+      pageGroups.forEach(g => {
+        const car = g._car;
         const row = document.createElement('tr');
         if (car && car.rarity === 'Legendary') row.classList.add('legendary');
         if (car && car.rankMax > 3500) row.classList.add('high-rank');
         if (g.items.some(i => i._event && /exclusive|special|grand prix|car hunt/i.test(i._event.eventName))) row.classList.add('rare-event');
-        row.innerHTML = `<td>${g.carName}</td><td>${g.class}</td><td class="num">${g.items.length}</td><td><button class="btn expand-btn">Show ${g.items.length} link${g.items.length === 1 ? '' : 's'}</button></td>`;
+        row.innerHTML = `<td>${g.carName}</td><td>${g.class}</td><td>${car ? car.manufacturer : '—'}</td><td>${car && car.rarity ? car.rarity : '—'}</td><td class="num">${car ? fmt(car.rankMax) : '—'}</td><td class="num">${g.items.length}</td><td><button class="btn expand-btn">${g.items.length ? 'Show links' : 'No links'}</button></td>`;
         tbody.appendChild(row);
 
         const detailRow = document.createElement('tr');
         detailRow.className = 'expand-row';
         detailRow.style.display = 'none';
-        detailRow.innerHTML = `<td colspan="4"><div class="dash-detail"></div></td>`;
+        detailRow.innerHTML = `<td colspan="7"><div class="dash-detail"></div></td>`;
         tbody.appendChild(detailRow);
 
-        const detail = detailRow.querySelector('.dash-detail');
-        detail.innerHTML = buildDetailHtml(g.items);
-        attachDetailInteractions(detail);
-
         const btn = row.querySelector('.expand-btn');
+        btn.disabled = !g.items.length;
         btn.addEventListener('click', () => {
+          const detail = detailRow.querySelector('.dash-detail');
           const shown = detailRow.style.display !== 'none';
-          detailRow.style.display = shown ? 'none' : 'table-row';
-          btn.textContent = shown ? `Show ${g.items.length} link${g.items.length === 1 ? '' : 's'}` : 'Hide links';
+          if (!shown && !detail.innerHTML) {
+            detail.innerHTML = buildDetailHtml(g.items);
+            attachDetailInteractions(detail);
+          }
+          detailRow.style.display = shown ? 'none' : (window.innerWidth <= 640 ? 'block' : 'table-row');
+          btn.textContent = shown ? (g.items.length ? 'Show links' : 'No links') : 'Hide links';
         });
       });
       setSortIndicators(dashTable, sortKey, sortDir);
+      renderPagination(total, totalPages);
     }
 
-    initSortHeaders(dashTable, key => {
+    function doFilter() { page = 1; render(); updateUrl(); }
+    function doSort(key) {
       sortDir = sortKey === key ? -sortDir : 1;
       sortKey = key;
       render();
-    });
-    [selClass, selMfr, selTrack, selEvent].forEach(el => el.addEventListener('change', render));
+      updateUrl();
+    }
+
+    initSortHeaders(dashTable, doSort);
+    [selClass, selMfr, selRarity, selEvo, selOwned, selTrack, selEvent].forEach(el => el.addEventListener('change', doFilter));
+    search.addEventListener('input', doFilter);
+
+    readUrl();
     render();
   }
 
