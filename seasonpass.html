@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <title>Season Pass Tracker | Asphalt Legends Unite</title>
+  <title>Season Pass Mission Solver | Asphalt Legends Unite</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -65,31 +65,60 @@
     </div>
   </header>
   <main>
-    <h1 class="page-title">Season Pass Tracker</h1>
-    <p class="page-subtitle">Track special missions and find the best tracks and cars to complete them.</p>
+    <h1 class="page-title">Season Pass Mission Solver</h1>
+    <p class="page-subtitle">Pick a mission condition and find the best tracks, cars, and career race to complete it.</p>
 
     <div class="card">
       <div class="card-body">
-        <h2>Add mission</h2>
         <div class="filters">
+          <div class="filter"><label for="sp-pass">Season Pass</label><input type="text" id="sp-pass" placeholder="e.g. Road to Glory E1" /></div>
           <div class="filter"><label for="sp-condition">Condition</label><select id="sp-condition"><option value="">Select condition</option></select></div>
-          <div class="filter"><label for="sp-target">Target</label><input type="text" id="sp-target" placeholder="e.g. 4" /></div>
-          <div class="filter"><label for="sp-sp">SP</label><input type="text" id="sp-sp" placeholder="e.g. 60" /></div>
           <div class="filter"><label for="sp-class">Class</label><select id="sp-class"><option value="">Any</option></select></div>
-          <div class="filter"><label for="sp-track-length">Track Length</label><select id="sp-track-length"><option value="">Any</option></select></div>
-          <div class="filter"><label for="sp-track">Track</label><select id="sp-track"><option value="">Select track</option><option value="__other__">Other / new track</option></select><input type="text" id="sp-track-custom" placeholder="Enter new track" style="display:none; margin-top:0.4rem;" /></div>
-          <div class="filter"><label for="sp-car">Car</label><select id="sp-car"><option value="">Select car</option><option value="__other__">Other / new car</option></select><input type="text" id="sp-car-custom" placeholder="Enter new car" style="display:none; margin-top:0.4rem;" /></div>
+          <div class="filter"><label for="sp-target">Target</label><input type="text" id="sp-target" placeholder="e.g. 5" /></div>
+          <div class="filter"><label for="sp-locations">Allowed locations/tracks</label><input type="text" id="sp-locations" placeholder="e.g. Cairo, Paris, Greenland" /></div>
+          <div class="filter"><label for="sp-mode">Mode</label><input type="text" id="sp-mode" placeholder="e.g. Classic" /></div>
         </div>
-        <button id="sp-add" class="btn">Add mission</button>
+        <button id="sp-solve" class="btn">Find matches</button>
+      </div>
+    </div>
 
-        <div class="count" id="sp-count">0 missions</div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Done</th><th>Condition</th><th>Target</th><th>SP</th><th>Track</th><th>Car</th><th></th></tr>
-            </thead>
-            <tbody id="sp-body"></tbody>
-          </table>
+    <div id="sp-results" style="display:none;">
+      <div class="card">
+        <div class="card-body">
+          <h2>Suggested Tracks</h2>
+          <div class="count" id="sp-tracks-count">0 tracks</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Track</th><th>Environment</th><th>Length</th><th>Hazards</th></tr></thead>
+              <tbody id="sp-tracks-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h2>Suggested Cars</h2>
+          <div class="count" id="sp-cars-count">0 cars</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Car</th><th>Class</th><th>Rarity</th><th>Rank (Max)</th></tr></thead>
+              <tbody id="sp-cars-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h2>Career Races</h2>
+          <div class="count" id="sp-races-count">0 races</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Chapter</th><th>Season</th><th>Race</th><th>Rank</th><th>Mode</th><th>Track</th><th>Credits</th><th>Rep</th></tr></thead>
+              <tbody id="sp-races-body"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
