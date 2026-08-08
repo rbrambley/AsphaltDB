@@ -71,12 +71,11 @@
     <div class="card">
       <div class="card-body">
         <div class="filters">
-          <div class="filter"><label for="sp-pass">Season Pass</label><input type="text" id="sp-pass" placeholder="e.g. Road to Glory E1" /></div>
           <div class="filter"><label for="sp-condition">Condition</label><select id="sp-condition"><option value="">Select condition</option></select></div>
           <div class="filter"><label for="sp-class">Class</label><select id="sp-class"><option value="">Any</option></select></div>
           <div class="filter"><label for="sp-target">Target</label><input type="text" id="sp-target" placeholder="e.g. 5" /></div>
           <div class="filter"><label for="sp-locations">Allowed locations/tracks</label><input type="text" id="sp-locations" placeholder="e.g. Cairo, Paris, Greenland" /></div>
-          <div class="filter"><label for="sp-mode">Mode</label><input type="text" id="sp-mode" placeholder="e.g. Classic" /></div>
+          <div class="filter"><label for="sp-mode">Mode</label><select id="sp-mode"><option value="">Any</option></select></div>
         </div>
         <button id="sp-solve" class="btn">Find matches</button>
       </div>
@@ -86,12 +85,10 @@
       <div class="card">
         <div class="card-body">
           <h2>Best tracks for this mission</h2>
-          <div class="count" id="sp-cars-count">0 cars match the class</div>
-          <div id="sp-cars-list" style="margin-bottom:1rem;"></div>
           <div class="count" id="sp-tracks-count">0 tracks</div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Track</th><th>Environment</th><th>Length</th><th>Hazards</th><th>Career Races</th></tr></thead>
+              <thead><tr><th>Track</th><th>Environment</th><th>Length</th><th>Hazards</th><th>Career Races</th><th>Cars</th></tr></thead>
               <tbody id="sp-tracks-body"></tbody>
             </table>
           </div>

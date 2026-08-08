@@ -596,15 +596,14 @@
     const conditionSelect = $('#sp-condition');
     const classSelect = $('#sp-class');
     const locationsInput = $('#sp-locations');
-    const modeInput = $('#sp-mode');
+    const modeSelect = $('#sp-mode');
     const solveBtn = $('#sp-solve');
     const results = $('#sp-results');
     const tracksBody = $('#sp-tracks-body');
-    const carsList = $('#sp-cars-list');
-    const carsCount = $('#sp-cars-count');
 
     missionConditions.forEach(c => conditionSelect.add(new Option(c.label, c.id)));
     [...new Set(cars.map(c => c.class))].sort().forEach(v => classSelect.add(new Option(v, v)));
+    [...new Set(careerRaces.map(r => r.mode))].sort().forEach(v => modeSelect.add(new Option(v, v)));
 
     function matchesLocations(track, terms) {
       if (!terms.length) return true;
@@ -624,7 +623,7 @@
       const cond = missionConditions.find(c => c.id === conditionSelect.value);
       const cls = classSelect.value;
       const locs = locationsInput.value.toLowerCase().split(/,\s*|,/).map(s => s.trim()).filter(Boolean);
-      const mode = modeInput.value.toLowerCase();
+      const mode = modeSelect.value.toLowerCase();
 
       const matchedTracks = tracks.filter(t => matchesLocations(t, locs) && matchesCondition(t, cond))
         .sort((a, b) => a.trackName.localeCompare(b.trackName));
@@ -632,6 +631,7 @@
 
       const matchedCars = cars.filter(c => !cls || c.class === cls)
         .sort((a, b) => a.carName.localeCompare(b.carName));
+      const carsHtml = matchedCars.map(c => c.carName).join('<br>') || '—';
 
       const raceMap = new Map();
       careerRaces.forEach(r => {
@@ -642,16 +642,13 @@
       });
 
       results.style.display = 'block';
-      carsCount.textContent = `${matchedCars.length} car${matchedCars.length === 1 ? '' : 's'} match the class`;
-      carsList.textContent = matchedCars.map(c => c.carName).join(', ') || '—';
-
       $('#sp-tracks-count').textContent = `${matchedTracks.length} track${matchedTracks.length === 1 ? '' : 's'}`;
       tracksBody.innerHTML = matchedTracks.map(t => {
         const races = raceMap.get(t.trackName) || [];
         const racesHtml = races.length
           ? races.map(r => `${r.chapter} &rsaquo; ${r.season} &rsaquo; Race ${r.race} (${r.mode})`).join('<br>')
           : '—';
-        return `<tr><td>${t.trackName}</td><td>${t.environment}</td><td>${t.length}</td><td>${t.hazards || '—'}</td><td>${racesHtml}</td></tr>`;
+        return `<tr><td>${t.trackName}</td><td>${t.environment}</td><td>${t.length}</td><td>${t.hazards || '—'}</td><td>${racesHtml}</td><td>${carsHtml}</td></tr>`;
       }).join('');
     }
 
