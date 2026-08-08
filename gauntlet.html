@@ -67,44 +67,22 @@
   <main>
     <section class="hero">
       <h1>Gauntlet Mode</h1>
-      <p>Pick 5 short tracks, then choose the 5 fastest accelerating and top-speed cars with handling and nitro as a bonus.</p>
-    </section>
-
-    <section class="card">
-      <div class="card-header"><h2>Your 5 Gauntlet Tracks</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <div class="filters" id="gauntlet-track-slots">
-          <div class="filter"><label for="gauntlet-track-0">Track 1</label><select id="gauntlet-track-0"><option value="">— Select track —</option></select></div>
-          <div class="filter"><label for="gauntlet-track-1">Track 2</label><select id="gauntlet-track-1"><option value="">— Select track —</option></select></div>
-          <div class="filter"><label for="gauntlet-track-2">Track 3</label><select id="gauntlet-track-2"><option value="">— Select track —</option></select></div>
-          <div class="filter"><label for="gauntlet-track-3">Track 4</label><select id="gauntlet-track-3"><option value="">— Select track —</option></select></div>
-          <div class="filter"><label for="gauntlet-track-4">Track 5</label><select id="gauntlet-track-4"><option value="">— Select track —</option></select></div>
-        </div>
-      </div>
+      <p>Pick an opponent for each of the 5 short tracks. The page recommends a faster car for every track.</p>
     </section>
 
     <section class="card" id="gauntlet-picks">
-      <div class="card-header"><h2>Suggested Cars for Your Tracks</h2><span class="toggle">−</span></div>
+      <div class="card-header"><h2>5 Track Matchups</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <p class="dashboard-intro">Sorted by top speed and acceleration, with smaller handling and nitro bonuses.</p>
-        <div class="count" id="gauntlet-car-count">0 cars</div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Track</th><th>Best Car</th><th>Class</th><th>Top Speed</th><th>Accel</th><th>Handling</th><th>Nitro</th><th>Score</th></tr>
-            </thead>
-            <tbody id="gauntlet-car-body"></tbody>
-          </table>
-        </div>
-        <button id="gauntlet-use-top" class="btn" style="margin-top:1rem;">Use top 5 in lineup</button>
+        <div id="gauntlet-cols" class="gauntlet-cols" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;"></div>
+        <button id="gauntlet-use-all" class="btn" style="margin-top:1rem;">Use all recommendations</button>
       </div>
     </section>
 
     <section class="card">
-      <div class="card-header"><h2>5-Car Lineup Builder</h2><span class="toggle">−</span></div>
+      <div class="card-header"><h2>5-Car Lineup</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <p class="dashboard-intro">Pick 5 cars you own to estimate your Gauntlet league based on combined max rank.</p>
-        <div class="lineup-slots" id="gauntlet-lineup"></div>
+        <p class="dashboard-intro">These slots are filled when you pick tracks and opponents, or by clicking “Use all recommendations.”</p>
+        <div class="filters" id="gauntlet-lineup"></div>
         <div class="lineup-summary" id="gauntlet-summary">Combined max rank: 0</div>
       </div>
     </section>

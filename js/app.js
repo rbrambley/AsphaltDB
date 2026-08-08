@@ -1119,68 +1119,70 @@
   }
 
   function initGauntlet() {
-    const trackOptions = tracks.filter(t => t.length === 'Short').sort((a, b) => a.trackName.localeCompare(b.trackName));
-    for (let i = 0; i < 5; i++) {
-      const sel = $(`#gauntlet-track-${i}`);
-      trackOptions.forEach(t => sel.add(new Option(`${t.trackName} (${t.environment})`, t.trackName)));
-    }
-    trackOptions.slice(0, 5).forEach((t, i) => { $(`#gauntlet-track-${i}`).value = t.trackName; });
-
-    const carBody = $('#gauntlet-car-body');
-    const carCount = $('#gauntlet-car-count');
+    const cols = $('#gauntlet-cols');
     const slots = $('#gauntlet-lineup');
     const summary = $('#gauntlet-summary');
 
+    const trackOptions = tracks.filter(t => t.length === 'Short').sort((a, b) => a.trackName.localeCompare(b.trackName));
     const carOptions = cars.filter(c => c.rankMax != null).sort((a, b) => a.carName.localeCompare(b.carName))
       .map(c => `<option value="${esc(c.carName)}">${esc(c.carName)} (${c.class}, ${fmt(c.rankMax)})</option>`).join('');
+    const trackOptionsHtml = trackOptions.map(t => `<option value="${esc(t.trackName)}">${esc(t.trackName)} (${t.environment})</option>`).join('');
+
     for (let i = 0; i < 5; i++) {
+      const col = document.createElement('div');
+      col.className = 'gauntlet-col';
+      col.style.cssText = 'display:flex;flex-direction:column;gap:0.5rem;padding:0.75rem;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);';
+      col.innerHTML = `<strong style="margin-bottom:0.25rem;">Track ${i + 1}</strong>` +
+                      `<label for="gauntlet-track-${i}">Track</label>` +
+                      `<select id="gauntlet-track-${i}"><option value="">— Select track —</option>${trackOptionsHtml}</select>` +
+                      `<label for="gauntlet-opp-${i}">Opponent</label>` +
+                      `<select id="gauntlet-opp-${i}"><option value="">— Select opponent —</option>${carOptions}</select>` +
+                      `<label for="gauntlet-rec-${i}">Your car</label>` +
+                      `<select id="gauntlet-rec-${i}"><option value="">— Select car —</option>${carOptions}</select>` +
+                      `<button class="btn gauntlet-use-one" data-i="${i}">Use in slot ${i + 1}</button>`;
+      cols.appendChild(col);
+
       const div = document.createElement('div');
       div.className = 'filter';
       div.innerHTML = `<label for="gauntlet-slot-${i}">Slot ${i + 1}</label><select id="gauntlet-slot-${i}"><option value="">— Select car —</option>${carOptions}</select>`;
       slots.appendChild(div);
     }
 
+    trackOptions.slice(0, 5).forEach((t, i) => { $(`#gauntlet-track-${i}`).value = t.trackName; });
+
     function gauntletScore(c) {
       if (c.topSpeedMax == null || c.accelerationMax == null || c.handlingMax == null || c.nitroMax == null) return 0;
       return Math.round(c.topSpeedMax + c.accelerationMax * 1.2 + c.handlingMax * 0.5 + c.nitroMax * 0.3);
     }
 
-    function classAllowed(track, car) {
-      if (!track || !track.recClasses || !car.class) return true;
-      return track.recClasses.includes(car.class);
-    }
-
-    function bestForTrack(track, used) {
-      const list = cars.filter(c => c.rankMax != null && classAllowed(track, c))
-        .map(c => Object.assign({}, c, { _gs: gauntletScore(c) }))
-        .sort((a, b) => b._gs - a._gs || (b.rankMax || 0) - (a.rankMax || 0));
-      let pick = list.find(c => !used.has(c.carName)) || list[0];
-      if (pick) used.add(pick.carName);
-      return pick;
-    }
-
-    function selectedTracks() {
-      const out = [];
-      for (let i = 0; i < 5; i++) {
-        const name = $(`#gauntlet-track-${i}`).value;
-        const t = tracks.find(tr => tr.trackName === name);
-        if (t) out.push(t);
-      }
-      return out;
-    }
-
-    function renderCars() {
-      const tracks = selectedTracks();
+    function recommendAll() {
       const used = new Set();
-      const picks = tracks.map(t => ({ track: t, car: bestForTrack(t, used) })).filter(p => p.car);
-      carCount.textContent = `${picks.length} pick${picks.length === 1 ? '' : 's'}`;
-      carBody.innerHTML = picks.map(p =>
-        `<tr><td>${p.track.trackName}</td><td>${p.car.carName}</td><td>${p.car.class}</td>` +
-        `<td class="num">${fix(p.car.topSpeedMax)}</td><td class="num">${fix(p.car.accelerationMax)}</td>` +
-        `<td class="num">${fix(p.car.handlingMax)}</td><td class="num">${fix(p.car.nitroMax)}</td>` +
-        `<td class="num">${p.car._gs}</td></tr>`
-      ).join('');
-      return picks.map(p => p.car);
+      for (let i = 0; i < 5; i++) {
+        const oppName = $(`#gauntlet-opp-${i}`).value;
+        const opp = cars.find(c => c.carName === oppName);
+        const minScore = opp ? gauntletScore(opp) : 0;
+        const list = cars.filter(c => c.rankMax != null && !used.has(c.carName) && gauntletScore(c) > minScore)
+          .sort((a, b) => gauntletScore(b) - gauntletScore(a) || Number(b.rankMax) - Number(a.rankMax));
+        const pick = list[0] || cars.filter(c => !used.has(c.carName)).sort((a, b) => gauntletScore(b) - gauntletScore(a))[0];
+        if (pick) {
+          used.add(pick.carName);
+          $(`#gauntlet-rec-${i}`).value = pick.carName;
+        }
+      }
+    }
+
+    function useOne(i) {
+      const rec = $(`#gauntlet-rec-${i}`).value;
+      if (rec) $(`#gauntlet-slot-${i}`).value = rec;
+      updateSummary();
+    }
+
+    function useAll() {
+      for (let i = 0; i < 5; i++) {
+        const rec = $(`#gauntlet-rec-${i}`).value;
+        if (rec) $(`#gauntlet-slot-${i}`).value = rec;
+      }
+      updateSummary();
     }
 
     function updateSummary() {
@@ -1194,19 +1196,15 @@
     }
 
     for (let i = 0; i < 5; i++) {
+      $(`#gauntlet-opp-${i}`).addEventListener('input', recommendAll);
+      $(`#gauntlet-track-${i}`).addEventListener('input', recommendAll);
       $(`#gauntlet-slot-${i}`).addEventListener('change', updateSummary);
-      $(`#gauntlet-track-${i}`).addEventListener('input', renderCars);
+      $(`.gauntlet-use-one[data-i="${i}"]`).addEventListener('click', () => useOne(i));
     }
 
-    $('#gauntlet-use-top').addEventListener('click', () => {
-      const top = renderCars();
-      for (let i = 0; i < 5; i++) {
-        if (top[i]) $(`#gauntlet-slot-${i}`).value = top[i].carName;
-      }
-      updateSummary();
-    });
+    $('#gauntlet-use-all').addEventListener('click', useAll);
 
-    renderCars();
+    recommendAll();
     updateSummary();
   }
 
