@@ -277,7 +277,7 @@
     $('#stat-tracks').textContent = tracks.length;
     $('#stat-seasons').textContent = careerSeasons.length;
     $('#stat-events').textContent = events.length;
-    $('#stat-classes').textContent = Object.keys(byClass).sort().join(' / ');
+    $('#stat-classes').textContent = Object.keys(byClass).length;
   }
 
   // ---------- Cars ----------

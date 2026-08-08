@@ -1,4 +1,4 @@
-const CACHE_NAME = 'asphalt-db-v1';
+const CACHE_NAME = 'asphalt-db-v2';
 const PRECACHE = [
   './',
   'index.html',
