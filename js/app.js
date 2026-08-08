@@ -415,6 +415,17 @@
         row.appendChild(makeCell(t.recClasses));
         row.appendChild(makeCell(t.hazards, 'wrap'));
         row.appendChild(makeCell(t.notes, 'wrap'));
+        const actions = makeCell('');
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = 'Best cars';
+        btn.addEventListener('click', () => {
+          if (window.matchForTrack) window.matchForTrack(t.trackName);
+          const resultsCard = $('#results-card');
+          if (resultsCard) resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        actions.appendChild(btn);
+        row.appendChild(actions);
       });
       setSortIndicators(table, sortKey, sortDir);
     }
@@ -1011,18 +1022,15 @@
   function initMatchmaker() {
     const sel = $('#match-track');
     const info = $('#track-info');
+    const infoCard = $('#track-info-card');
     const resultsCard = $('#results-card');
     const results = $('#match-results');
-    if (!sel) return;
+    if (!info || !resultsCard || !results) return;
 
-    [...tracks].sort((a, b) => a.trackName.localeCompare(b.trackName)).forEach(t => {
-      sel.add(new Option(`${t.trackName} (${t.environment})`, t.trackName));
-    });
-
-    sel.addEventListener('change', () => {
-      const track = tracks.find(t => t.trackName === sel.value);
+    function render(track) {
       if (!track) {
         info.style.display = 'none';
+        if (infoCard) infoCard.style.display = 'none';
         resultsCard.style.display = 'none';
         return;
       }
@@ -1031,6 +1039,7 @@
         `Hazards: ${track.hazards || '—'}<br>Recommended classes: ${track.recClasses || '—'}<br>` +
         `Score weights — Top Speed: ${w.top.toFixed(1)}, Acceleration: ${w.acc.toFixed(1)}, Handling: ${w.hand.toFixed(1)}, Nitro: ${w.nitro.toFixed(1)}`;
       info.style.display = 'block';
+      if (infoCard) infoCard.style.display = 'block';
 
       const classes = ['D', 'C', 'B', 'A', 'S'];
       let html = '';
@@ -1058,7 +1067,16 @@
       });
       results.innerHTML = html;
       resultsCard.style.display = 'block';
-    });
+    }
+
+    if (sel) {
+      [...tracks].sort((a, b) => a.trackName.localeCompare(b.trackName)).forEach(t => {
+        sel.add(new Option(`${t.trackName} (${t.environment})`, t.trackName));
+      });
+      sel.addEventListener('change', () => render(tracks.find(t => t.trackName === sel.value)));
+    }
+
+    window.matchForTrack = (name) => render(tracks.find(t => t.trackName === name));
   }
 
   function initFarming() {

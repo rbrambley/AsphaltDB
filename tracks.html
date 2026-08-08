@@ -47,28 +47,7 @@
 
     <section class="hero">
       <h1>Tracks Reference</h1>
-      <p>Every location and route in Asphalt Legends Unite. Pick a track below to see the top 3 cars per class.</p>
-    </section>
-
-    <section class="card">
-      <div class="card-header"><h2>Find Best Cars for a Track</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <div class="filters">
-          <div class="filter" style="flex: 1 1 100%;">
-            <label for="match-track">Track</label>
-            <select id="match-track"><option value="">— Choose a track —</option></select>
-          </div>
-        </div>
-        <div id="track-info" class="dashboard-intro" style="display:none;"></div>
-      </div>
-    </section>
-
-    <section class="card" id="results-card" style="display:none;">
-      <div class="card-header"><h2>Recommended Cars</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <p class="dashboard-intro">Cars are scored using their max stats, weighted by track type. Only cars with complete stats are shown.</p>
-        <div id="match-results"></div>
-      </div>
+      <p>Every location and route in Asphalt Legends Unite. Pick a track from the table to see the top 3 cars per class.</p>
     </section>
 
     <div class="card">
@@ -81,13 +60,27 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th data-sort="trackName">Track Name</th><th data-sort="environment">Environment</th><th data-sort="length">Length</th><th data-sort="difficulty">Difficulty</th><th data-sort="recClasses">Recommended Classes</th><th data-sort="hazards">Hazards</th><th data-sort="notes">Notes</th></tr>
+              <tr><th data-sort="trackName">Track Name</th><th data-sort="environment">Environment</th><th data-sort="length">Length</th><th data-sort="difficulty">Difficulty</th><th data-sort="recClasses">Recommended Classes</th><th data-sort="hazards">Hazards</th><th data-sort="notes">Notes</th><th>Actions</th></tr>
             </thead>
             <tbody id="tracks-body"></tbody>
           </table>
         </div>
       </div>
     </div>
+
+    <section class="card" id="track-info-card" style="display:none;">
+      <div class="card-body">
+        <div id="track-info" class="dashboard-intro" style="display:none;"></div>
+      </div>
+    </section>
+
+    <section class="card" id="results-card" style="display:none;">
+      <div class="card-header"><h2>Recommended Cars</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Cars are scored using their max stats, weighted by track type. Only cars with complete stats are shown.</p>
+        <div id="match-results"></div>
+      </div>
+    </section>
   </main>
   <footer>
     Data sourced from <a href="https://asphalt.fandom.com/" target="_blank" rel="noopener">Asphalt Fandom</a> and <a href="https://asphalt9.info/" target="_blank" rel="noopener">Asphalt9.info</a> — compiled for gameplay optimization.<br>
