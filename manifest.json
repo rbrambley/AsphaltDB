@@ -1,0 +1,12 @@
+{
+  "name": "Asphalt Legends Unite Database",
+  "short_name": "Asphalt DB",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0d47a1",
+  "theme_color": "#0d47a1",
+  "description": "Community-driven reference for Asphalt Legends Unite cars, tracks, career and events.",
+  "icons": [
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any" }
+  ]
+}

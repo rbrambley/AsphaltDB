@@ -37,8 +37,10 @@
 
   function initNav() {
     const toggle = $('.menu-toggle');
-    if (toggle) toggle.addEventListener('click', () => $('nav').classList.toggle('open'));
+    const nav = $('nav');
+    if (toggle) toggle.addEventListener('click', () => nav.classList.toggle('open'));
     $$('nav a').forEach(a => {
+      a.addEventListener('click', () => { if (window.innerWidth <= 768 && nav) nav.classList.remove('open'); });
       const page = location.pathname.split('/').pop() || 'index.html';
       const target = a.getAttribute('href');
       if (target === page || (page === '' && target === 'index.html')) a.classList.add('active');
@@ -90,6 +92,183 @@
     });
   }
 
+  // ---------- UX helpers ----------
+  function addManifestLink() {
+    if ($('link[rel="manifest"]')) return;
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = 'manifest.json';
+    document.head.appendChild(link);
+    const meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    meta.content = '#0d47a1';
+    document.head.appendChild(meta);
+  }
+
+  function registerSW() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  }
+
+  function getFavorites() {
+    try { return JSON.parse(localStorage.getItem('favorites') || '[]'); } catch { return []; }
+  }
+  function saveFavorites(list) { localStorage.setItem('favorites', JSON.stringify(list)); }
+  function isFavorite(name) { return getFavorites().includes(name); }
+  function toggleFavorite(name) {
+    const list = getFavorites();
+    const idx = list.indexOf(name);
+    if (idx >= 0) list.splice(idx, 1); else list.push(name);
+    saveFavorites(list);
+    return idx < 0;
+  }
+  function makeFavButton(name, extra = '') {
+    const btn = document.createElement('button');
+    btn.className = 'fav-btn' + (isFavorite(name) ? ' active' : '');
+    btn.title = 'Toggle favorite';
+    btn.textContent = '★';
+    if (extra) btn.dataset.extra = extra;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      btn.classList.toggle('active', toggleFavorite(name));
+    });
+    return btn;
+  }
+
+  function getLocalGarage() {
+    try { return JSON.parse(localStorage.getItem('localGarage') || '[]'); } catch { return []; }
+  }
+  function saveLocalGarage(list) { localStorage.setItem('localGarage', JSON.stringify(list)); }
+  function getCombinedGarage() {
+    const local = getLocalGarage();
+    const localIds = new Set(local.map(g => g.id));
+    const base = (typeof garage !== 'undefined' ? garage : []);
+    return [...local, ...base.filter(g => !localIds.has(g.id))];
+  }
+
+  function applySearchFromUrl() {
+    const q = new URLSearchParams(location.search).get('search');
+    if (!q) return;
+    const input = $('#cars-search') || $('#tracks-search') || $('#career-search') || $('#events-search') || $('#evo-search') || $('#roi-search') || $('#cal-search');
+    if (input) { input.value = q; input.dispatchEvent(new Event('input')); }
+  }
+
+  function initGlobalSearch() {
+    const inner = $('.header-inner');
+    if (!inner || $('#global-search')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'global-search';
+    wrapper.id = 'global-search';
+    wrapper.innerHTML = '<input type="search" id="global-search-input" placeholder="Find cars, tracks, seasons, events…" aria-label="Global search" autocomplete="off" /><div id="global-search-results" class="global-search-results" role="listbox"></div>';
+    inner.insertBefore(wrapper, inner.querySelector('.theme-switcher'));
+
+    const input = $('#global-search-input');
+    const results = $('#global-search-results');
+    let debounce;
+
+    function find(q) {
+      const m = q.toLowerCase();
+      const out = [];
+      cars.filter(c => c.carName.toLowerCase().includes(m)).slice(0, 5).forEach(c => out.push({ type: 'Car', name: c.carName, link: 'cars.html?search=' + encodeURIComponent(c.carName) }));
+      tracks.filter(t => t.trackName.toLowerCase().includes(m)).slice(0, 4).forEach(t => out.push({ type: 'Track', name: t.trackName, link: 'tracks.html?search=' + encodeURIComponent(t.trackName) }));
+      careerSeasons.filter(s => s.chapter.toLowerCase().includes(m) || s.stage.toLowerCase().includes(m)).slice(0, 4).forEach(s => out.push({ type: 'Career', name: s.stage, link: 'career.html?search=' + encodeURIComponent(s.stage) }));
+      events.filter(e => e.eventName.toLowerCase().includes(m) || e.eligibleCars.toLowerCase().includes(m)).slice(0, 4).forEach(e => out.push({ type: 'Event', name: e.eventName, link: 'events.html?search=' + encodeURIComponent(e.eventName) }));
+      return out;
+    }
+
+    function renderResults() {
+      const q = input.value.trim();
+      if (!q) { results.classList.remove('open'); return; }
+      const items = find(q);
+      if (!items.length) {
+        results.innerHTML = '<div class="global-search-empty">No results</div>';
+      } else {
+        results.innerHTML = items.map(i => `<div class="global-search-result" data-link="${i.link}"><strong>${i.name}</strong><small>${i.type}</small></div>`).join('');
+        $$('.global-search-result', results).forEach(el => el.addEventListener('click', () => location.href = el.dataset.link));
+      }
+      results.classList.add('open');
+    }
+
+    input.addEventListener('input', () => { clearTimeout(debounce); debounce = setTimeout(renderResults, 150); });
+    input.addEventListener('focus', () => { if (input.value.trim()) renderResults(); });
+    input.addEventListener('keydown', (e) => { if (e.key === 'Escape') { input.value = ''; results.classList.remove('open'); } if (e.key === 'Enter' && input.value.trim()) location.href = 'cars.html?search=' + encodeURIComponent(input.value.trim()); });
+    document.addEventListener('click', (e) => { if (!wrapper.contains(e.target)) results.classList.remove('open'); });
+  }
+
+  function initTooltips() {
+    const tips = {
+      'Car Name': 'Full in-game car name',
+      'Class': 'Car class (D, C, B, A, S)',
+      'Manufacturer': 'Real-world manufacturer',
+      'Year': 'Model release year',
+      'Rarity': 'How rare the car is',
+      'EVO': 'Eligible for EVO tuning',
+      'Top Speed (Stock/Max)': 'Top speed before and after upgrades',
+      'Acceleration (Stock/Max)': 'Acceleration stat before and after upgrades',
+      'Handling (Stock/Max)': 'Handling stat before and after upgrades',
+      'Nitro (Stock/Max)': 'Nitro stat before and after upgrades',
+      'Rank (Stock/Max)': 'Performance rank before and after max upgrades',
+      'Blueprint Source': 'Where to obtain blueprints',
+      'Unlock Method': 'How the car is unlocked',
+      'Upgrade Cost': 'Approximate credits and parts cost',
+      'Recommended Tracks': 'Track types where this car performs well',
+      'Track Name': 'Track / route name',
+      'Environment': 'Track location / city',
+      'Length': 'Short, medium or long track',
+      'Difficulty': 'Track difficulty rating',
+      'Hazards': 'Notable obstacles and shortcuts'
+    };
+    $$('th').forEach(th => {
+      const txt = th.textContent.trim();
+      if (tips[txt] && !th.dataset.tooltip) th.dataset.tooltip = tips[txt];
+    });
+    $$('th[data-tooltip]').forEach(th => th.setAttribute('role', 'tooltip'));
+  }
+
+  function initMobileCards() {
+    function label(table) {
+      const ths = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+      table.querySelectorAll('tbody tr').forEach(tr => {
+        if (tr.classList.contains('expand-row')) return;
+        Array.from(tr.children).forEach((td, i) => { if (ths[i]) td.setAttribute('data-label', ths[i]); });
+      });
+    }
+    $$('.table-wrap table').forEach(table => {
+      const tbody = table.querySelector('tbody');
+      if (tbody) new MutationObserver(() => label(table)).observe(tbody, { childList: true, subtree: true });
+      label(table);
+    });
+  }
+
+  function initEmptyStates() {
+    $$('.count').forEach(el => {
+      new MutationObserver(() => {
+        const m = el.textContent.match(/\b0\b/);
+        let btn = el.querySelector('.clear-btn');
+        if (m) {
+          if (!btn) {
+            btn = document.createElement('button');
+            btn.className = 'btn clear-btn';
+            btn.textContent = 'Clear filters';
+            btn.addEventListener('click', () => {
+              $$('.filters select, .filters input, .search-bar input').forEach(i => {
+                if (i.tagName === 'SELECT') i.selectedIndex = 0;
+                else i.value = '';
+                i.dispatchEvent(new Event(i.tagName === 'SELECT' ? 'change' : 'input'));
+              });
+            });
+            el.appendChild(document.createTextNode(' '));
+            el.appendChild(btn);
+          }
+        } else if (btn) {
+          btn.previousSibling?.remove();
+          btn.remove();
+        }
+      }).observe(el, { childList: true, subtree: true, characterData: true });
+    });
+  }
+
   // ---------- Home ----------
   function initHome() {
     const byClass = {};
@@ -116,8 +295,21 @@
     mfrs.forEach(v => selMfr.add(new Option(v, v)));
     rarities.forEach(v => selRarity.add(new Option(v, v)));
 
-    let sortKey = '', sortDir = 1;
+    // Favorite filter
+    const filters = $('.filters');
+    const favWrap = document.createElement('div');
+    favWrap.className = 'filter fav-filter';
+    favWrap.innerHTML = '<label for="cars-fav">Favorites</label><select id="cars-fav"><option value="All">All</option><option value="fav">Favorites only</option></select>';
+    filters.appendChild(favWrap);
+    const selFav = $('#cars-fav');
+
     const table = $('#cars-body').closest('table');
+    const headRow = table.querySelector('thead tr');
+    const favTh = document.createElement('th');
+    favTh.textContent = 'Fav';
+    headRow.appendChild(favTh);
+
+    let sortKey = '', sortDir = 1;
 
     function render() {
       const q = search.value.toLowerCase();
@@ -125,12 +317,15 @@
       const mfr = selMfr.value;
       const rarity = selRarity.value;
       const evo = selEvo.value;
+      const fav = selFav.value;
+      const faves = new Set(getFavorites());
       let filtered = cars.filter(c => {
         const evoOk = evo === 'All' || (evo === 'yes' && c.evoEligible) || (evo === 'no' && !c.evoEligible);
         return (!q || c.carName.toLowerCase().includes(q) || c.manufacturer.toLowerCase().includes(q)) &&
                (cls === 'All' || c.class === cls) &&
                (mfr === 'All' || c.manufacturer === mfr) &&
                (rarity === 'All' || c.rarity === rarity) &&
+               (fav === 'All' || faves.has(c.carName)) &&
                evoOk;
       });
       if (sortKey) filtered = [...filtered].sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
@@ -154,6 +349,9 @@
         row.appendChild(makeCell(c.upgradeCost, 'wrap'));
         row.appendChild(makeCell(c.recommendedTracks, 'wrap'));
         row.appendChild(makeCell(c.notes, 'wrap'));
+        const favTd = makeCell('');
+        favTd.appendChild(makeFavButton(c.carName));
+        row.appendChild(favTd);
       });
       setSortIndicators(table, sortKey, sortDir);
     }
@@ -163,7 +361,7 @@
       sortKey = key;
       render();
     });
-    [search, selClass, selMfr, selRarity, selEvo].forEach(el => el.addEventListener('input', render));
+    [search, selClass, selMfr, selRarity, selEvo, selFav].forEach(el => el.addEventListener('input', render));
     render();
   }
 
@@ -972,10 +1170,71 @@
     sel2.addEventListener('change', render);
   }
 
+  function initGarageForm() {
+    const form = $('#garage-form');
+    const select = $('#garage-form-car');
+    if (!form || !select) return;
+    const sorted = [...cars].sort((a, b) => a.carName.localeCompare(b.carName));
+    sorted.forEach(c => select.add(new Option(c.carName, c.carName)));
+    select.addEventListener('change', () => {
+      const car = cars.find(c => c.carName === select.value);
+      if (!car) return;
+      $('#gf-rank').value = car.rankMax || '';
+      $('#gf-stars').value = '';
+      $('#gf-topspeed').value = car.topSpeedMax || '';
+      $('#gf-accel').value = car.accelerationMax || '';
+      $('#gf-handling').value = car.handlingMax || '';
+      $('#gf-nitro').value = car.nitroMax || '';
+    });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const carName = select.value;
+      const car = cars.find(c => c.carName === carName);
+      if (!car) return;
+      const id = carName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const existing = getLocalGarage().find(g => g.id === id);
+      const entry = existing ? Object.assign(existing, {
+        carName, matchedCar: carName, class: car.class,
+        rankCurrent: Number($('#gf-rank').value) || null,
+        rankMax: Number($('#gf-rank').value) || null,
+        stars: Number($('#gf-stars').value) || null,
+        topSpeed: Number($('#gf-topspeed').value) || null,
+        acceleration: Number($('#gf-accel').value) || null,
+        handling: Number($('#gf-handling').value) || null,
+        nitro: Number($('#gf-nitro').value) || null,
+        capturedAt: new Date().toISOString(),
+        imageName: ''
+      }) : {
+        id, carName, matchedCar: carName, class: car.class,
+        rankCurrent: Number($('#gf-rank').value) || null,
+        rankMax: Number($('#gf-rank').value) || null,
+        stars: Number($('#gf-stars').value) || null,
+        topSpeed: Number($('#gf-topspeed').value) || null,
+        acceleration: Number($('#gf-accel').value) || null,
+        handling: Number($('#gf-handling').value) || null,
+        nitro: Number($('#gf-nitro').value) || null,
+        blueprintCurrent: null, blueprintMax: null, blueprintStatus: '',
+        capturedAt: new Date().toISOString(),
+        imageName: ''
+      };
+      const list = getLocalGarage().filter(g => g.id !== id);
+      list.push(entry);
+      saveLocalGarage(list);
+      form.reset();
+      location.reload();
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+    addManifestLink();
+    registerSW();
     initTheme();
     initNav();
     initCollapsible();
+    initGlobalSearch();
+    initTooltips();
+    initMobileCards();
+    initEmptyStates();
     if ($('#home-stats')) initHome();
     if ($('#cars-body')) initCars();
     if ($('#tracks-body')) initTracks();
@@ -991,6 +1250,8 @@
     if ($('#compare-car-1')) initCompare();
     if ($('#cal-list')) initCalendar();
     if ($('#garage-body')) initGarage();
+    if ($('#garage-form')) initGarageForm();
+    applySearchFromUrl();
   });
 
   function initCalendar() {
@@ -1066,17 +1327,22 @@
 
   function initGarage() {
     const table = $('#garage-body').closest('table');
+    const headRow = table.querySelector('thead tr');
+    const actionTh = document.createElement('th');
+    actionTh.textContent = 'Actions';
+    headRow.appendChild(actionTh);
     let sortKey = '', sortDir = 1;
 
     function render() {
-      const data = garage && garage.length ? [...garage] : [];
+      const data = getCombinedGarage();
       if (sortKey) data.sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
       $('#garage-count').textContent = `${data.length} car${data.length === 1 ? '' : 's'}`;
       if (!data.length) {
-        $('#garage-body').innerHTML = '<tr><td colspan="8" class="empty-state">No cars in garage. Run the local OCR script to import screenshots.</td></tr>';
+        $('#garage-body').innerHTML = '<tr><td colspan="9" class="empty-state">No cars in garage. Use the form below or run the OCR script.</td></tr>';
         setSortIndicators(table, sortKey, sortDir);
         return;
       }
+      const localIds = new Set(getLocalGarage().map(g => g.id));
       renderTable('garage-body', data, (c, row) => {
         row.appendChild(makeCell(c.carName));
         row.appendChild(makeCell(c.class));
@@ -1086,6 +1352,18 @@
         row.appendChild(makeCell(c.acceleration != null ? c.acceleration : '—', 'num'));
         row.appendChild(makeCell(c.handling != null ? c.handling : '—', 'num'));
         row.appendChild(makeCell(c.nitro != null ? c.nitro : '—', 'num'));
+        const actions = makeCell('');
+        if (localIds.has(c.id)) {
+          const del = document.createElement('button');
+          del.className = 'btn';
+          del.textContent = 'Remove';
+          del.addEventListener('click', () => {
+            saveLocalGarage(getLocalGarage().filter(g => g.id !== c.id));
+            render();
+          });
+          actions.appendChild(del);
+        }
+        row.appendChild(actions);
       });
       setSortIndicators(table, sortKey, sortDir);
     }

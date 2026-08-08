@@ -63,6 +63,23 @@
     </section>
 
     <section class="card">
+      <div class="card-header"><h2>Add a car manually</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Use this form to add or update a car in your local garage. Manual entries are saved in this browser and overlay any imported data.</p>
+        <form id="garage-form" class="garage-form">
+          <div><label for="garage-form-car">Car</label><select id="garage-form-car" required><option value="">Select a car…</option></select></div>
+          <div><label for="gf-stars">Stars</label><input id="gf-stars" type="number" min="1" max="6" placeholder="e.g. 4" required /></div>
+          <div><label for="gf-rank">Rank</label><input id="gf-rank" type="number" min="0" placeholder="Current rank" required /></div>
+          <div><label for="gf-topspeed">Top Speed</label><input id="gf-topspeed" type="number" step="0.1" placeholder="Max top speed" /></div>
+          <div><label for="gf-accel">Acceleration</label><input id="gf-accel" type="number" step="0.1" placeholder="Max acceleration" /></div>
+          <div><label for="gf-handling">Handling</label><input id="gf-handling" type="number" step="0.1" placeholder="Max handling" /></div>
+          <div><label for="gf-nitro">Nitro</label><input id="gf-nitro" type="number" step="0.1" placeholder="Max nitro" /></div>
+          <div style="display:flex;align-items:flex-end;"><button class="btn" type="submit">Save to garage</button></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="card">
       <div class="card-header"><h2>Owned Cars</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <div class="count" id="garage-count">0 cars</div>
