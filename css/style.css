@@ -189,29 +189,30 @@ main {
 }
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1rem;
-  margin: 2rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0;
 }
 .stat-card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.25rem 1rem;
+  border-radius: 8px;
+  padding: 0.6rem 0.4rem;
   text-align: center;
   box-shadow: var(--shadow);
 }
 .stat-card .num {
   display: block;
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--primary);
 }
 .stat-card .label {
-  font-size: 0.85rem;
+  display: block;
+  font-size: 0.7rem;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 .card {
   background: var(--card);
@@ -472,7 +473,7 @@ footer a { color: var(--primary-light); }
 @media (max-width: 768px) {
   .hero { padding: 1.75rem 1rem; }
   .hero h1 { font-size: 1.4rem; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
   th, td { padding: 0.5rem; font-size: 0.8rem; }
 }
 
