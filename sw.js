@@ -12,7 +12,7 @@ const PRECACHE = [
   'evo.html',
   'farming.html',
   'gauntlet.html',
-  'matchmaker.html',
+
   'roster.html',
   'upgrades.html',
   'css/style.css',

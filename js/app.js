@@ -56,13 +56,41 @@
 
   function initNav() {
     const toggle = $('.menu-toggle');
-    const nav = $('nav');
-    if (toggle) toggle.addEventListener('click', () => nav.classList.toggle('open'));
+    const nav = $('#main-nav');
+    const backdrop = $('.menu-backdrop');
+    function setMenu(open) {
+      if (!nav) return;
+      const isOpen = Boolean(open);
+      nav.classList.toggle('open', isOpen);
+      document.body.classList.toggle('menu-open', isOpen);
+      if (toggle) toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (backdrop) backdrop.classList.toggle('show', isOpen);
+    }
+    if (toggle && nav) {
+      toggle.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
+    }
+    if (backdrop) {
+      backdrop.addEventListener('click', () => setMenu(false));
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setMenu(false);
+    });
     $$('nav a').forEach(a => {
-      a.addEventListener('click', () => { if (window.innerWidth <= 768 && nav) nav.classList.remove('open'); });
+      a.addEventListener('click', () => setMenu(false));
       const page = location.pathname.split('/').pop() || 'index.html';
       const target = a.getAttribute('href');
-      if (target === page || (page === '' && target === 'index.html')) a.classList.add('active');
+      if (target === page || (page === '' && target === 'index.html')) {
+        a.classList.add('active');
+        const group = a.closest('.nav-group');
+        const title = group ? group.querySelector('.nav-group-title') : null;
+        if (title) title.setAttribute('aria-expanded', 'true');
+      }
+    });
+    $$('.nav-group-title').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+      });
     });
   }
 

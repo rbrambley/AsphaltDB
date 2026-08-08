@@ -49,10 +49,10 @@ This roadmap turns the ideas in `FEATURES.md` into a practical, phased plan. Eac
 ## Phase 2 — Core correlation tools (highest player value)
 **Goal:** turn the database into a decision-making assistant.
 
-1. **Track ↔ Car matchmaker**
+1. **Track ↔ Car matchmaker** *(done — integrated into Tracks page)*
    - For any track, recommend the top 3 cars per class.
    - Score formula: weight stats by track length (short → accel/handling/nitro; long → top speed/handling).
-   - Add a new page or modal reachable from the Tracks table.
+   - Reachable from the Tracks table.
 
 2. **Career race recommender**
    - On the Career page, for each season/race, show which owned cars (Phase 4 garage) meet the rank requirement.

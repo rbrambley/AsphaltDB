@@ -22,25 +22,46 @@
           <option value="dark">Dark</option>
         </select>
       </div>
-      <button class="menu-toggle" aria-label="Open menu">☰</button>
-      <nav>
-        <ul>
-          <li><a href="index.html">Dashboard</a></li>
-          <li><a href="cars.html">Cars</a></li>
-          <li><a href="tracks.html">Tracks</a></li>
-          <li><a href="career.html">Career</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="gauntlet.html">Gauntlet</a></li>
-          <li><a href="evo.html">EVO</a></li>
-          <li><a href="matchmaker.html">Matchmaker</a></li>
-          <li><a href="farming.html">Farming</a></li>
-          <li><a href="upgrades.html">Upgrades</a></li>
-          <li><a href="roster.html">Roster</a></li>
-          <li><a href="compare.html">Compare</a></li>
-          <li><a href="calendar.html">Calendar</a></li>
-          <li><a href="garage.html">Garage</a></li>
-        </ul>
+      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+        <span class="hamburger" aria-hidden="true"></span>
+      </button>
+      <nav id="main-nav">
+        <div class="nav-group">
+          <button class="nav-group-title" aria-expanded="false" aria-controls="nav-reference">Reference</button>
+          <ul id="nav-reference" class="nav-group-list">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="cars.html">Cars</a></li>
+            <li><a href="tracks.html">Tracks</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="events.html">Events</a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <button class="nav-group-title" aria-expanded="false" aria-controls="nav-tools">Tools</button>
+          <ul id="nav-tools" class="nav-group-list">
+            <li><a href="gauntlet.html">Gauntlet</a></li>
+
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="evo.html">EVO</a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <button class="nav-group-title" aria-expanded="false" aria-controls="nav-plan">Plan</button>
+          <ul id="nav-plan" class="nav-group-list">
+            <li><a href="farming.html">Farming</a></li>
+            <li><a href="calendar.html">Calendar</a></li>
+            <li><a href="roster.html">Roster</a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <button class="nav-group-title" aria-expanded="false" aria-controls="nav-garage">Garage</button>
+          <ul id="nav-garage" class="nav-group-list">
+            <li><a href="garage.html">Garage</a></li>
+            <li><a href="upgrades.html">Upgrades</a></li>
+          </ul>
+        </div>
       </nav>
+      <div class="menu-backdrop" aria-hidden="true"></div>
     </div>
   </header>
   <main>
