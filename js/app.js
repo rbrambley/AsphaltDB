@@ -1145,23 +1145,42 @@
       return Math.round(c.topSpeedMax + c.accelerationMax * 1.2 + c.handlingMax * 0.5 + c.nitroMax * 0.3);
     }
 
-    function topCars() {
-      return cars.filter(c => c.rankMax != null)
+    function classAllowed(track, car) {
+      if (!track || !track.recClasses || !car.class) return true;
+      return track.recClasses.includes(car.class);
+    }
+
+    function bestForTrack(track, used) {
+      const list = cars.filter(c => c.rankMax != null && classAllowed(track, c))
         .map(c => Object.assign({}, c, { _gs: gauntletScore(c) }))
         .sort((a, b) => b._gs - a._gs || (b.rankMax || 0) - (a.rankMax || 0));
+      let pick = list.find(c => !used.has(c.carName)) || list[0];
+      if (pick) used.add(pick.carName);
+      return pick;
+    }
+
+    function selectedTracks() {
+      const out = [];
+      for (let i = 0; i < 5; i++) {
+        const name = $(`#gauntlet-track-${i}`).value;
+        const t = tracks.find(tr => tr.trackName === name);
+        if (t) out.push(t);
+      }
+      return out;
     }
 
     function renderCars() {
-      const scored = topCars();
-      carCount.textContent = `${scored.length} cars`;
-      const top = scored.slice(0, 5);
-      carBody.innerHTML = top.map(c =>
-        `<tr><td>${c.carName}</td><td>${c.class}</td>` +
-        `<td class="num">${fix(c.topSpeedMax)}</td><td class="num">${fix(c.accelerationMax)}</td>` +
-        `<td class="num">${fix(c.handlingMax)}</td><td class="num">${fix(c.nitroMax)}</td>` +
-        `<td class="num">${c._gs}</td><td class="num">${fmt(c.rankMax)}</td></tr>`
+      const tracks = selectedTracks();
+      const used = new Set();
+      const picks = tracks.map(t => ({ track: t, car: bestForTrack(t, used) })).filter(p => p.car);
+      carCount.textContent = `${picks.length} pick${picks.length === 1 ? '' : 's'}`;
+      carBody.innerHTML = picks.map(p =>
+        `<tr><td>${p.track.trackName}</td><td>${p.car.carName}</td><td>${p.car.class}</td>` +
+        `<td class="num">${fix(p.car.topSpeedMax)}</td><td class="num">${fix(p.car.accelerationMax)}</td>` +
+        `<td class="num">${fix(p.car.handlingMax)}</td><td class="num">${fix(p.car.nitroMax)}</td>` +
+        `<td class="num">${p.car._gs}</td></tr>`
       ).join('');
-      return top;
+      return picks.map(p => p.car);
     }
 
     function updateSummary() {
@@ -1174,7 +1193,10 @@
       summary.textContent = `Combined max rank: ${total.toLocaleString()}`;
     }
 
-    for (let i = 0; i < 5; i++) $(`#gauntlet-slot-${i}`).addEventListener('change', updateSummary);
+    for (let i = 0; i < 5; i++) {
+      $(`#gauntlet-slot-${i}`).addEventListener('change', updateSummary);
+      $(`#gauntlet-track-${i}`).addEventListener('input', renderCars);
+    }
 
     $('#gauntlet-use-top').addEventListener('click', () => {
       const top = renderCars();
