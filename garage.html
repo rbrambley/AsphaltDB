@@ -97,18 +97,6 @@
     </section>
 
     <section class="card">
-      <div class="card-header"><h2>How to update</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <ol>
-          <li>Save car-detail screenshots to <code>garage-screenshots/</code>.</li>
-          <li>Run <code>python scripts/update_garage.py</code> locally (requires Tesseract).</li>
-          <li>Review the generated <code>js/garage_data.js</code> and commit it.</li>
-          <li>Push to GitHub — the live site will use the updated garage.</li>
-        </ol>
-      </div>
-    </section>
-
-    <section class="card">
       <div class="card-header"><h2>Add a car manually</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <p class="dashboard-intro">Use this form to add or update a car in your local garage. Manual entries are saved in this browser and overlay any imported data.</p>
@@ -151,6 +139,18 @@
             <tbody id="garage-body"></tbody>
           </table>
         </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>How to update</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <ol>
+          <li>Save car-detail screenshots to <code>garage-screenshots/</code>.</li>
+          <li>Run <code>python scripts/update_garage.py</code> locally (requires Tesseract).</li>
+          <li>Review the generated <code>js/garage_data.js</code> and commit it.</li>
+          <li>Push to GitHub — the live site will use the updated garage.</li>
+        </ol>
       </div>
     </section>
 
