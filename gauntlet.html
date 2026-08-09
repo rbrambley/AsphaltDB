@@ -144,7 +144,8 @@
           <div class="filter"><label for="gp-log-time">Actual time (s)</label><input id="gp-log-time" type="number" step="0.01" min="0" placeholder="32.45" /></div>
           <div class="filter"><label for="gp-log-notes">Notes</label><input id="gp-log-notes" type="text" placeholder="e.g. maxed, manual" /></div>
         </div>
-        <button id="gp-add-log" class="btn" style="margin-bottom:1.5rem;">Add Log</button>
+        <button id="gp-add-log" class="btn" style="margin-bottom:0.5rem;">Add Log</button>
+        <div id="gp-log-status" style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;"></div>
 
         <h4>Race Logs</h4>
         <div class="table-wrap">
@@ -155,6 +156,7 @@
         </div>
 
         <div style="margin:1rem 0;"><button id="gp-calibrate" class="btn">Run Calibration</button></div>
+        <div id="gp-cal-status" style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;"></div>
         <h4>Track Calibration Status</h4>
         <div class="table-wrap">
           <table class="detail-table">
@@ -162,6 +164,18 @@
             <tbody id="gp-status-body"><tr><td colspan="6" class="empty-state">No logs yet — add race logs and calibrate</td></tr></tbody>
           </table>
         </div>
+
+        <h4>Edit Track Seed</h4>
+        <div class="filters">
+          <div class="filter"><label for="gp-seed-track">Track</label><select id="gp-seed-track"><option value="">— Select track —</option></select></div>
+          <div class="filter"><label for="gp-seed-par">Par time (s)</label><input id="gp-seed-par" type="number" step="0.01" min="0" /></div>
+          <div class="filter"><label for="gp-seed-wt">Top speed weight</label><input id="gp-seed-wt" type="number" step="0.01" min="0" max="1" /></div>
+          <div class="filter"><label for="gp-seed-wa">Acceleration weight</label><input id="gp-seed-wa" type="number" step="0.01" min="0" max="1" /></div>
+          <div class="filter"><label for="gp-seed-wh">Handling weight</label><input id="gp-seed-wh" type="number" step="0.01" min="0" max="1" /></div>
+          <div class="filter"><label for="gp-seed-wn">Nitro weight</label><input id="gp-seed-wn" type="number" step="0.01" min="0" max="1" /></div>
+        </div>
+        <button id="gp-save-seed" class="btn" style="margin-bottom:0.5rem;">Save Seed</button>
+        <div id="gp-seed-status" style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;"></div>
       </div>
     </section>
   </main>
@@ -372,18 +386,20 @@
     const assignment = hungarian(costs);
     const rows = [];
     let totalRank = 0;
+    let totalTime = 0;
     for (let i = 0; i < 5; i++) {
       const carIdx = assignment[i];
       if (carIdx < 0) { rows.push(`<tr><td>${i+1}</td><td>${esc(selected[i].display_name)}</td><td colspan="3">No car assigned</td></tr>`); continue; }
       const car = pool[carIdx];
       const p = predict(car, selected[i]);
       totalRank += car.rank;
+      totalTime += p.time;
       rows.push(`<tr><td>${i+1}</td><td>${esc(selected[i].display_name)}</td><td>${esc(car.name)}${car.owned ? '' : ' [catalog]'} (${car.car_class})</td><td class="num">${FMT(p.time)} ± ${FMT(p.ci)}</td><td class="num">${Number(car.rank).toLocaleString()}</td></tr>`);
     }
     const result = $('#gp-result');
     result.innerHTML = `<table class="detail-table"><thead><tr><th>Slot</th><th>Track</th><th>Car</th><th class="num">Predicted (s)</th><th class="num">Rank</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
     result.style.display = 'block';
-    $('#gp-summary').textContent = `Combined max rank: ${totalRank.toLocaleString()}`;
+    $('#gp-summary').textContent = `Combined max rank: ${totalRank.toLocaleString()} · Combined predicted time: ${FMT(totalTime)} s`;
   }
 
   function runPredict() {
@@ -409,12 +425,13 @@
     const notes = $('#gp-log-notes').value.trim();
     const t = gTracks.find((x) => x.id === tId);
     const c = gCars.find((x) => x.id === cId);
-    if (!t || !c || !time || time <= 0) { alert('Enter a valid track, car and positive time'); return; }
+    if (!t || !c || !time || time <= 0) { $('#gp-log-status').textContent = 'Enter a valid track, car and positive time.'; return; }
     const p = predict(c, t);
     logs.unshift({ timestamp: new Date().toISOString(), track_id: tId, car_id: cId, actual_time_sec: time, predicted_time_sec: p.time, notes });
     saveLogs();
     renderLogs();
     renderStatus();
+    $('#gp-log-status').textContent = `Logged ${esc(c.name)} on ${esc(t.display_name)}.`;
   }
 
   function deleteLog(idx) { logs.splice(idx, 1); saveLogs(); renderLogs(); renderStatus(); }
@@ -519,6 +536,8 @@
     }]));
     saveCal();
     renderStatus();
+    const active = gTracks.filter((t) => t.sample_count > 0).length;
+    $('#gp-cal-status').textContent = `Calibration run on ${logs.length} log(s) for ${active} track(s).`;
     runPredict();
     if ($('#gp-result').style.display !== 'none') runOptimize();
   }
@@ -644,6 +663,48 @@
     });
   }
 
+  function loadSeedTrack() {
+    const track = gTracks.find((x) => x.id === $('#gp-seed-track').value);
+    if (!track) {
+      $('#gp-seed-par').value = '';
+      $('#gp-seed-wt').value = '';
+      $('#gp-seed-wa').value = '';
+      $('#gp-seed-wh').value = '';
+      $('#gp-seed-wn').value = '';
+      return;
+    }
+    $('#gp-seed-par').value = track.par_time_sec.toFixed(2);
+    $('#gp-seed-wt').value = track.w_top_speed.toFixed(3);
+    $('#gp-seed-wa').value = track.w_acceleration.toFixed(3);
+    $('#gp-seed-wh').value = track.w_handling.toFixed(3);
+    $('#gp-seed-wn').value = track.w_nitro.toFixed(3);
+  }
+
+  function saveSeed() {
+    const track = gTracks.find((x) => x.id === $('#gp-seed-track').value);
+    if (!track) { $('#gp-seed-status').textContent = 'Select a track.'; return; }
+    const par = Number($('#gp-seed-par').value);
+    const wt = Number($('#gp-seed-wt').value);
+    const wa = Number($('#gp-seed-wa').value);
+    const wh = Number($('#gp-seed-wh').value);
+    const wn = Number($('#gp-seed-wn').value);
+    track.par_time_sec = par;
+    track.w_top_speed = wt;
+    track.w_acceleration = wa;
+    track.w_handling = wh;
+    track.w_nitro = wn;
+    track.par_car_score = 0.75;
+    cal[track.id] = {
+      w_top_speed: wt, w_acceleration: wa, w_handling: wh, w_nitro: wn,
+      par_time_sec: par, par_car_score: 0.75, beta: track.beta
+    };
+    saveCal();
+    renderStatus();
+    if ($('#gp-result').style.display !== 'none') runOptimize();
+    runPredict();
+    $('#gp-seed-status').textContent = `Saved seed for ${esc(track.display_name)}.`;
+  }
+
   function init() {
     logs = loadLogs();
     cal = loadCal();
@@ -655,6 +716,8 @@
     renderSelectors();
     renderClassFilter();
     renderAddGarage();
+    const stOpts = gTracks.map((t) => `<option value="${t.id}">${esc(t.display_name)} (${t.track_length})</option>`).join('');
+    $('#gp-seed-track').innerHTML = `<option value="">— Select track —</option>${stOpts}`;
     initTabs();
     if (typeof initSearchableSelects !== 'undefined') initSearchableSelects();
     renderLogs();
@@ -665,6 +728,8 @@
     $('#gp-add-log').addEventListener('click', addLog);
     $('#gp-add-to-garage').addEventListener('click', addToGarage);
     $('#gp-calibrate').addEventListener('click', runCalibrate);
+    $('#gp-seed-track').addEventListener('change', loadSeedTrack);
+    $('#gp-save-seed').addEventListener('click', saveSeed);
     $('#gp-car-class').addEventListener('change', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
     $('#gp-min-rank').addEventListener('input', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
     $('#gp-use-catalog').addEventListener('change', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });

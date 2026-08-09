@@ -73,6 +73,30 @@
     </section>
 
     <section class="card">
+      <div class="card-header"><h2>Garage Stats</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <div class="stats-grid" id="garage-stats"></div>
+        <div style="margin-top:1rem;">
+          <a href="gauntlet.html" class="btn">Find Gauntlet candidates</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>Import / Export</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Back up your local garage or restore it from a JSON file.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+          <button id="garage-export" class="btn">Export garage JSON</button>
+          <label class="btn" style="cursor:pointer;">Import garage JSON
+            <input id="garage-import" type="file" accept=".json" style="display:none;" />
+          </label>
+        </div>
+        <div id="garage-import-status" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"></div>
+      </div>
+    </section>
+
+    <section class="card">
       <div class="card-header"><h2>How to update</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <ol>
@@ -113,10 +137,15 @@
                 <th data-sort="class">Class</th>
                 <th data-sort="rankCurrent" data-sort-type="num">Rank</th>
                 <th data-sort="stars" data-sort-type="num">Stars</th>
+                <th data-sort="blueprintCurrent" data-sort-type="num">BP</th>
+                <th data-sort="blueprintMax" data-sort-type="num">BP Max</th>
+                <th data-sort="blueprintToMax" data-sort-type="num">To Max</th>
+                <th>Source</th>
                 <th data-sort="topSpeed" data-sort-type="num">Top Speed</th>
                 <th data-sort="acceleration" data-sort-type="num">Accel</th>
                 <th data-sort="handling" data-sort-type="num">Handling</th>
                 <th data-sort="nitro" data-sort-type="num">Nitro</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="garage-body"></tbody>

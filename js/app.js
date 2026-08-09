@@ -1512,12 +1512,24 @@
     wrapper.className = 'searchable-select';
     select.parentNode.insertBefore(wrapper, select);
     wrapper.appendChild(select);
+
+    const row = document.createElement('div');
+    row.className = 'searchable-select-row';
     const input = document.createElement('input');
-    input.type = 'search';
+    input.type = 'text';
     input.className = 'searchable-select-input';
     input.placeholder = 'Filter...';
     input.setAttribute('aria-label', 'Filter ' + (select.getAttribute('aria-label') || 'options'));
-    wrapper.insertBefore(input, select);
+    const clear = document.createElement('button');
+    clear.type = 'button';
+    clear.className = 'searchable-select-clear';
+    clear.textContent = '×';
+    clear.setAttribute('aria-label', 'Clear filter');
+    clear.style.display = 'none';
+    row.appendChild(input);
+    row.appendChild(clear);
+    wrapper.insertBefore(row, select);
+
     const observer = new MutationObserver(() => { select._all = [...select.options].map(o => ({ value: o.value, text: o.textContent, selected: o.selected })); });
     observer.observe(select, { childList: true });
     select._all = all;
@@ -1530,8 +1542,10 @@
       select.innerHTML = filtered.map(o => `<option value="${esc(o.value)}" ${o.value === chosen ? 'selected' : ''}>${esc(o.text)}</option>`).join('');
       observer.observe(select, { childList: true });
       select.value = chosen;
+      clear.style.display = q ? 'inline-flex' : 'none';
     }
     input.addEventListener('input', update);
+    clear.addEventListener('click', () => { input.value = ''; input.dispatchEvent(new Event('input')); });
     select.dataset.searchable = 'done';
   }
 
@@ -1642,36 +1656,99 @@
 
   function initGarage() {
     const table = $('#garage-body').closest('table');
-    const headRow = table.querySelector('thead tr');
-    const actionTh = document.createElement('th');
-    actionTh.textContent = 'Actions';
-    headRow.appendChild(actionTh);
     let sortKey = '', sortDir = 1;
+
+    function editGarageCar(id) {
+      const c = getCombinedGarage().find(g => g.id === id);
+      if (!c) return;
+      const form = $('#garage-form');
+      if (!form) return;
+      form.scrollIntoView({ behavior: 'smooth' });
+      const select = $('#garage-form-car');
+      select.value = c.carName;
+      select.dispatchEvent(new Event('change'));
+      $('#gf-rank').value = c.rankCurrent != null ? c.rankCurrent : (c.rankMax != null ? c.rankMax : '');
+      $('#gf-stars').value = c.stars != null ? c.stars : '';
+      $('#gf-topspeed').value = c.topSpeed != null ? c.topSpeed : '';
+      $('#gf-accel').value = c.acceleration != null ? c.acceleration : '';
+      $('#gf-handling').value = c.handling != null ? c.handling : '';
+      $('#gf-nitro').value = c.nitro != null ? c.nitro : '';
+    }
+    window.editGarageCar = editGarageCar;
+
+    function renderStats() {
+      const data = getCombinedGarage();
+      const catalog = (typeof cars !== 'undefined' ? cars : []);
+      const classCounts = {};
+      let totalRank = 0, countWithRank = 0, bpTotal = 0, bpToMaxTotal = 0;
+      data.forEach(c => {
+        classCounts[c.class] = (classCounts[c.class] || 0) + 1;
+        if (c.rankCurrent != null) { totalRank += c.rankCurrent; countWithRank++; }
+        if (c.blueprintCurrent != null) bpTotal += c.blueprintCurrent;
+        const btm = (c.blueprintCurrent != null && c.blueprintMax != null) ? c.blueprintMax - c.blueprintCurrent : null;
+        if (btm != null) bpToMaxTotal += btm;
+      });
+      const pct = catalog.length ? Math.round(data.length / catalog.length * 100) : 0;
+      const top = [...data].sort((a, b) => (b.rankCurrent || 0) - (a.rankCurrent || 0)).slice(0, 3).map(c => c.carName).join(', ') || '—';
+      const classHtml = Object.entries(classCounts).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<div class="stat-card"><span class="num">${v}</span><span class="label">${esc(k)}</span></div>`).join('');
+      const avgRank = countWithRank ? Math.round(totalRank / countWithRank).toLocaleString() : '—';
+      const statContainer = $('#garage-stats');
+      if (statContainer) statContainer.innerHTML = `
+        <div class="stat-card"><span class="num">${data.length}</span><span class="label">Owned</span></div>
+        <div class="stat-card"><span class="num">${pct}%</span><span class="label">Of catalog</span></div>
+        <div class="stat-card"><span class="num">${avgRank}</span><span class="label">Avg rank</span></div>
+        <div class="stat-card"><span class="num">${bpTotal.toLocaleString()}</span><span class="label">Total BPs</span></div>
+        <div class="stat-card"><span class="num">${bpToMaxTotal.toLocaleString()}</span><span class="label">BPs to max</span></div>
+        ${classHtml}
+        <div class="stat-card" style="grid-column:1/-1;"><span class="num" style="font-size:0.95rem;">${esc(top)}</span><span class="label">Top 3 by rank</span></div>
+      `;
+    }
 
     function render() {
       const data = getCombinedGarage();
       if (sortKey) data.sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
       $('#garage-count').textContent = `${data.length} car${data.length === 1 ? '' : 's'}`;
+      renderStats();
       if (!data.length) {
-        $('#garage-body').innerHTML = '<tr><td colspan="9" class="empty-state">No cars in garage. Use the form below or run the OCR script.</td></tr>';
+        $('#garage-body').innerHTML = '<tr><td colspan="13" class="empty-state">No cars in garage. Use the form below or run the OCR script.</td></tr>';
         setSortIndicators(table, sortKey, sortDir);
         return;
       }
       const localIds = new Set(getLocalGarage().map(g => g.id));
+      const baseIds = new Set((typeof garage !== 'undefined' ? garage : []).map(g => g.id));
       renderTable('garage-body', data, (c, row) => {
         row.appendChild(makeCell(c.carName));
         row.appendChild(makeCell(c.class));
         row.appendChild(makeCell(c.rankCurrent != null && c.rankMax != null ? `${c.rankCurrent.toLocaleString()} / ${c.rankMax.toLocaleString()}` : '—', 'num'));
         row.appendChild(makeCell(c.stars != null ? c.stars : '—', 'num'));
+        row.appendChild(makeCell(c.blueprintCurrent != null ? c.blueprintCurrent : '—', 'num'));
+        row.appendChild(makeCell(c.blueprintMax != null ? c.blueprintMax : '—', 'num'));
+        const toMax = (c.blueprintCurrent != null && c.blueprintMax != null) ? c.blueprintMax - c.blueprintCurrent : null;
+        row.appendChild(makeCell(toMax != null ? toMax : '—', 'num'));
+        let source = 'OCR';
+        if (localIds.has(c.id)) source = 'manual';
+        if (baseIds.has(c.id) && localIds.has(c.id)) source = 'manual+OCR';
+        const sourceBadge = document.createElement('span');
+        sourceBadge.className = 'badge ' + (source === 'OCR' ? 'badge-common' : source === 'manual' ? 'badge-rare' : 'badge-epic');
+        sourceBadge.textContent = source;
+        const sourceTd = document.createElement('td');
+        sourceTd.appendChild(sourceBadge);
+        row.appendChild(sourceTd);
         row.appendChild(makeCell(c.topSpeed != null ? c.topSpeed : '—', 'num'));
         row.appendChild(makeCell(c.acceleration != null ? c.acceleration : '—', 'num'));
         row.appendChild(makeCell(c.handling != null ? c.handling : '—', 'num'));
         row.appendChild(makeCell(c.nitro != null ? c.nitro : '—', 'num'));
         const actions = makeCell('');
         if (localIds.has(c.id)) {
+          const editBtn = document.createElement('button');
+          editBtn.className = 'btn';
+          editBtn.textContent = 'Edit';
+          editBtn.addEventListener('click', () => editGarageCar(c.id));
+          actions.appendChild(editBtn);
           const del = document.createElement('button');
           del.className = 'btn';
           del.textContent = 'Remove';
+          del.style.marginLeft = '0.25rem';
           del.addEventListener('click', () => {
             saveLocalGarage(getLocalGarage().filter(g => g.id !== c.id));
             render();
@@ -1689,6 +1766,40 @@
       render();
     });
     render();
+
+    const exportBtn = $('#garage-export');
+    const importInput = $('#garage-import');
+    const importStatus = $('#garage-import-status');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(getLocalGarage(), null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'garage-backup.json';
+        a.click();
+      });
+    }
+    if (importInput) {
+      importInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const imported = JSON.parse(ev.target.result);
+            if (!Array.isArray(imported)) throw new Error('Expected an array of garage entries.');
+            const valid = imported.filter(g => g && g.id && g.carName);
+            if (!valid.length) throw new Error('No valid garage entries found.');
+            saveLocalGarage(valid);
+            importStatus.textContent = `Imported ${valid.length} car(s). Reloading...`;
+            location.reload();
+          } catch (err) {
+            importStatus.textContent = err.message;
+          }
+        };
+        reader.readAsText(file);
+      });
+    }
   }
   window.makeSearchable = makeSearchable;
   window.initSearchableSelects = initSearchableSelects;

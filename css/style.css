@@ -676,8 +676,10 @@ footer a { color: var(--primary-light); }
 
 /* Searchable selects */
 .searchable-select { display: flex; flex-direction: column; gap: 0.4rem; }
+.searchable-select-row { display: flex; align-items: center; gap: 0.25rem; }
 .searchable-select input {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   padding: 0.45rem 0.65rem;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -685,3 +687,18 @@ footer a { color: var(--primary-light); }
   background: var(--input-bg);
   color: var(--text);
 }
+.searchable-select-clear {
+  flex: 0 0 auto;
+  padding: 0.45rem 0.55rem;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.searchable-select-clear:hover { background: var(--hover); }
+
+/* Track filters on mobile */
+#gp-track-filters { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
