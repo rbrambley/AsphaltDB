@@ -1,4 +1,4 @@
-const CACHE_NAME = 'asphalt-db-v36';
+const CACHE_NAME = 'asphalt-db-v37';
 const PRECACHE = [
   './',
   'index.html',
@@ -18,6 +18,10 @@ const PRECACHE = [
   'upgrades.html',
   'css/style.css',
   'favicon.svg',
+  'icons/icon-192.png',
+  'icons/icon-512.png',
+  'icons/icon-192-maskable.png',
+  'icons/icon-512-maskable.png',
   'js/app.js',
   'js/data.js',
   'js/missions.js',

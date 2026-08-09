@@ -1,12 +1,18 @@
 {
   "name": "Asphalt Legends Unite Database",
   "short_name": "Asphalt DB",
-  "start_url": ".",
+  "id": "asphalt-db",
+  "start_url": "index.html",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#0d47a1",
   "theme_color": "#0d47a1",
   "description": "Community-driven reference for Asphalt Legends Unite cars, tracks, career and events.",
   "icons": [
-    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any" }
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "icons/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "icons/icon-512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "icons/icon-192-maskable.png", "type": "image/png", "sizes": "192x192", "purpose": "maskable" },
+    { "src": "icons/icon-512-maskable.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
   ]
 }
