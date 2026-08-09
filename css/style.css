@@ -712,3 +712,7 @@ footer a { color: var(--primary-light); }
 
 /* Track filters on mobile */
 #gp-track-filters { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+
+/* PWA install button */
+#install-btn { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+#install-btn:hover { background: rgba(255,255,255,0.25); }

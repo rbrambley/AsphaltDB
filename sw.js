@@ -1,4 +1,4 @@
-const CACHE_NAME = 'asphalt-db-v37';
+const CACHE_NAME = 'asphalt-db-v39';
 const PRECACHE = [
   './',
   'index.html',
@@ -47,6 +47,23 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  const dataFiles = ['js/data.js', 'js/garage_data.js', 'js/missions.js'];
+  const isData = dataFiles.some((p) => url.pathname.endsWith(p));
+
+  if (isData) {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((cached) =>
       cached || fetch(e.request).then((response) => {

@@ -1553,6 +1553,30 @@
     document.querySelectorAll('select').forEach(makeSearchable);
   }
 
+  function initInstallPrompt() {
+    let deferredPrompt;
+    const header = $('.header-inner');
+    if (!header) return;
+    const btn = document.createElement('button');
+    btn.id = 'install-btn';
+    btn.className = 'btn';
+    btn.textContent = 'Install';
+    btn.style.display = 'none';
+    header.appendChild(btn);
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      btn.style.display = 'inline-flex';
+    });
+    btn.addEventListener('click', () => {
+      if (!deferredPrompt) return;
+      btn.style.display = 'none';
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+    });
+    window.addEventListener('appinstalled', () => { btn.style.display = 'none'; deferredPrompt = null; });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     addManifestLink();
     registerSW();
@@ -1581,6 +1605,7 @@
     if ($('#garage-form')) initGarageForm();
     applySearchFromUrl();
     if (!$('#gp-predict-car')) initSearchableSelects();
+    initInstallPrompt();
   });
 
   function initCalendar() {
