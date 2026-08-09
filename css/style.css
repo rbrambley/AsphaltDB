@@ -650,6 +650,16 @@ footer a { color: var(--primary-light); }
   #global-search-input { width: 100%; }
 }
 
+/* Keep garage table as a horizontal-scroll table on mobile */
+@media (max-width: 1024px) {
+  #garage-table, #garage-table > thead, #garage-table > tbody { display: table !important; }
+  #garage-table > thead > tr > th { display: table-cell !important; }
+  #garage-table > tbody > tr { display: table-row !important; margin: 0; border: none; border-radius: 0; overflow: visible; box-shadow: none; }
+  #garage-table > tbody > tr > td { display: table-cell !important; justify-content: initial; align-items: initial; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); }
+  #garage-table > tbody > tr > td:last-child { border-bottom: 1px solid var(--border); }
+  #garage-table > tbody > tr > td::before { content: none; }
+}
+
 /* Dashboard pagination */
 .dash-pagination { display: flex; justify-content: center; align-items: center; gap: 0.75rem; margin-top: 1rem; }
 .dash-page-info { color: var(--muted); font-size: 0.85rem; }
