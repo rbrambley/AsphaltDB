@@ -661,6 +661,19 @@ footer a { color: var(--primary-light); }
 .garage-form select, .garage-form input { width: 100%; padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; background: var(--input-bg); color: var(--text); }
 .empty-state .btn { margin-left: 0.5rem; }
 
+/* Tab bar */
+.tab-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.tab-bar .tab-btn { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+.tab-bar .tab-btn:hover { background: var(--hover); }
+.tab-bar .tab-btn.active { background: var(--primary-light); color: #fff; border-color: var(--primary-light); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
 /* Searchable selects */
 .searchable-select { display: flex; flex-direction: column; gap: 0.4rem; }
 .searchable-select input {

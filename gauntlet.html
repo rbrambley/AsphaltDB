@@ -70,7 +70,14 @@
       <p>Track-specific lap-time prediction, 5-track defense optimizer, and race-log calibration for your garage.</p>
     </section>
 
-    <section class="card">
+    <div class="tab-bar" id="gp-tab-bar">
+      <button class="btn tab-btn active" data-tab="defense">Defense</button>
+      <button class="btn tab-btn" data-tab="predict">Predict</button>
+      <button class="btn tab-btn" data-tab="addcar">Add Car</button>
+      <button class="btn tab-btn" data-tab="calibrate">Calibrate</button>
+    </div>
+
+    <section class="card tab-panel active" data-tab="defense">
       <div class="card-header"><h2>Defense Optimizer</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <p class="dashboard-intro">Pick 5 Gauntlet tracks, then run the Hungarian-assignment optimizer to get the best 5-car defensive lineup from your garage.</p>
@@ -78,7 +85,12 @@
         <div class="filters">
           <div class="filter"><label for="gp-car-class">Car class</label><select id="gp-car-class"><option value="all">All classes</option></select></div>
           <div class="filter"><label for="gp-min-rank">Min rank</label><input id="gp-min-rank" type="number" min="0" value="0" /></div>
+          <div class="filter" style="display:flex;align-items:center;gap:0.5rem;padding-top:1.6rem;">
+            <input id="gp-use-catalog" type="checkbox" checked style="width:auto;" />
+            <label for="gp-use-catalog" style="margin:0;font-weight:500;">Use catalog cars</label>
+          </div>
         </div>
+        <div id="gp-optimize-status" style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;"></div>
         <div>
           <button id="gp-optimize" class="btn">Optimize 5-Car Lineup</button>
           <span id="gp-car-count" class="count"></span>
@@ -88,7 +100,7 @@
       </div>
     </section>
 
-    <section class="card">
+    <section class="card tab-panel" data-tab="predict">
       <div class="card-header"><h2>Predict Lap Time</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <div class="filters">
@@ -99,7 +111,7 @@
       </div>
     </section>
 
-    <section class="card">
+    <section class="card tab-panel" data-tab="addcar">
       <div class="card-header"><h2>Add to Garage</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <p class="dashboard-intro">Add a catalog car to your garage so it is saved across the app. You can later edit full details on the Garage page.</p>
@@ -122,7 +134,7 @@
       </div>
     </section>
 
-    <section class="card">
+    <section class="card tab-panel" data-tab="calibrate">
       <div class="card-header"><h2>Calibration</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <h4 style="margin-top:0;">Add Race Log</h4>
@@ -163,6 +175,7 @@
   <script>
 (function () {
   const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
   const FMT = (n) => n == null ? '-' : Number(n).toFixed(2);
   const FMT3 = (n) => n == null ? '-' : Number(n).toFixed(3);
 
@@ -340,19 +353,21 @@
   function filterCars() {
     const cls = $('#gp-car-class').value;
     const minRank = Number($('#gp-min-rank').value) || 0;
-    return gCars.filter((c) => (cls === 'all' || c.car_class === cls) && c.rank >= minRank);
+    const useCatalog = $('#gp-use-catalog').checked;
+    return gCars.filter((c) => (cls === 'all' || c.car_class === cls) && c.rank >= minRank && (useCatalog || c.owned));
   }
 
   function runOptimize() {
+    $('#gp-optimize-status').textContent = '';
     const selected = [];
     for (let i = 0; i < 5; i++) {
       const el = $(`#gp-track-${i}`);
       const t = gTracks.find((x) => x.id === el.value);
-      if (!t) { alert('Select all 5 tracks'); return; }
+      if (!t) { $('#gp-optimize-status').textContent = 'Select all 5 tracks.'; return; }
       selected.push(t);
     }
     const pool = filterCars();
-    if (pool.length < 5) { alert('Need at least 5 eligible cars in your garage'); return; }
+    if (pool.length < 5) { $('#gp-optimize-status').textContent = 'Need at least 5 eligible cars. Try enabling catalog cars or lowering the rank filter.'; return; }
     const costs = selected.map((t) => pool.map((c) => predict(c, t).time));
     const assignment = hungarian(costs);
     const rows = [];
@@ -617,6 +632,18 @@
     $('#gp-add-status').textContent = `${esc(car.name)} added to your garage.`;
   }
 
+  function switchTab(name) {
+    $$('.tab-btn').forEach((b) => b.classList.toggle('active', b.dataset.tab === name));
+    $$('.tab-panel').forEach((p) => p.classList.toggle('active', p.dataset.tab === name));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function initTabs() {
+    $$('.tab-btn').forEach((b) => {
+      b.addEventListener('click', () => switchTab(b.dataset.tab));
+    });
+  }
+
   function init() {
     logs = loadLogs();
     cal = loadCal();
@@ -628,6 +655,7 @@
     renderSelectors();
     renderClassFilter();
     renderAddGarage();
+    initTabs();
     if (typeof initSearchableSelects !== 'undefined') initSearchableSelects();
     renderLogs();
     renderStatus();
@@ -639,6 +667,7 @@
     $('#gp-calibrate').addEventListener('click', runCalibrate);
     $('#gp-car-class').addEventListener('change', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
     $('#gp-min-rank').addEventListener('input', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
+    $('#gp-use-catalog').addEventListener('change', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
   }
 
   document.addEventListener('DOMContentLoaded', init);
