@@ -1505,6 +1505,40 @@
     });
   }
 
+  function makeSearchable(select) {
+    if (select.dataset.searchable === 'done' || select.options.length < 15 || select.multiple || select.size > 1) return;
+    const all = [...select.options].map(o => ({ value: o.value, text: o.textContent, selected: o.selected }));
+    const wrapper = document.createElement('div');
+    wrapper.className = 'searchable-select';
+    select.parentNode.insertBefore(wrapper, select);
+    wrapper.appendChild(select);
+    const input = document.createElement('input');
+    input.type = 'search';
+    input.className = 'searchable-select-input';
+    input.placeholder = 'Filter...';
+    input.setAttribute('aria-label', 'Filter ' + (select.getAttribute('aria-label') || 'options'));
+    wrapper.insertBefore(input, select);
+    const observer = new MutationObserver(() => { select._all = [...select.options].map(o => ({ value: o.value, text: o.textContent, selected: o.selected })); });
+    observer.observe(select, { childList: true });
+    select._all = all;
+    function update() {
+      const q = input.value.trim().toLowerCase();
+      const master = select._all || [];
+      const chosen = select.value;
+      const filtered = q ? master.filter(o => o.text.toLowerCase().includes(q)) : master;
+      observer.disconnect();
+      select.innerHTML = filtered.map(o => `<option value="${esc(o.value)}" ${o.value === chosen ? 'selected' : ''}>${esc(o.text)}</option>`).join('');
+      observer.observe(select, { childList: true });
+      select.value = chosen;
+    }
+    input.addEventListener('input', update);
+    select.dataset.searchable = 'done';
+  }
+
+  function initSearchableSelects() {
+    document.querySelectorAll('select').forEach(makeSearchable);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     addManifestLink();
     registerSW();
@@ -1532,6 +1566,7 @@
     if ($('#garage-body')) initGarage();
     if ($('#garage-form')) initGarageForm();
     applySearchFromUrl();
+    if (!$('#gp-predict-car')) initSearchableSelects();
   });
 
   function initCalendar() {
@@ -1655,4 +1690,6 @@
     });
     render();
   }
+  window.makeSearchable = makeSearchable;
+  window.initSearchableSelects = initSearchableSelects;
 })();

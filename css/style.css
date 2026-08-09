@@ -660,3 +660,15 @@ footer a { color: var(--primary-light); }
 .garage-form label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 0.3rem; }
 .garage-form select, .garage-form input { width: 100%; padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; background: var(--input-bg); color: var(--text); }
 .empty-state .btn { margin-left: 0.5rem; }
+
+/* Searchable selects */
+.searchable-select { display: flex; flex-direction: column; gap: 0.4rem; }
+.searchable-select input {
+  width: 100%;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  background: var(--input-bg);
+  color: var(--text);
+}

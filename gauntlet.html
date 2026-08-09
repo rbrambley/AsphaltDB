@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <title>Gauntlet Mode | Asphalt Legends Unite</title>
+  <title>Gauntlet Predictor | Asphalt Legends Unite</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -66,24 +66,90 @@
   </header>
   <main>
     <section class="hero">
-      <h1>Gauntlet Mode</h1>
-      <p>Pick an opponent for each of the 5 short tracks. The page recommends a faster car for every track.</p>
+      <h1>Gauntlet Predictor</h1>
+      <p>Track-specific lap-time prediction, 5-track defense optimizer, and race-log calibration for your garage.</p>
     </section>
 
-    <section class="card" id="gauntlet-picks">
-      <div class="card-header"><h2>5 Track Matchups</h2><span class="toggle">−</span></div>
+    <section class="card">
+      <div class="card-header"><h2>Defense Optimizer</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <div id="gauntlet-cols" class="gauntlet-cols" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;"></div>
-        <button id="gauntlet-use-all" class="btn" style="margin-top:1rem;">Use all recommendations</button>
+        <p class="dashboard-intro">Pick 5 Gauntlet tracks, then run the Hungarian-assignment optimizer to get the best 5-car defensive lineup from your garage.</p>
+        <div class="filters" id="gp-track-filters"></div>
+        <div class="filters">
+          <div class="filter"><label for="gp-car-class">Car class</label><select id="gp-car-class"><option value="all">All classes</option></select></div>
+          <div class="filter"><label for="gp-min-rank">Min rank</label><input id="gp-min-rank" type="number" min="0" value="0" /></div>
+        </div>
+        <div>
+          <button id="gp-optimize" class="btn">Optimize 5-Car Lineup</button>
+          <span id="gp-car-count" class="count"></span>
+        </div>
+        <div id="gp-result" class="table-wrap" style="display:none; margin-top:1rem;"></div>
+        <div id="gp-summary" class="lineup-summary"></div>
       </div>
     </section>
 
     <section class="card">
-      <div class="card-header"><h2>5-Car Lineup</h2><span class="toggle">−</span></div>
+      <div class="card-header"><h2>Predict Lap Time</h2><span class="toggle">−</span></div>
       <div class="card-body">
-        <p class="dashboard-intro">These slots are filled when you pick tracks and opponents, or by clicking “Use all recommendations.”</p>
-        <div class="filters" id="gauntlet-lineup"></div>
-        <div class="lineup-summary" id="gauntlet-summary">Combined max rank: 0</div>
+        <div class="filters">
+          <div class="filter"><label for="gp-predict-track">Track</label><select id="gp-predict-track"><option value="">— Select track —</option></select></div>
+          <div class="filter"><label for="gp-predict-car">Car</label><select id="gp-predict-car"><option value="">— Select car —</option></select></div>
+        </div>
+        <div id="gp-predict-result" class="dashboard-intro" style="margin-top:1rem;"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>Add to Garage</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Add a catalog car to your garage so it is saved across the app. You can later edit full details on the Garage page.</p>
+        <div class="filters">
+          <div class="filter">
+            <label for="gp-add-car-select">Catalog car</label>
+            <select id="gp-add-car-select"><option value="">— Select catalog car —</option></select>
+          </div>
+          <div class="filter">
+            <label for="gp-add-rank">Rank</label>
+            <input id="gp-add-rank" type="number" min="0" placeholder="Use catalog max" />
+          </div>
+          <div class="filter">
+            <label for="gp-add-stars">Stars</label>
+            <input id="gp-add-stars" type="number" min="0" max="6" placeholder="e.g. 5" />
+          </div>
+        </div>
+        <button id="gp-add-to-garage" class="btn" style="margin-bottom:0.5rem;">Add to my garage</button>
+        <div id="gp-add-status" style="font-size:0.85rem;color:var(--muted);"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header"><h2>Calibration</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <h4 style="margin-top:0;">Add Race Log</h4>
+        <div class="filters">
+          <div class="filter"><label for="gp-log-track">Track</label><select id="gp-log-track"><option value="">— Track —</option></select></div>
+          <div class="filter"><label for="gp-log-car">Car</label><select id="gp-log-car"><option value="">— Car —</option></select></div>
+          <div class="filter"><label for="gp-log-time">Actual time (s)</label><input id="gp-log-time" type="number" step="0.01" min="0" placeholder="32.45" /></div>
+          <div class="filter"><label for="gp-log-notes">Notes</label><input id="gp-log-notes" type="text" placeholder="e.g. maxed, manual" /></div>
+        </div>
+        <button id="gp-add-log" class="btn" style="margin-bottom:1.5rem;">Add Log</button>
+
+        <h4>Race Logs</h4>
+        <div class="table-wrap">
+          <table class="detail-table">
+            <thead><tr><th>Track</th><th>Car</th><th class="num">Actual</th><th class="num">Predicted</th><th>Notes</th><th></th></tr></thead>
+            <tbody id="gp-logs-body"><tr><td colspan="6" class="empty-state">No race logs yet</td></tr></tbody>
+          </table>
+        </div>
+
+        <div style="margin:1rem 0;"><button id="gp-calibrate" class="btn">Run Calibration</button></div>
+        <h4>Track Calibration Status</h4>
+        <div class="table-wrap">
+          <table class="detail-table">
+            <thead><tr><th>Track</th><th>Profile</th><th class="num">Samples</th><th class="num">Beta</th><th class="num">Par time</th><th>Weights (T / A / H / N)</th></tr></thead>
+            <tbody id="gp-status-body"><tr><td colspan="6" class="empty-state">No logs yet — add race logs and calibrate</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </section>
   </main>
@@ -94,5 +160,489 @@
   <script src="js/data.js"></script>
   <script src="js/garage_data.js"></script>
   <script src="js/app.js"></script>
+  <script>
+(function () {
+  const $ = (sel) => document.querySelector(sel);
+  const FMT = (n) => n == null ? '-' : Number(n).toFixed(2);
+  const FMT3 = (n) => n == null ? '-' : Number(n).toFixed(3);
+
+  const STORAGE = { logs: 'gauntletRaceLogs', cal: 'gauntletTrackCal' };
+  const PROFILES = {
+    pure_straight:       { w_top_speed: 0.55, w_acceleration: 0.15, w_handling: 0.05, w_nitro: 0.25 },
+    highway_with_turns:  { w_top_speed: 0.40, w_acceleration: 0.15, w_handling: 0.15, w_nitro: 0.30 },
+    mixed_circuit:       { w_top_speed: 0.25, w_acceleration: 0.25, w_handling: 0.25, w_nitro: 0.25 },
+    twisty_city:         { w_top_speed: 0.10, w_acceleration: 0.20, w_handling: 0.45, w_nitro: 0.25 },
+    twisty_off_road:     { w_top_speed: 0.10, w_acceleration: 0.25, w_handling: 0.40, w_nitro: 0.25 },
+    jump_heavy:          { w_top_speed: 0.15, w_acceleration: 0.30, w_handling: 0.10, w_nitro: 0.45 },
+    tunnel_tight:        { w_top_speed: 0.15, w_acceleration: 0.30, w_handling: 0.40, w_nitro: 0.15 }
+  };
+  const PAR_TIME = { 'Short': 29.5, 'Medium-ish Short': 30.5, 'Medium': 33.0, 'Medium-ish Long': 35.0, 'Long': 38.0, 'Extra Long': 42.0 };
+
+  let gTracks = [];
+  let gCars = [];
+  let logs = [];
+  let cal = {};
+
+  function slug(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''); }
+  function esc(s) { return String(s || '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function getGarage() {
+    let local = [];
+    try { local = JSON.parse(localStorage.getItem('localGarage') || '[]'); } catch {}
+    const base = (typeof garage !== 'undefined' ? garage : []);
+    const map = new Map(base.map((c) => [slug(c.id || c.carName), c]));
+    local.forEach((c) => { map.set(slug(c.id || c.carName), c); });
+    return [...map.values()].filter((c) => c.carName && c.topSpeed != null && c.acceleration != null && c.handling != null && c.nitro != null);
+  }
+
+  function inferProfile(name, length) {
+    const n = name.toLowerCase();
+    if (n.includes('tunnel')) return 'tunnel_tight';
+    if (n.includes('jump') || n.includes('leap') || n.includes('freefall') || n.includes('tumble')) return 'jump_heavy';
+    if (n.includes('straight') || n.includes('sprint')) return 'pure_straight';
+    if (n.includes('twister') || n.includes('twisty') || n.includes('tight') || n.includes('hairpin') || n.includes('byroads')) {
+      return (length === 'Short' || length === 'Medium') ? 'twisty_city' : 'twisty_off_road';
+    }
+    if (n.includes('highway') || n.includes('railroad')) return 'highway_with_turns';
+    if (length === 'Short') return 'mixed_circuit';
+    if (length === 'Long' || length === 'Extra Long') return 'highway_with_turns';
+    return 'mixed_circuit';
+  }
+
+  function buildTracks() {
+    const raw = (typeof tracks !== 'undefined' ? tracks : []);
+    return raw.map((t) => {
+      const profile = inferProfile(t.trackName, t.length);
+      const w = PROFILES[profile];
+      const id = slug(t.trackName);
+      const base = {
+        id, display_name: t.trackName, location: t.environment,
+        w_top_speed: w.w_top_speed, w_acceleration: w.w_acceleration,
+        w_handling: w.w_handling, w_nitro: w.w_nitro,
+        par_time_sec: PAR_TIME[t.length] || 33.0,
+        par_car_score: 0.75,
+        beta: 1.0,
+        sample_count: 0,
+        profile,
+        track_length: t.length
+      };
+      return Object.assign({}, base, cal[id]);
+    });
+  }
+
+  function buildCars() {
+    const owned = new Map(getGarage().map((c) => [slug(c.id || c.carName), c]));
+    const catalog = (typeof cars !== 'undefined' ? cars : []);
+    const out = new Map();
+    owned.forEach((c) => {
+      const key = slug(c.id || c.carName);
+      out.set(key, {
+        id: key,
+        name: c.carName,
+        rank: Number(c.rankMax || c.rankCurrent || 0),
+        car_class: c.class,
+        top_speed: Number(c.topSpeed),
+        acceleration: Number(c.acceleration),
+        handling: Number(c.handling),
+        nitro: Number(c.nitro),
+        n_top_speed: 0, n_acceleration: 0, n_handling: 0, n_nitro: 0,
+        owned: true
+      });
+    });
+    catalog.forEach((c) => {
+      const key = slug(c.carName);
+      if (out.has(key)) return;
+      out.set(key, {
+        id: key,
+        name: c.carName,
+        rank: Number(c.rankMax || 0),
+        car_class: c.class,
+        top_speed: Number(c.topSpeedMax),
+        acceleration: Number(c.accelerationMax),
+        handling: Number(c.handlingMax),
+        nitro: Number(c.nitroMax),
+        n_top_speed: 0, n_acceleration: 0, n_handling: 0, n_nitro: 0,
+        owned: false
+      });
+    });
+    return [...out.values()];
+  }
+
+  function normalize(gCars) {
+    if (!gCars.length) return;
+    const max = { t: 0, a: 0, h: 0, n: 0 };
+    gCars.forEach((c) => {
+      max.t = Math.max(max.t, c.top_speed);
+      max.a = Math.max(max.a, c.acceleration);
+      max.h = Math.max(max.h, c.handling);
+      max.n = Math.max(max.n, c.nitro);
+    });
+    gCars.forEach((c) => {
+      c.n_top_speed = max.t ? c.top_speed / max.t : 0;
+      c.n_acceleration = max.a ? c.acceleration / max.a : 0;
+      c.n_handling = max.h ? c.handling / max.h : 0;
+      c.n_nitro = max.n ? c.nitro / max.n : 0;
+    });
+  }
+
+  function scoreCar(track, car) {
+    return track.w_top_speed * car.n_top_speed + track.w_acceleration * car.n_acceleration +
+           track.w_handling * car.n_handling + track.w_nitro * car.n_nitro;
+  }
+
+  function predict(car, track) {
+    const s = scoreCar(track, car);
+    const time = track.par_time_sec * (1 + track.beta * (track.par_car_score - s));
+    const ci = Math.max(0.1, 1.5 / Math.sqrt(1 + track.sample_count));
+    return { time, ci, s };
+  }
+
+  function hungarian(cost) {
+    const n = cost.length;
+    const m = cost[0].length;
+    const u = new Array(n + 1).fill(0);
+    const v = new Array(m + 1).fill(0);
+    const p = new Array(m + 1).fill(0);
+    const way = new Array(m + 1).fill(0);
+    for (let i = 1; i <= n; i++) {
+      p[0] = i;
+      let j0 = 0;
+      const minv = new Array(m + 1).fill(Infinity);
+      const used = new Array(m + 1).fill(false);
+      do {
+        used[j0] = true;
+        const i0 = p[j0];
+        let delta = Infinity;
+        let j1 = 0;
+        for (let j = 1; j <= m; j++) {
+          if (!used[j]) {
+            const cur = cost[i0 - 1][j - 1] - u[i0] - v[j];
+            if (cur < minv[j]) { minv[j] = cur; way[j] = j0; }
+            if (minv[j] < delta) { delta = minv[j]; j1 = j; }
+          }
+        }
+        for (let j = 0; j <= m; j++) {
+          if (used[j]) { u[p[j]] += delta; v[j] -= delta; } else { minv[j] -= delta; }
+        }
+        j0 = j1;
+      } while (p[j0] !== 0);
+      do {
+        const j1 = way[j0];
+        p[j0] = p[j1];
+        j0 = j1;
+      } while (j0);
+    }
+    const assignment = new Array(n).fill(-1);
+    for (let j = 1; j <= m; j++) if (p[j] !== 0) assignment[p[j] - 1] = j - 1;
+    return assignment;
+  }
+
+  function filterCars() {
+    const cls = $('#gp-car-class').value;
+    const minRank = Number($('#gp-min-rank').value) || 0;
+    return gCars.filter((c) => (cls === 'all' || c.car_class === cls) && c.rank >= minRank);
+  }
+
+  function runOptimize() {
+    const selected = [];
+    for (let i = 0; i < 5; i++) {
+      const el = $(`#gp-track-${i}`);
+      const t = gTracks.find((x) => x.id === el.value);
+      if (!t) { alert('Select all 5 tracks'); return; }
+      selected.push(t);
+    }
+    const pool = filterCars();
+    if (pool.length < 5) { alert('Need at least 5 eligible cars in your garage'); return; }
+    const costs = selected.map((t) => pool.map((c) => predict(c, t).time));
+    const assignment = hungarian(costs);
+    const rows = [];
+    let totalRank = 0;
+    for (let i = 0; i < 5; i++) {
+      const carIdx = assignment[i];
+      if (carIdx < 0) { rows.push(`<tr><td>${i+1}</td><td>${esc(selected[i].display_name)}</td><td colspan="3">No car assigned</td></tr>`); continue; }
+      const car = pool[carIdx];
+      const p = predict(car, selected[i]);
+      totalRank += car.rank;
+      rows.push(`<tr><td>${i+1}</td><td>${esc(selected[i].display_name)}</td><td>${esc(car.name)}${car.owned ? '' : ' [catalog]'} (${car.car_class})</td><td class="num">${FMT(p.time)} ± ${FMT(p.ci)}</td><td class="num">${Number(car.rank).toLocaleString()}</td></tr>`);
+    }
+    const result = $('#gp-result');
+    result.innerHTML = `<table class="detail-table"><thead><tr><th>Slot</th><th>Track</th><th>Car</th><th class="num">Predicted (s)</th><th class="num">Rank</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
+    result.style.display = 'block';
+    $('#gp-summary').textContent = `Combined max rank: ${totalRank.toLocaleString()}`;
+  }
+
+  function runPredict() {
+    const t = gTracks.find((x) => x.id === $('#gp-predict-track').value);
+    const c = gCars.find((x) => x.id === $('#gp-predict-car').value);
+    if (!t || !c) return;
+    const p = predict(c, t);
+    $('#gp-predict-result').innerHTML =
+      `<strong>${esc(c.name)}${c.owned ? '' : ' [catalog]'}</strong> on <strong>${esc(t.display_name)}</strong><br>` +
+      `Predicted lap: <strong>${FMT(p.time)}</strong> s (± ${FMT(p.ci)} s)<br>` +
+      `Car score: ${FMT3(p.s)} · Weights: T ${FMT3(t.w_top_speed)} / A ${FMT3(t.w_acceleration)} / H ${FMT3(t.w_handling)} / N ${FMT3(t.w_nitro)}`;
+  }
+
+  function saveLogs() { localStorage.setItem(STORAGE.logs, JSON.stringify(logs)); }
+  function loadLogs() { try { return JSON.parse(localStorage.getItem(STORAGE.logs) || '[]'); } catch { return []; } }
+  function saveCal() { localStorage.setItem(STORAGE.cal, JSON.stringify(cal)); }
+  function loadCal() { try { return JSON.parse(localStorage.getItem(STORAGE.cal) || '{}'); } catch { return {}; } }
+
+  function addLog() {
+    const tId = $('#gp-log-track').value;
+    const cId = $('#gp-log-car').value;
+    const time = Number($('#gp-log-time').value);
+    const notes = $('#gp-log-notes').value.trim();
+    const t = gTracks.find((x) => x.id === tId);
+    const c = gCars.find((x) => x.id === cId);
+    if (!t || !c || !time || time <= 0) { alert('Enter a valid track, car and positive time'); return; }
+    const p = predict(c, t);
+    logs.unshift({ timestamp: new Date().toISOString(), track_id: tId, car_id: cId, actual_time_sec: time, predicted_time_sec: p.time, notes });
+    saveLogs();
+    renderLogs();
+    renderStatus();
+  }
+
+  function deleteLog(idx) { logs.splice(idx, 1); saveLogs(); renderLogs(); renderStatus(); }
+
+  function linearReg(xs, ys) {
+    const n = xs.length;
+    const mx = xs.reduce((a, b) => a + b, 0) / n;
+    const my = ys.reduce((a, b) => a + b, 0) / n;
+    let sxx = 0, sxy = 0;
+    for (let i = 0; i < n; i++) { sxx += (xs[i] - mx) ** 2; sxy += (xs[i] - mx) * (ys[i] - my); }
+    if (sxx === 0) return null;
+    const b = sxy / sxx;
+    const a = my - b * mx;
+    return { a, b };
+  }
+
+  function updateBeta(track, carMap) {
+    const related = logs.filter((l) => l.track_id === track.id);
+    const xs = [], ys = [];
+    for (const l of related) {
+      const car = carMap[l.car_id];
+      if (!car) continue;
+      xs.push(scoreCar(track, car));
+      ys.push(l.actual_time_sec);
+    }
+    if (xs.length < 2) return;
+    const r = linearReg(xs, ys);
+    if (!r) return;
+    if (r.a !== 0) track.beta = -r.b / r.a;
+    track.par_time_sec = r.a + r.b * 0.75;
+  }
+
+  function invert(m) {
+    const n = m.length;
+    const a = m.map((row) => [...row, ...Array(n).fill(0)]);
+    for (let i = 0; i < n; i++) a[i][n + i] = 1;
+    for (let i = 0; i < n; i++) {
+      let piv = i;
+      for (let r = i; r < n; r++) if (Math.abs(a[r][i]) > Math.abs(a[piv][i])) piv = r;
+      if (Math.abs(a[piv][i]) < 1e-12) return null;
+      [a[i], a[piv]] = [a[piv], a[i]];
+      const d = a[i][i];
+      for (let c = 0; c < 2 * n; c++) a[i][c] /= d;
+      for (let r = 0; r < n; r++) if (r !== i) {
+        const f = a[r][i];
+        for (let c = 0; c < 2 * n; c++) a[r][c] -= f * a[i][c];
+      }
+    }
+    return a.map((row) => row.slice(n));
+  }
+
+  function solveRidge(X, y, alpha) {
+    const d = X[0].length;
+    const XtX = Array(d).fill().map(() => Array(d).fill(0));
+    const Xty = Array(d).fill(0);
+    for (let k = 0; k < X.length; k++) {
+      for (let i = 0; i < d; i++) {
+        Xty[i] += X[k][i] * y[k];
+        for (let j = 0; j < d; j++) XtX[i][j] += X[k][i] * X[k][j];
+      }
+    }
+    for (let i = 0; i < d; i++) XtX[i][i] += alpha;
+    const inv = invert(XtX);
+    if (!inv) return null;
+    const w = Array(d).fill(0);
+    for (let i = 0; i < d; i++) for (let j = 0; j < d; j++) w[i] += inv[i][j] * Xty[j];
+    return w;
+  }
+
+  function refitWeights(track, carMap) {
+    const related = logs.filter((l) => l.track_id === track.id);
+    const X = [], y = [];
+    for (const l of related) {
+      const car = carMap[l.car_id];
+      if (!car) continue;
+      X.push([car.n_top_speed, car.n_acceleration, car.n_handling, car.n_nitro]);
+      y.push(l.actual_time_sec);
+    }
+    if (X.length < 8) return;
+    const w = solveRidge(X, y, 1.0);
+    if (!w) return;
+    let coeffs = w.map(Math.abs);
+    const total = coeffs.reduce((a, b) => a + b, 0);
+    if (total > 0) coeffs = coeffs.map((c) => c / total);
+    track.w_top_speed = coeffs[0];
+    track.w_acceleration = coeffs[1];
+    track.w_handling = coeffs[2];
+    track.w_nitro = coeffs[3];
+  }
+
+  function runCalibrate() {
+    const carMap = Object.fromEntries(gCars.map((c) => [c.id, c]));
+    for (const t of gTracks) {
+      const related = logs.filter((l) => l.track_id === t.id);
+      t.sample_count = related.length;
+      if (related.length >= 2) updateBeta(t, carMap);
+      if (related.length >= 8) refitWeights(t, carMap);
+    }
+    cal = Object.fromEntries(gTracks.map((t) => [t.id, {
+      w_top_speed: t.w_top_speed, w_acceleration: t.w_acceleration, w_handling: t.w_handling, w_nitro: t.w_nitro,
+      par_time_sec: t.par_time_sec, par_car_score: t.par_car_score, beta: t.beta
+    }]));
+    saveCal();
+    renderStatus();
+    runPredict();
+    if ($('#gp-result').style.display !== 'none') runOptimize();
+  }
+
+  function renderTrackSelectors() {
+    const container = $('#gp-track-filters');
+    const sorted = [...gTracks].sort((a, b) => {
+      const sa = a.track_length === 'Short' ? -1 : 1;
+      const sb = b.track_length === 'Short' ? -1 : 1;
+      return (sa - sb) || a.display_name.localeCompare(b.display_name);
+    });
+    const options = sorted.map((t) => `<option value="${t.id}">${esc(t.display_name)} (${t.track_length})</option>`).join('');
+    const shortTracks = gTracks.filter((t) => t.track_length === 'Short').sort((a, b) => a.display_name.localeCompare(b.display_name));
+    container.innerHTML = '';
+    for (let i = 0; i < 5; i++) {
+      const div = document.createElement('div');
+      div.className = 'filter';
+      div.innerHTML = `<label for="gp-track-${i}">Track ${i+1}</label><select id="gp-track-${i}"><option value="">— Select track —</option>${options}</select>`;
+      container.appendChild(div);
+      if (shortTracks[i]) $(`#gp-track-${i}`).value = shortTracks[i].id;
+    }
+  }
+
+  function renderSelectors() {
+    const tOpts = gTracks.map((t) => `<option value="${t.id}">${esc(t.display_name)} (${t.track_length})</option>`).join('');
+    const cOpts = gCars.map((c) => `<option value="${c.id}">${esc(c.name)}${c.owned ? '' : ' [catalog]'} (${c.car_class}, ${Number(c.rank).toLocaleString()})</option>`).join('');
+    $('#gp-predict-track').innerHTML = `<option value="">— Select track —</option>${tOpts}`;
+    $('#gp-predict-car').innerHTML = `<option value="">— Select car —</option>${cOpts}`;
+    $('#gp-log-track').innerHTML = `<option value="">— Track —</option>${tOpts}`;
+    $('#gp-log-car').innerHTML = `<option value="">— Car —</option>${cOpts}`;
+  }
+
+  function renderClassFilter() {
+    const classes = [...new Set(gCars.map((c) => c.car_class))].sort();
+    const opts = classes.map((c) => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    $('#gp-car-class').innerHTML = `<option value="all">All classes</option>${opts}`;
+    $('#gp-car-count').textContent = `${gCars.length} cars available`;
+  }
+
+  function renderLogs() {
+    const tb = $('#gp-logs-body');
+    if (!logs.length) { tb.innerHTML = '<tr><td colspan="6" class="empty-state">No race logs yet</td></tr>'; return; }
+    const carMap = Object.fromEntries(gCars.map((c) => [c.id, c]));
+    const trackMap = Object.fromEntries(gTracks.map((t) => [t.id, t]));
+    tb.innerHTML = logs.map((l, i) => {
+      const t = trackMap[l.track_id] || {};
+      const c = carMap[l.car_id] || {};
+      return `<tr><td>${esc(t.display_name || '-')}</td><td>${esc(c.name || '-')}</td><td class="num">${FMT(l.actual_time_sec)}</td><td class="num">${FMT(l.predicted_time_sec)}</td><td>${esc(l.notes || '')}</td><td><button class="btn" data-del="${i}">Delete</button></td></tr>`;
+    }).join('');
+    tb.querySelectorAll('button[data-del]').forEach((b) => b.addEventListener('click', (e) => deleteLog(Number(e.target.dataset.del))));
+  }
+
+  function renderStatus() {
+    const tb = $('#gp-status-body');
+    const active = gTracks.filter((t) => t.sample_count > 0).sort((a, b) => b.sample_count - a.sample_count);
+    if (!active.length) { tb.innerHTML = '<tr><td colspan="6" class="empty-state">No logs yet — add race logs and calibrate</td></tr>'; return; }
+    tb.innerHTML = active.map((t) => `<tr>
+      <td>${esc(t.display_name)}</td>
+      <td>${esc(t.profile)}</td>
+      <td class="num">${t.sample_count}</td>
+      <td class="num">${FMT(t.beta)}</td>
+      <td class="num">${FMT(t.par_time_sec)}</td>
+      <td class="num">${FMT3(t.w_top_speed)} / ${FMT3(t.w_acceleration)} / ${FMT3(t.w_handling)} / ${FMT3(t.w_nitro)}</td>
+    </tr>`).join('');
+  }
+
+  function renderAddGarage() {
+    const catalog = gCars.filter((c) => !c.owned).sort((a, b) => a.name.localeCompare(b.name));
+    const opts = catalog.map((c) => `<option value="${c.id}">${esc(c.name)} (${c.car_class}, ${Number(c.rank).toLocaleString()})</option>`).join('');
+    $('#gp-add-car-select').innerHTML = `<option value="">— Select catalog car —</option>${opts}`;
+  }
+
+  function addToGarage() {
+    const id = $('#gp-add-car-select').value;
+    const car = gCars.find((c) => c.id === id);
+    if (!car || car.owned) { $('#gp-add-status').textContent = 'Select a catalog car not already in your garage.'; return; }
+    let rank = Number($('#gp-add-rank').value);
+    let stars = Number($('#gp-add-stars').value);
+    if (!rank) rank = car.rank;
+    if (!stars) stars = 5;
+    const raw = (typeof cars !== 'undefined' ? cars : []).find((c) => slug(c.carName) === id);
+    const entry = {
+      id: car.id,
+      carName: car.name,
+      matchedCar: car.name,
+      class: car.car_class,
+      rankCurrent: rank,
+      rankMax: car.rank,
+      stars: stars,
+      topSpeed: car.top_speed,
+      acceleration: car.acceleration,
+      handling: car.handling,
+      nitro: car.nitro,
+      blueprintCurrent: 0,
+      blueprintMax: raw ? (raw.blueprintCount || null) : null,
+      blueprintStatus: raw ? ('0 / ' + (raw.blueprintCount || '-')) : null,
+      capturedAt: new Date().toISOString()
+    };
+    let local = [];
+    try { local = JSON.parse(localStorage.getItem('localGarage') || '[]'); } catch {}
+    local = local.filter((c) => slug(c.id || c.carName) !== car.id);
+    local.push(entry);
+    localStorage.setItem('localGarage', JSON.stringify(local));
+    gCars = buildCars();
+    normalize(gCars);
+    renderSelectors();
+    renderAddGarage();
+    renderClassFilter();
+    if ($('#gp-result').style.display !== 'none') runOptimize();
+    runPredict();
+    $('#gp-add-status').textContent = `${esc(car.name)} added to your garage.`;
+  }
+
+  function init() {
+    logs = loadLogs();
+    cal = loadCal();
+    gTracks = buildTracks();
+    gCars = buildCars();
+    if (!gCars.length) alert('No eligible cars found in your garage. Add cars in Garage first.');
+    normalize(gCars);
+    renderTrackSelectors();
+    renderSelectors();
+    renderClassFilter();
+    renderAddGarage();
+    if (typeof initSearchableSelects !== 'undefined') initSearchableSelects();
+    renderLogs();
+    renderStatus();
+    $('#gp-optimize').addEventListener('click', runOptimize);
+    $('#gp-predict-track').addEventListener('change', runPredict);
+    $('#gp-predict-car').addEventListener('change', runPredict);
+    $('#gp-add-log').addEventListener('click', addLog);
+    $('#gp-add-to-garage').addEventListener('click', addToGarage);
+    $('#gp-calibrate').addEventListener('click', runCalibrate);
+    $('#gp-car-class').addEventListener('change', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
+    $('#gp-min-rank').addEventListener('input', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+  </script>
 </body>
 </html>
