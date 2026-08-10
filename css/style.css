@@ -81,7 +81,7 @@ header {
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 .brand { margin-right: auto; }
 .brand {
