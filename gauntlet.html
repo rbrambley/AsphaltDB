@@ -86,7 +86,7 @@
           <div class="filter"><label for="gp-car-class">Car class</label><select id="gp-car-class"><option value="all">All classes</option></select></div>
           <div class="filter"><label for="gp-min-rank">Min rank</label><input id="gp-min-rank" type="number" min="0" value="0" /></div>
           <div class="filter" style="display:flex;align-items:center;gap:0.5rem;padding-top:1.6rem;">
-            <input id="gp-use-catalog" type="checkbox" checked style="width:auto;" />
+            <input id="gp-use-catalog" type="checkbox" style="width:auto;" />
             <label for="gp-use-catalog" style="margin:0;font-weight:500;">Use catalog cars</label>
           </div>
         </div>
@@ -184,7 +184,6 @@
     Car ranks from Asphalt Wiki; performance stats from Asphalt9.info. Rarity/upgrade fields are baseline placeholders pending community review.
   </footer>
   <script src="js/data.js"></script>
-  <script src="js/garage_data.js"></script>
   <script src="js/app.js"></script>
   <script>
 (function () {
@@ -216,10 +215,7 @@
   function getGarage() {
     let local = [];
     try { local = JSON.parse(localStorage.getItem('localGarage') || '[]'); } catch {}
-    const base = (typeof garage !== 'undefined' ? garage : []);
-    const map = new Map(base.map((c) => [slug(c.id || c.carName), c]));
-    local.forEach((c) => { map.set(slug(c.id || c.carName), c); });
-    return [...map.values()].filter((c) => c.carName && c.topSpeed != null && c.acceleration != null && c.handling != null && c.nitro != null);
+    return [...local].filter((c) => c.carName && c.topSpeed != null && c.acceleration != null && c.handling != null && c.nitro != null);
   }
 
   function inferProfile(name, length) {
