@@ -73,13 +73,13 @@
     </section>
 
     <div class="tab-bar" id="garage-tab-bar">
-      <button class="btn tab-btn active" data-tab="owned">Owned Cars</button>
-      <button class="btn tab-btn" data-tab="stats">Stats</button>
+      <button class="btn tab-btn active" data-tab="stats">Stats</button>
+      <button class="btn tab-btn" data-tab="owned">Owned Cars</button>
       <button class="btn tab-btn" data-tab="add">Add / Edit</button>
       <button class="btn tab-btn" data-tab="import">Import / Export</button>
     </div>
 
-    <section class="card tab-panel active" data-tab="owned">
+    <section class="card tab-panel" data-tab="owned">
       <div class="card-header"><h2>Owned Cars</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <div class="count" id="garage-count">0 cars</div>
@@ -130,7 +130,7 @@
       </div>
     </section>
 
-    <section class="card tab-panel" data-tab="stats">
+    <section class="card tab-panel active" data-tab="stats">
       <div class="card-header"><h2>Garage Stats</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <div class="stats-grid" id="garage-stats"></div>
