@@ -77,7 +77,6 @@
       <button class="btn tab-btn" data-tab="owned">Owned Cars</button>
       <button class="btn tab-btn" data-tab="add">Add / Edit</button>
       <button class="btn tab-btn" data-tab="import">Import / Export</button>
-      <button class="btn tab-btn" data-tab="hidden">Hidden</button>
     </div>
 
     <section class="card tab-panel" data-tab="owned">
@@ -95,12 +94,6 @@
             <option value="S">S</option>
             <option value="R">R</option>
           </select>
-          <select id="garage-filter-source" style="min-width:7rem;">
-            <option value="">All sources</option>
-            <option value="OCR">OCR</option>
-            <option value="manual">manual</option>
-            <option value="manual+OCR">manual+OCR</option>
-          </select>
           <label style="display:flex;align-items:center;gap:0.25rem;cursor:pointer;">
             <input id="garage-filter-bad" type="checkbox" /> Bad entries only
           </label>
@@ -117,7 +110,6 @@
                 <th data-sort="blueprintCurrent" data-sort-type="num">BP</th>
                 <th data-sort="blueprintMax" data-sort-type="num">BP Max</th>
                 <th data-sort="blueprintToMax" data-sort-type="num">To Max</th>
-                <th>Source</th>
                 <th data-sort="topSpeed" data-sort-type="num">Top Speed</th>
                 <th data-sort="acceleration" data-sort-type="num">Accel</th>
                 <th data-sort="handling" data-sort-type="num">Handling</th>
@@ -185,14 +177,6 @@
           </label>
         </div>
         <div id="garage-import-status" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"></div>
-      </div>
-    </section>
-
-    <section class="card tab-panel" data-tab="hidden">
-      <div class="card-header"><h2>Hidden Cars</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <p class="dashboard-intro">These base/OCR records have been hidden. Restoring a record will make it reappear in the Owned Cars list.</p>
-        <div id="garage-removed-list"></div>
       </div>
     </section>
 

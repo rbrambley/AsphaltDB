@@ -168,17 +168,7 @@
     try { return JSON.parse(localStorage.getItem('localGarage') || '[]'); } catch { return []; }
   }
   function saveLocalGarage(list) { localStorage.setItem('localGarage', JSON.stringify(list)); }
-  function getRemovedGarage() {
-    try { return JSON.parse(localStorage.getItem('garageRemoved') || '[]'); } catch { return []; }
-  }
-  function saveRemovedGarage(list) { localStorage.setItem('garageRemoved', JSON.stringify(list)); }
-  function getCombinedGarage() {
-    const local = getLocalGarage();
-    const removed = new Set(getRemovedGarage());
-    const localIds = new Set(local.map(g => g.id));
-    const base = (typeof garage !== 'undefined' ? garage : []);
-    return [...local, ...base.filter(g => !localIds.has(g.id) && !removed.has(g.id))].filter(g => !removed.has(g.id));
-  }
+  function getGarage() { return getLocalGarage(); }
 
   function applySearchFromUrl() {
     const params = new URLSearchParams(location.search);
@@ -924,7 +914,7 @@
       const trackFilter = selTrack.value;
       const eventFilter = selEvent.value;
 
-      const ownedNames = ownedFilter === 'owned' ? new Set(getCombinedGarage().map(g => g.carName.toLowerCase())) : null;
+      const ownedNames = ownedFilter === 'owned' ? new Set(getGarage().map(g => g.carName.toLowerCase())) : null;
 
       const filteredCars = cars.filter(c => {
         const evoOk = evoFilter === 'All' || (evoFilter === 'yes' && c.evoEligible) || (evoFilter === 'no' && !c.evoEligible);
@@ -1451,7 +1441,7 @@
       const newId = known ? (known.id || slugify(known.carName)) : slugify(raw);
       const classVal = known ? (known.class || '') : ($('#gf-class').value || '');
       const originalId = formId ? formId.value : '';
-      const original = originalId ? getCombinedGarage().find(g => g.id === originalId) : null;
+      const original = originalId ? getGarage().find(g => g.id === originalId) : null;
       const existing = getLocalGarage().find(g => g.id === newId);
       const base = {
         carName,
@@ -1483,11 +1473,6 @@
       let list = getLocalGarage().filter(g => g.id !== originalId && g.id !== newId);
       list.push(entry);
       saveLocalGarage(list);
-      if (originalId && originalId !== newId) {
-        const removed = [...new Set([...getRemovedGarage(), originalId])];
-        saveRemovedGarage(removed);
-      }
-      saveRemovedGarage(getRemovedGarage().filter(rid => rid !== newId));
       if (formId) formId.value = '';
       form.reset();
       location.reload();
@@ -1677,7 +1662,7 @@
     }
 
     function editGarageCar(id) {
-      const c = getCombinedGarage().find(g => g.id === id);
+      const c = getGarage().find(g => g.id === id);
       if (!c) return;
       switchTab('add');
       const input = $('#garage-form-car');
@@ -1696,50 +1681,13 @@
     window.editGarageCar = editGarageCar;
 
     function removeGarageCar(id) {
-      const baseIds = new Set((typeof garage !== 'undefined' ? garage : []).map(g => g.id));
       saveLocalGarage(getLocalGarage().filter(g => g.id !== id));
-      if (baseIds.has(id)) {
-        const removed = [...new Set([...getRemovedGarage(), id])];
-        saveRemovedGarage(removed);
-      }
       render();
-      renderRemoved();
     }
     window.removeGarageCar = removeGarageCar;
 
-    function restoreGarageCar(id) {
-      saveRemovedGarage(getRemovedGarage().filter(rid => rid !== id));
-      renderRemoved();
-      render();
-    }
-
-    function renderRemoved() {
-      const container = $('#garage-removed-list');
-      if (!container) return;
-      const removed = getRemovedGarage();
-      if (!removed.length) { container.innerHTML = '<p class="empty-state">No hidden cars.</p>'; return; }
-      const base = (typeof garage !== 'undefined' ? garage : []);
-      const byId = new Map(base.map(g => [g.id, g]));
-      container.innerHTML = '';
-      removed.forEach(id => {
-        const c = byId.get(id);
-        const row = document.createElement('div');
-        row.className = 'garage-removed-item';
-        row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid var(--border);';
-        const name = document.createElement('span');
-        name.textContent = c ? (c.carName || c.matchedCar || id) : id;
-        row.appendChild(name);
-        const restore = document.createElement('button');
-        restore.className = 'btn';
-        restore.textContent = 'Restore';
-        restore.addEventListener('click', () => restoreGarageCar(id));
-        row.appendChild(restore);
-        container.appendChild(row);
-      });
-    }
-
     function renderStats() {
-      const data = getCombinedGarage();
+      const data = getGarage();
       const catalog = (typeof cars !== 'undefined' ? cars : []);
       const classCounts = {};
       let totalRank = 0, countWithRank = 0, bpTotal = 0, bpToMaxTotal = 0;
@@ -1766,41 +1714,31 @@
       `;
     }
 
-    let filterText = '', filterClass = '', filterSource = '', filterBad = false;
+    let filterText = '', filterClass = '', filterBad = false;
     const catalogNames = new Set((typeof cars !== 'undefined' ? cars : []).map(c => c.carName));
 
-    function getSource(c, localIds, baseIds) {
-      if (localIds.has(c.id) && baseIds.has(c.id)) return 'manual+OCR';
-      if (localIds.has(c.id)) return 'manual';
-      return 'OCR';
-    }
-
     function isBad(c) {
-      return !c.class || c.rankCurrent == null || c.rankMax == null || c.topSpeed == null || c.stars == null || !catalogNames.has(c.carName);
+      return !c.class || c.rankCurrent == null || c.topSpeed == null || c.stars == null || !catalogNames.has(c.carName);
     }
 
-    function filterData(data, localIds, baseIds) {
+    function filterData(data) {
       const q = filterText.trim().toLowerCase();
       return data.filter(c => {
-        const source = getSource(c, localIds, baseIds);
         if (filterClass && c.class !== filterClass) return false;
-        if (filterSource && source !== filterSource) return false;
         if (filterBad && !isBad(c)) return false;
         if (!q) return true;
-        return (c.carName || '').toLowerCase().includes(q) || (c.class || '').toLowerCase().includes(q) || source.toLowerCase().includes(q);
+        return (c.carName || '').toLowerCase().includes(q) || (c.class || '').toLowerCase().includes(q);
       });
     }
 
     function render() {
-      const data = getCombinedGarage();
-      const localIds = new Set(getLocalGarage().map(g => g.id));
-      const baseIds = new Set((typeof garage !== 'undefined' ? garage : []).map(g => g.id));
-      const filtered = filterData(data, localIds, baseIds);
+      const data = getGarage();
+      const filtered = filterData(data);
       if (sortKey) filtered.sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
       $('#garage-count').textContent = `${filtered.length} car${filtered.length === 1 ? '' : 's'}`;
       renderStats();
       if (!filtered.length) {
-        $('#garage-body').innerHTML = '<tr><td colspan="13" class="empty-state">No cars in garage. Use the form below or run the OCR script.</td></tr>';
+        $('#garage-body').innerHTML = '<tr><td colspan="12" class="empty-state">No cars in garage. Use the form below to add cars.</td></tr>';
         setSortIndicators(table, sortKey, sortDir);
         return;
       }
@@ -1813,13 +1751,6 @@
         row.appendChild(makeCell(c.blueprintMax != null ? c.blueprintMax : '—', 'num'));
         const toMax = (c.blueprintCurrent != null && c.blueprintMax != null) ? c.blueprintMax - c.blueprintCurrent : null;
         row.appendChild(makeCell(toMax != null ? toMax : '—', 'num'));
-        const source = getSource(c, localIds, baseIds);
-        const sourceBadge = document.createElement('span');
-        sourceBadge.className = 'badge ' + (source === 'OCR' ? 'badge-common' : source === 'manual' ? 'badge-rare' : 'badge-epic');
-        sourceBadge.textContent = source;
-        const sourceTd = document.createElement('td');
-        sourceTd.appendChild(sourceBadge);
-        row.appendChild(sourceTd);
         row.appendChild(makeCell(c.topSpeed != null ? c.topSpeed : '—', 'num'));
         row.appendChild(makeCell(c.acceleration != null ? c.acceleration : '—', 'num'));
         row.appendChild(makeCell(c.handling != null ? c.handling : '—', 'num'));
@@ -1849,24 +1780,20 @@
 
     const filterTextInput = $('#garage-filter-text');
     const filterClassSelect = $('#garage-filter-class');
-    const filterSourceSelect = $('#garage-filter-source');
     const filterBadCheck = $('#garage-filter-bad');
     const filterClearBtn = $('#garage-filter-clear');
     function onFilterChange() {
       filterText = filterTextInput ? filterTextInput.value : '';
       filterClass = filterClassSelect ? filterClassSelect.value : '';
-      filterSource = filterSourceSelect ? filterSourceSelect.value : '';
       filterBad = filterBadCheck ? filterBadCheck.checked : false;
       render();
     }
     if (filterTextInput) filterTextInput.addEventListener('input', onFilterChange);
     if (filterClassSelect) filterClassSelect.addEventListener('change', onFilterChange);
-    if (filterSourceSelect) filterSourceSelect.addEventListener('change', onFilterChange);
     if (filterBadCheck) filterBadCheck.addEventListener('change', onFilterChange);
     if (filterClearBtn) filterClearBtn.addEventListener('click', () => {
       if (filterTextInput) filterTextInput.value = '';
       if (filterClassSelect) filterClassSelect.value = '';
-      if (filterSourceSelect) filterSourceSelect.value = '';
       if (filterBadCheck) filterBadCheck.checked = false;
       onFilterChange();
     });
@@ -1874,7 +1801,6 @@
     $$('#garage-tab-bar .tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
 
     render();
-    renderRemoved();
 
     const exportBtn = $('#garage-export');
     const importInput = $('#garage-import');
