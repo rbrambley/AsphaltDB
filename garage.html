@@ -72,63 +72,14 @@
       <p>Cars imported from your screenshots. This data is committed to the repository so it works on every device.</p>
     </section>
 
-    <section class="card">
-      <div class="card-header"><h2>Garage Stats</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <div class="stats-grid" id="garage-stats"></div>
-        <div style="margin-top:1rem;">
-          <a href="gauntlet.html" class="btn">Find Gauntlet candidates</a>
-        </div>
-      </div>
-    </section>
+    <div class="tab-bar" id="garage-tab-bar">
+      <button class="btn tab-btn active" data-tab="owned">Owned Cars</button>
+      <button class="btn tab-btn" data-tab="stats">Stats</button>
+      <button class="btn tab-btn" data-tab="add">Add / Edit</button>
+      <button class="btn tab-btn" data-tab="import">Import / Export</button>
+    </div>
 
-    <section class="card">
-      <div class="card-header"><h2>Import / Export</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <p class="dashboard-intro">Back up your local garage or restore it from a JSON file.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
-          <button id="garage-export" class="btn">Export garage JSON</button>
-          <label class="btn" style="cursor:pointer;">Import garage JSON
-            <input id="garage-import" type="file" accept=".json" style="display:none;" />
-          </label>
-        </div>
-        <div id="garage-import-status" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="card-header"><h2>Add a car manually</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <p class="dashboard-intro">Use this form to add or update a car in your local garage. Manual entries are saved in this browser and overlay any imported data.</p>
-        <form id="garage-form" class="garage-form">
-          <div>
-            <label for="garage-form-car">Car</label>
-            <input id="garage-form-car" list="garage-form-car-list" type="text" required placeholder="Select or type a car…" />
-            <datalist id="garage-form-car-list"></datalist>
-          </div>
-          <div><label for="gf-class">Class</label>
-            <select id="gf-class" required>
-              <option value="">Select…</option>
-              <option value="D">D</option>
-              <option value="C">C</option>
-              <option value="B">B</option>
-              <option value="A">A</option>
-              <option value="S">S</option>
-              <option value="R">R</option>
-            </select>
-          </div>
-          <div><label for="gf-stars">Stars</label><input id="gf-stars" type="number" min="1" max="6" placeholder="e.g. 4" required /></div>
-          <div><label for="gf-rank">Rank</label><input id="gf-rank" type="number" min="0" placeholder="Current rank" required /></div>
-          <div><label for="gf-topspeed">Top Speed</label><input id="gf-topspeed" type="number" step="0.1" placeholder="Max top speed" /></div>
-          <div><label for="gf-accel">Acceleration</label><input id="gf-accel" type="number" step="0.1" placeholder="Max acceleration" /></div>
-          <div><label for="gf-handling">Handling</label><input id="gf-handling" type="number" step="0.1" placeholder="Max handling" /></div>
-          <div><label for="gf-nitro">Nitro</label><input id="gf-nitro" type="number" step="0.1" placeholder="Max nitro" /></div>
-          <div style="display:flex;align-items:flex-end;"><button class="btn" type="submit">Save to garage</button></div>
-        </form>
-      </div>
-    </section>
-
-    <section class="card">
+    <section class="card tab-panel active" data-tab="owned">
       <div class="card-header"><h2>Owned Cars</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <div class="count" id="garage-count">0 cars</div>
@@ -176,6 +127,62 @@
             <tbody id="garage-body"></tbody>
           </table>
         </div>
+      </div>
+    </section>
+
+    <section class="card tab-panel" data-tab="stats">
+      <div class="card-header"><h2>Garage Stats</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <div class="stats-grid" id="garage-stats"></div>
+        <div style="margin-top:1rem;">
+          <a href="gauntlet.html" class="btn">Find Gauntlet candidates</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card tab-panel" data-tab="add">
+      <div class="card-header"><h2>Add / Edit Car</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Use this form to add or update a car in your local garage. Manual entries are saved in this browser and overlay any imported data.</p>
+        <form id="garage-form" class="garage-form">
+          <div>
+            <label for="garage-form-car">Car</label>
+            <input id="garage-form-car" list="garage-form-car-list" type="text" required placeholder="Select or type a car…" />
+            <datalist id="garage-form-car-list"></datalist>
+          </div>
+          <div><label for="gf-class">Class</label>
+            <select id="gf-class" required>
+              <option value="">Select…</option>
+              <option value="D">D</option>
+              <option value="C">C</option>
+              <option value="B">B</option>
+              <option value="A">A</option>
+              <option value="S">S</option>
+              <option value="R">R</option>
+            </select>
+          </div>
+          <div><label for="gf-stars">Stars</label><input id="gf-stars" type="number" min="1" max="6" placeholder="e.g. 4" required /></div>
+          <div><label for="gf-rank">Rank</label><input id="gf-rank" type="number" min="0" placeholder="Current rank" required /></div>
+          <div><label for="gf-topspeed">Top Speed</label><input id="gf-topspeed" type="number" step="0.1" placeholder="Max top speed" /></div>
+          <div><label for="gf-accel">Acceleration</label><input id="gf-accel" type="number" step="0.1" placeholder="Max acceleration" /></div>
+          <div><label for="gf-handling">Handling</label><input id="gf-handling" type="number" step="0.1" placeholder="Max handling" /></div>
+          <div><label for="gf-nitro">Nitro</label><input id="gf-nitro" type="number" step="0.1" placeholder="Max nitro" /></div>
+          <div style="display:flex;align-items:flex-end;"><button class="btn" type="submit">Save to garage</button></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="card tab-panel" data-tab="import">
+      <div class="card-header"><h2>Import / Export</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Back up your local garage or restore it from a JSON file.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+          <button id="garage-export" class="btn">Export garage JSON</button>
+          <label class="btn" style="cursor:pointer;">Import garage JSON
+            <input id="garage-import" type="file" accept=".json" style="display:none;" />
+          </label>
+        </div>
+        <div id="garage-import-status" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"></div>
       </div>
     </section>
 

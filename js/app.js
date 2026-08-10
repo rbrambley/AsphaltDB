@@ -1690,14 +1690,18 @@
     const table = $('#garage-body').closest('table');
     let sortKey = '', sortDir = 1;
 
+    function switchTab(name) {
+      $$('#garage-tab-bar .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+      $$('.tab-panel[data-tab]').forEach(p => p.classList.toggle('active', p.dataset.tab === name));
+    }
+
     function editGarageCar(id) {
       const c = getCombinedGarage().find(g => g.id === id);
       if (!c) return;
-      const form = $('#garage-form');
-      if (!form) return;
-      form.scrollIntoView({ behavior: 'smooth' });
+      switchTab('add');
       const input = $('#garage-form-car');
       input.value = c.carName;
+      input.focus();
       $('#gf-class').value = c.class || '';
       $('#gf-rank').value = c.rankCurrent != null ? c.rankCurrent : (c.rankMax != null ? c.rankMax : '');
       $('#gf-stars').value = c.stars != null ? c.stars : '';
@@ -1845,6 +1849,8 @@
       if (filterBadCheck) filterBadCheck.checked = false;
       onFilterChange();
     });
+
+    $$('#garage-tab-bar .tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
 
     render();
 
