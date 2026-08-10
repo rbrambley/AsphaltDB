@@ -106,6 +106,9 @@
         <div class="filters">
           <div class="filter"><label for="gp-predict-track">Track</label><select id="gp-predict-track"><option value="">— Select track —</option></select></div>
           <div class="filter"><label for="gp-predict-car">Car</label><select id="gp-predict-car"><option value="">— Select car —</option></select></div>
+          <label style="display:flex;align-items:center;gap:0.25rem;cursor:pointer;white-space:nowrap;">
+            <input id="gp-predict-master" type="checkbox" /> Use master catalog
+          </label>
         </div>
         <div id="gp-predict-result" class="dashboard-intro" style="margin-top:1rem;"></div>
       </div>
@@ -206,6 +209,7 @@
 
   let gTracks = [];
   let gCars = [];
+  let predictUseCatalog = false;
   let logs = [];
   let cal = {};
 
@@ -566,6 +570,13 @@
     $('#gp-log-car').innerHTML = `<option value="">— Car —</option>${cOpts}`;
   }
 
+  function renderPredictCars() {
+    const list = gCars.filter((c) => c.owned || predictUseCatalog);
+    const cOpts = list.map((c) => `<option value="${c.id}">${esc(c.name)}${c.owned ? '' : ' [catalog]'} (${c.car_class}, ${Number(c.rank).toLocaleString()})</option>`).join('');
+    $('#gp-predict-car').innerHTML = `<option value="">— Select car —</option>${cOpts}`;
+    $('#gp-predict-result').innerHTML = '';
+  }
+
   function renderClassFilter() {
     const classes = [...new Set(gCars.map((c) => c.car_class))].sort();
     const opts = classes.map((c) => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
@@ -710,6 +721,7 @@
     normalize(gCars);
     renderTrackSelectors();
     renderSelectors();
+    renderPredictCars();
     renderClassFilter();
     renderAddGarage();
     const stOpts = gTracks.map((t) => `<option value="${t.id}">${esc(t.display_name)} (${t.track_length})</option>`).join('');
@@ -729,6 +741,7 @@
     $('#gp-car-class').addEventListener('change', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
     $('#gp-min-rank').addEventListener('input', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
     $('#gp-use-catalog').addEventListener('change', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
+    $('#gp-predict-master').addEventListener('change', () => { predictUseCatalog = $('#gp-predict-master').checked; renderPredictCars(); });
   }
 
   document.addEventListener('DOMContentLoaded', init);
