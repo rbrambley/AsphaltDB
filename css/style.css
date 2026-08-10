@@ -557,47 +557,6 @@ footer a { color: var(--primary-light); }
 
 /* --- UX improvements --- */
 
-/* Global search */
-.global-search { position: relative; }
-#global-search-input {
-  width: 260px;
-  max-width: 100%;
-  padding: 0.45rem 0.7rem;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 6px;
-  background: rgba(255,255,255,0.15);
-  color: #fff;
-  font-size: 0.85rem;
-}
-#global-search-input::placeholder { color: rgba(255,255,255,0.7); }
-.global-search-results {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  z-index: 1002;
-  max-height: 320px;
-  overflow-y: auto;
-  margin-top: 0.25rem;
-  min-width: 280px;
-}
-.global-search-results.open { display: block; }
-.global-search-result {
-  padding: 0.6rem 0.8rem;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  font-size: 0.85rem;
-  color: var(--text);
-}
-.global-search-result:hover { background: var(--hover); }
-.global-search-result small { color: var(--muted); font-size: 0.75rem; display: block; }
-.global-search-empty { padding: 0.75rem; color: var(--muted); text-align: center; font-size: 0.85rem; }
-
 /* Tooltips */
 [data-tooltip] { position: relative; cursor: help; }
 [data-tooltip]::after {
@@ -649,7 +608,6 @@ footer a { color: var(--primary-light); }
   .table-wrap > table:not(.detail-table) > tbody > tr > td:last-child { border-bottom: none; }
   .table-wrap > table:not(.detail-table) > tbody > tr > td::before { content: attr(data-label); color: var(--muted); font-weight: 600; font-size: 0.8rem; margin-right: 1rem; }
   .table-wrap > table:not(.detail-table) > tbody > tr.expand-row > td { display: block; padding: 0; border-bottom: none; }
-  #global-search-input { width: 100%; }
   #install-btn { display: none !important; }
   .menu-toggle { margin-left: auto; }
 }

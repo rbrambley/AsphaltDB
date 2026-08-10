@@ -211,48 +211,6 @@
     }
   }
 
-  function initGlobalSearch() {
-    const inner = $('.header-inner');
-    if (!inner || $('#global-search')) return;
-    const wrapper = document.createElement('div');
-    wrapper.className = 'global-search';
-    wrapper.id = 'global-search';
-    wrapper.innerHTML = '<input type="search" id="global-search-input" placeholder="Find cars, tracks, seasons, events…" aria-label="Global search" autocomplete="off" /><div id="global-search-results" class="global-search-results" role="listbox"></div>';
-    inner.insertBefore(wrapper, inner.querySelector('.theme-switcher'));
-
-    const input = $('#global-search-input');
-    const results = $('#global-search-results');
-    let debounce;
-
-    function find(q) {
-      const m = q.toLowerCase();
-      const out = [];
-      cars.filter(c => c.carName.toLowerCase().includes(m)).slice(0, 5).forEach(c => out.push({ type: 'Car', name: c.carName, link: 'cars.html?search=' + encodeURIComponent(c.carName) }));
-      tracks.filter(t => t.trackName.toLowerCase().includes(m)).slice(0, 4).forEach(t => out.push({ type: 'Track', name: t.trackName, link: 'tracks.html?search=' + encodeURIComponent(t.trackName) }));
-      careerSeasons.filter(s => s.chapter.toLowerCase().includes(m) || s.stage.toLowerCase().includes(m)).slice(0, 4).forEach(s => out.push({ type: 'Career', name: s.stage, link: 'career.html?search=' + encodeURIComponent(s.stage) }));
-      events.filter(e => e.eventName.toLowerCase().includes(m) || e.eligibleCars.toLowerCase().includes(m)).slice(0, 4).forEach(e => out.push({ type: 'Event', name: e.eventName, link: 'events.html?search=' + encodeURIComponent(e.eventName) }));
-      return out;
-    }
-
-    function renderResults() {
-      const q = input.value.trim();
-      if (!q) { results.classList.remove('open'); return; }
-      const items = find(q);
-      if (!items.length) {
-        results.innerHTML = '<div class="global-search-empty">No results</div>';
-      } else {
-        results.innerHTML = items.map(i => `<div class="global-search-result" data-link="${i.link}"><strong>${i.name}</strong><small>${i.type}</small></div>`).join('');
-        $$('.global-search-result', results).forEach(el => el.addEventListener('click', () => location.href = el.dataset.link));
-      }
-      results.classList.add('open');
-    }
-
-    input.addEventListener('input', () => { clearTimeout(debounce); debounce = setTimeout(renderResults, 150); });
-    input.addEventListener('focus', () => { if (input.value.trim()) renderResults(); });
-    input.addEventListener('keydown', (e) => { if (e.key === 'Escape') { input.value = ''; results.classList.remove('open'); } if (e.key === 'Enter' && input.value.trim()) location.href = 'cars.html?search=' + encodeURIComponent(input.value.trim()); });
-    document.addEventListener('click', (e) => { if (!wrapper.contains(e.target)) results.classList.remove('open'); });
-  }
-
   function initTooltips() {
     const tips = {
       'Car Name': 'Full in-game car name',
@@ -1590,7 +1548,6 @@
     initTheme();
     initNav();
     initCollapsible();
-    initGlobalSearch();
     initTooltips();
     initMobileCards();
     initEmptyStates();
