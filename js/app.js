@@ -1037,19 +1037,23 @@
     const selClass = $('#evo-class');
     const selUpdate = $('#evo-update');
 
+    const ownedNames = new Set(getGarage().map(c => c.carName.toLowerCase()));
     const evoCars = cars.filter(c => c.evoEligible);
     [...new Set(evoCars.map(c => c.class))].sort().forEach(v => selClass.add(new Option(v, v)));
     [...new Set(evoCars.map(c => c.evoInfo).filter(Boolean))].sort().forEach(v => selUpdate.add(new Option(v, v)));
 
     let sortKey = '', sortDir = 1;
     const table = $('#evo-body').closest('table');
+    const allCb = $('#evo-all');
+    let showAll = false;
 
     function render() {
       const q = search.value.toLowerCase();
       const cls = selClass.value;
       const upd = selUpdate.value;
       let filtered = evoCars.filter(c => {
-        return (!q || c.carName.toLowerCase().includes(q)) &&
+        return (showAll || ownedNames.has(c.carName.toLowerCase())) &&
+               (!q || c.carName.toLowerCase().includes(q)) &&
                (cls === 'All' || c.class === cls) &&
                (upd === 'All' || c.evoInfo === upd);
       });
@@ -1068,6 +1072,7 @@
       render();
     });
     [search, selClass, selUpdate].forEach(el => el.addEventListener('input', render));
+    if (allCb) allCb.addEventListener('change', () => { showAll = allCb.checked; render(); });
     render();
   }
 

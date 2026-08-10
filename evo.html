@@ -92,6 +92,9 @@
         <div class="filters">
           <div class="filter"><label for="evo-class">Class</label><select id="evo-class"><option value="All">All</option></select></div>
           <div class="filter"><label for="evo-update">Added In</label><select id="evo-update"><option value="All">All</option></select></div>
+          <label style="display:flex;align-items:center;gap:0.25rem;cursor:pointer;white-space:nowrap;">
+            <input id="evo-all" type="checkbox" /> Show all EVO cars
+          </label>
         </div>
         <div class="count" id="evo-count">0 cars</div>
         <div class="table-wrap">
@@ -111,7 +114,6 @@
     Car ranks from Asphalt Wiki; performance stats from Asphalt9.info. Rarity/upgrade fields are baseline placeholders pending community review.
   </footer>
   <script src="js/data.js"></script>
-  <script src="js/garage_data.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
