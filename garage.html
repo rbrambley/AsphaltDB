@@ -101,7 +101,22 @@
       <div class="card-body">
         <p class="dashboard-intro">Use this form to add or update a car in your local garage. Manual entries are saved in this browser and overlay any imported data.</p>
         <form id="garage-form" class="garage-form">
-          <div><label for="garage-form-car">Car</label><select id="garage-form-car" required><option value="">Select a car…</option></select></div>
+          <div>
+            <label for="garage-form-car">Car</label>
+            <input id="garage-form-car" list="garage-form-car-list" type="text" required placeholder="Select or type a car…" />
+            <datalist id="garage-form-car-list"></datalist>
+          </div>
+          <div><label for="gf-class">Class</label>
+            <select id="gf-class" required>
+              <option value="">Select…</option>
+              <option value="D">D</option>
+              <option value="C">C</option>
+              <option value="B">B</option>
+              <option value="A">A</option>
+              <option value="S">S</option>
+              <option value="R">R</option>
+            </select>
+          </div>
           <div><label for="gf-stars">Stars</label><input id="gf-stars" type="number" min="1" max="6" placeholder="e.g. 4" required /></div>
           <div><label for="gf-rank">Rank</label><input id="gf-rank" type="number" min="0" placeholder="Current rank" required /></div>
           <div><label for="gf-topspeed">Top Speed</label><input id="gf-topspeed" type="number" step="0.1" placeholder="Max top speed" /></div>

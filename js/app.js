@@ -1452,29 +1452,45 @@
 
   function initGarageForm() {
     const form = $('#garage-form');
-    const select = $('#garage-form-car');
-    if (!form || !select) return;
+    const input = $('#garage-form-car');
+    const datalist = $('#garage-form-car-list');
+    if (!form || !input || !datalist) return;
+    function slugify(name) {
+      return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
     const sorted = [...cars].sort((a, b) => a.carName.localeCompare(b.carName));
-    sorted.forEach(c => select.add(new Option(c.carName, c.carName)));
-    select.addEventListener('change', () => {
-      const car = cars.find(c => c.carName === select.value);
+    sorted.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.carName;
+      datalist.appendChild(opt);
+    });
+    function updateFromCarName() {
+      const raw = input.value.trim();
+      const car = cars.find(c => c.carName.toLowerCase() === raw.toLowerCase());
       if (!car) return;
+      input.value = car.carName;
+      $('#gf-class').value = car.class || '';
       $('#gf-rank').value = car.rankMax || '';
       $('#gf-stars').value = '';
       $('#gf-topspeed').value = car.topSpeedMax || '';
       $('#gf-accel').value = car.accelerationMax || '';
       $('#gf-handling').value = car.handlingMax || '';
       $('#gf-nitro').value = car.nitroMax || '';
-    });
+    }
+    input.addEventListener('change', updateFromCarName);
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const carName = select.value;
-      const car = cars.find(c => c.carName === carName);
-      if (!car) return;
-      const id = carName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const raw = input.value.trim();
+      if (!raw) return;
+      const known = cars.find(c => c.carName.toLowerCase() === raw.toLowerCase());
+      const carName = known ? known.carName : raw;
+      const id = known ? (known.id || slugify(known.carName)) : slugify(raw);
+      const classVal = known ? (known.class || '') : ($('#gf-class').value || '');
       const existing = getLocalGarage().find(g => g.id === id);
-      const entry = existing ? Object.assign(existing, {
-        carName, matchedCar: carName, class: car.class,
+      const base = {
+        carName,
+        matchedCar: carName,
+        class: classVal,
         rankCurrent: Number($('#gf-rank').value) || null,
         rankMax: Number($('#gf-rank').value) || null,
         stars: Number($('#gf-stars').value) || null,
@@ -1482,21 +1498,12 @@
         acceleration: Number($('#gf-accel').value) || null,
         handling: Number($('#gf-handling').value) || null,
         nitro: Number($('#gf-nitro').value) || null,
-        capturedAt: new Date().toISOString(),
-        imageName: ''
-      }) : {
-        id, carName, matchedCar: carName, class: car.class,
-        rankCurrent: Number($('#gf-rank').value) || null,
-        rankMax: Number($('#gf-rank').value) || null,
-        stars: Number($('#gf-stars').value) || null,
-        topSpeed: Number($('#gf-topspeed').value) || null,
-        acceleration: Number($('#gf-accel').value) || null,
-        handling: Number($('#gf-handling').value) || null,
-        nitro: Number($('#gf-nitro').value) || null,
-        blueprintCurrent: null, blueprintMax: null, blueprintStatus: '',
         capturedAt: new Date().toISOString(),
         imageName: ''
       };
+      const entry = existing
+        ? Object.assign(existing, base)
+        : Object.assign({ id, blueprintCurrent: null, blueprintMax: null, blueprintStatus: '' }, base);
       const list = getLocalGarage().filter(g => g.id !== id);
       list.push(entry);
       saveLocalGarage(list);
@@ -1689,9 +1696,10 @@
       const form = $('#garage-form');
       if (!form) return;
       form.scrollIntoView({ behavior: 'smooth' });
-      const select = $('#garage-form-car');
-      select.value = c.carName;
-      select.dispatchEvent(new Event('change'));
+      const input = $('#garage-form-car');
+      input.value = c.carName;
+      input.dispatchEvent(new Event('change'));
+      $('#gf-class').value = c.class || '';
       $('#gf-rank').value = c.rankCurrent != null ? c.rankCurrent : (c.rankMax != null ? c.rankMax : '');
       $('#gf-stars').value = c.stars != null ? c.stars : '';
       $('#gf-topspeed').value = c.topSpeed != null ? c.topSpeed : '';

@@ -24,7 +24,7 @@ import pytesseract
 from PIL import Image
 
 # If Tesseract is not on PATH, uncomment and set the path to tesseract.exe:
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\rich\tesseract-install\tesseract.exe'
 
 DATA_JS = Path(__file__).resolve().parents[1] / 'js' / 'data.js'
 GARAGE_JS = Path(__file__).resolve().parents[1] / 'js' / 'garage_data.js'
@@ -102,7 +102,7 @@ def find_name(words, width, height, cars):
     """Extract the car name from the large text in the top-left."""
     region = [w for w in words if w['x'] < 0.45 * width and w['y'] < 0.32 * height and w['conf'] > 30]
     if not region:
-        return None, []
+        return None, None, []
     # Ignore obvious non-name words
     region = [w for w in region if w['text'].upper() not in ('BLUEPRINT', 'RACER', 'IMPORT', 'PARTS', 'MAX', 'RANK')]
     # Use the largest words by height (the big name text)
@@ -201,6 +201,8 @@ def parse_image(path, cars):
         return None
 
     matched_name, raw_name, _ = find_name(words, width, height, cars)
+    if not matched_name and not raw_name:
+        return None
     rank, class_letter = find_rank(words, width, height)
     blueprint = find_blueprint(words)
     top_speed = find_stat(words, 'SPEED', width, height)
@@ -291,7 +293,7 @@ def main():
 
         # Flag for review if any key field is missing or the car was not matched
         car_names = {c['carName'] for c in cars}
-        if not parsed['rankCurrent'] or not parsed['topSpeed'] or parsed['carName'] not in car_names:
+        if not parsed['rankCurrent'] or not parsed['topSpeed']:
             review.append({
                 'imageName': img_path.name,
                 'parsedName': parsed['carName'],
