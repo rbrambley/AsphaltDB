@@ -80,6 +80,9 @@
             <label for="roster-event">Event</label>
             <select id="roster-event"><option value="">— Choose an event —</option></select>
           </div>
+          <label style="display:flex;align-items:center;gap:0.25rem;cursor:pointer;white-space:nowrap;">
+            <input id="roster-all" type="checkbox" /> Show all qualifying cars
+          </label>
         </div>
         <div id="roster-event-info" class="dashboard-intro" style="display:none;"></div>
       </div>
@@ -115,7 +118,6 @@
     Car ranks from Asphalt Wiki; performance stats from Asphalt9.info. Rarity/upgrade fields are baseline placeholders pending community review.
   </footer>
   <script src="js/data.js"></script>
-  <script src="js/garage_data.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

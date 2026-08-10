@@ -1302,8 +1302,11 @@
     const results = $('#roster-results');
     const body = $('#roster-body');
     const table = $('#roster-table');
+    const allCb = $('#roster-all');
     let sortKey = 'rankMax';
     let sortDir = -1;
+    let showAll = false;
+    const ownedNames = new Set(getGarage().map(c => c.carName.toLowerCase()));
 
     [...events].sort((a, b) => a.eventName.localeCompare(b.eventName)).forEach(e => {
       sel.add(new Option(e.eventName, e.eventName));
@@ -1332,7 +1335,7 @@
         `Notes: ${event.notes || '—'}`;
       info.style.display = 'block';
 
-      let list = cars.filter(c => qualifies(c, event));
+      let list = cars.filter(c => qualifies(c, event) && (showAll || ownedNames.has(c.carName.toLowerCase())));
       list.sort((a, b) => {
         let av = a[sortKey], bv = b[sortKey];
         return compareValues(av, bv, sortDir);
@@ -1356,6 +1359,7 @@
     });
 
     sel.addEventListener('change', render);
+    if (allCb) allCb.addEventListener('change', () => { showAll = allCb.checked; render(); });
     render();
   }
 
