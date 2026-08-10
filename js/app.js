@@ -1357,14 +1357,36 @@
   function initCompare() {
     const sel1 = $('#compare-car-1');
     const sel2 = $('#compare-car-2');
-    const options = [...cars].sort((a, b) => a.carName.localeCompare(b.carName))
-      .map(c => `<option value="${esc(c.carName)}">${esc(c.carName)} (${c.class})</option>`).join('');
-    sel1.innerHTML = '<option value="">— Select car —</option>' + options;
-    sel2.innerHTML = '<option value="">— Select car —</option>' + options;
+    const masterCb = $('#compare-master');
+    let useMaster = false;
+
+    function buildOptions() {
+      const list = useMaster ? [...cars] : getGarage();
+      const opts = list
+        .filter(c => c.carName && c.class)
+        .sort((a, b) => a.carName.localeCompare(b.carName))
+        .map(c => `<option value="${esc(c.carName)}">${esc(c.carName)} (${c.class})</option>`)
+        .join('');
+      sel1.innerHTML = '<option value="">— Select car —</option>' + opts;
+      sel2.innerHTML = '<option value="">— Select car —</option>' + opts;
+    }
+
+    function getCar(name) {
+      if (useMaster) return cars.find(c => c.carName === name) || null;
+      const owned = getGarage().find(c => c.carName === name);
+      if (!owned) return null;
+      const master = cars.find(c => c.carName === owned.carName);
+      const norm = Object.assign({}, master || {}, owned);
+      if (owned.topSpeed != null) norm.topSpeedMax = owned.topSpeed;
+      if (owned.acceleration != null) norm.accelerationMax = owned.acceleration;
+      if (owned.handling != null) norm.handlingMax = owned.handling;
+      if (owned.nitro != null) norm.nitroMax = owned.nitro;
+      return norm;
+    }
 
     function render() {
-      const c1 = cars.find(c => c.carName === sel1.value);
-      const c2 = cars.find(c => c.carName === sel2.value);
+      const c1 = getCar(sel1.value);
+      const c2 = getCar(sel2.value);
       const results = $('#compare-results');
       if (!c1 || !c2) {
         results.style.display = 'none';
@@ -1397,11 +1419,11 @@
       $('#compare-body').innerHTML =
         row('Class', 'class') +
         row('Rarity', 'rarity') +
-        row('Max Rank', 'rankMax') +
-        row('Top Speed (Max)', 'topSpeedMax') +
-        row('Acceleration (Max)', 'accelerationMax') +
-        row('Handling (Max)', 'handlingMax') +
-        row('Nitro (Max)', 'nitroMax') +
+        row('Rank', 'rankMax') +
+        row('Top Speed', 'topSpeedMax') +
+        row('Acceleration', 'accelerationMax') +
+        row('Handling', 'handlingMax') +
+        row('Nitro', 'nitroMax') +
         row('Blueprint Count', 'blueprintCount') +
         row('Total Upgrade Cost', 'totalUpgradeCost', true) +
         `<tr><td>Recommended Tracks</td><td>${c1.recommendedTracks || '—'}</td><td>${c2.recommendedTracks || '—'}</td></tr>` +
@@ -1410,6 +1432,12 @@
       results.style.display = 'block';
     }
 
+    buildOptions();
+    if (masterCb) masterCb.addEventListener('change', () => {
+      useMaster = masterCb.checked;
+      buildOptions();
+      render();
+    });
     sel1.addEventListener('change', render);
     sel2.addEventListener('change', render);
   }
