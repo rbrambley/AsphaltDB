@@ -1698,7 +1698,6 @@
       form.scrollIntoView({ behavior: 'smooth' });
       const input = $('#garage-form-car');
       input.value = c.carName;
-      input.dispatchEvent(new Event('change'));
       $('#gf-class').value = c.class || '';
       $('#gf-rank').value = c.rankCurrent != null ? c.rankCurrent : (c.rankMax != null ? c.rankMax : '');
       $('#gf-stars').value = c.stars != null ? c.stars : '';
@@ -1737,19 +1736,45 @@
       `;
     }
 
+    let filterText = '', filterClass = '', filterSource = '', filterBad = false;
+    const catalogNames = new Set((typeof cars !== 'undefined' ? cars : []).map(c => c.carName));
+
+    function getSource(c, localIds, baseIds) {
+      if (localIds.has(c.id) && baseIds.has(c.id)) return 'manual+OCR';
+      if (localIds.has(c.id)) return 'manual';
+      return 'OCR';
+    }
+
+    function isBad(c) {
+      return !c.class || c.rankCurrent == null || c.rankMax == null || c.topSpeed == null || c.stars == null || !catalogNames.has(c.carName);
+    }
+
+    function filterData(data, localIds, baseIds) {
+      const q = filterText.trim().toLowerCase();
+      return data.filter(c => {
+        const source = getSource(c, localIds, baseIds);
+        if (filterClass && c.class !== filterClass) return false;
+        if (filterSource && source !== filterSource) return false;
+        if (filterBad && !isBad(c)) return false;
+        if (!q) return true;
+        return (c.carName || '').toLowerCase().includes(q) || (c.class || '').toLowerCase().includes(q) || source.toLowerCase().includes(q);
+      });
+    }
+
     function render() {
       const data = getCombinedGarage();
-      if (sortKey) data.sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
-      $('#garage-count').textContent = `${data.length} car${data.length === 1 ? '' : 's'}`;
+      const localIds = new Set(getLocalGarage().map(g => g.id));
+      const baseIds = new Set((typeof garage !== 'undefined' ? garage : []).map(g => g.id));
+      const filtered = filterData(data, localIds, baseIds);
+      if (sortKey) filtered.sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
+      $('#garage-count').textContent = `${filtered.length} car${filtered.length === 1 ? '' : 's'}`;
       renderStats();
-      if (!data.length) {
+      if (!filtered.length) {
         $('#garage-body').innerHTML = '<tr><td colspan="13" class="empty-state">No cars in garage. Use the form below or run the OCR script.</td></tr>';
         setSortIndicators(table, sortKey, sortDir);
         return;
       }
-      const localIds = new Set(getLocalGarage().map(g => g.id));
-      const baseIds = new Set((typeof garage !== 'undefined' ? garage : []).map(g => g.id));
-      renderTable('garage-body', data, (c, row) => {
+      renderTable('garage-body', filtered, (c, row) => {
         row.appendChild(makeCell(c.carName));
         row.appendChild(makeCell(c.class));
         row.appendChild(makeCell(c.rankCurrent != null && c.rankMax != null ? `${c.rankCurrent.toLocaleString()} / ${c.rankMax.toLocaleString()}` : '—', 'num'));
@@ -1758,9 +1783,7 @@
         row.appendChild(makeCell(c.blueprintMax != null ? c.blueprintMax : '—', 'num'));
         const toMax = (c.blueprintCurrent != null && c.blueprintMax != null) ? c.blueprintMax - c.blueprintCurrent : null;
         row.appendChild(makeCell(toMax != null ? toMax : '—', 'num'));
-        let source = 'OCR';
-        if (localIds.has(c.id)) source = 'manual';
-        if (baseIds.has(c.id) && localIds.has(c.id)) source = 'manual+OCR';
+        const source = getSource(c, localIds, baseIds);
         const sourceBadge = document.createElement('span');
         sourceBadge.className = 'badge ' + (source === 'OCR' ? 'badge-common' : source === 'manual' ? 'badge-rare' : 'badge-epic');
         sourceBadge.textContent = source;
@@ -1772,12 +1795,12 @@
         row.appendChild(makeCell(c.handling != null ? c.handling : '—', 'num'));
         row.appendChild(makeCell(c.nitro != null ? c.nitro : '—', 'num'));
         const actions = makeCell('');
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn';
+        editBtn.textContent = 'Edit';
+        editBtn.addEventListener('click', () => editGarageCar(c.id));
+        actions.appendChild(editBtn);
         if (localIds.has(c.id)) {
-          const editBtn = document.createElement('button');
-          editBtn.className = 'btn';
-          editBtn.textContent = 'Edit';
-          editBtn.addEventListener('click', () => editGarageCar(c.id));
-          actions.appendChild(editBtn);
           const del = document.createElement('button');
           del.className = 'btn';
           del.textContent = 'Remove';
@@ -1798,6 +1821,31 @@
       sortKey = key;
       render();
     });
+
+    const filterTextInput = $('#garage-filter-text');
+    const filterClassSelect = $('#garage-filter-class');
+    const filterSourceSelect = $('#garage-filter-source');
+    const filterBadCheck = $('#garage-filter-bad');
+    const filterClearBtn = $('#garage-filter-clear');
+    function onFilterChange() {
+      filterText = filterTextInput ? filterTextInput.value : '';
+      filterClass = filterClassSelect ? filterClassSelect.value : '';
+      filterSource = filterSourceSelect ? filterSourceSelect.value : '';
+      filterBad = filterBadCheck ? filterBadCheck.checked : false;
+      render();
+    }
+    if (filterTextInput) filterTextInput.addEventListener('input', onFilterChange);
+    if (filterClassSelect) filterClassSelect.addEventListener('change', onFilterChange);
+    if (filterSourceSelect) filterSourceSelect.addEventListener('change', onFilterChange);
+    if (filterBadCheck) filterBadCheck.addEventListener('change', onFilterChange);
+    if (filterClearBtn) filterClearBtn.addEventListener('click', () => {
+      if (filterTextInput) filterTextInput.value = '';
+      if (filterClassSelect) filterClassSelect.value = '';
+      if (filterSourceSelect) filterSourceSelect.value = '';
+      if (filterBadCheck) filterBadCheck.checked = false;
+      onFilterChange();
+    });
+
     render();
 
     const exportBtn = $('#garage-export');

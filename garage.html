@@ -132,6 +132,28 @@
       <div class="card-header"><h2>Owned Cars</h2><span class="toggle">−</span></div>
       <div class="card-body">
         <div class="count" id="garage-count">0 cars</div>
+        <div class="garage-filters" style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin:0.75rem 0;">
+          <input id="garage-filter-text" type="text" placeholder="Search name, class, source…" style="min-width:12rem;" />
+          <select id="garage-filter-class" style="min-width:5rem;">
+            <option value="">All classes</option>
+            <option value="D">D</option>
+            <option value="C">C</option>
+            <option value="B">B</option>
+            <option value="A">A</option>
+            <option value="S">S</option>
+            <option value="R">R</option>
+          </select>
+          <select id="garage-filter-source" style="min-width:7rem;">
+            <option value="">All sources</option>
+            <option value="OCR">OCR</option>
+            <option value="manual">manual</option>
+            <option value="manual+OCR">manual+OCR</option>
+          </select>
+          <label style="display:flex;align-items:center;gap:0.25rem;cursor:pointer;">
+            <input id="garage-filter-bad" type="checkbox" /> Bad entries only
+          </label>
+          <button id="garage-filter-clear" type="button" class="btn">Clear</button>
+        </div>
         <div class="table-wrap">
           <table id="garage-table">
             <thead>
