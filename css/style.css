@@ -648,6 +648,8 @@ footer a { color: var(--primary-light); }
   .table-wrap > table:not(.detail-table) > tbody > tr > td::before { content: attr(data-label); color: var(--muted); font-weight: 600; font-size: 0.8rem; margin-right: 1rem; }
   .table-wrap > table:not(.detail-table) > tbody > tr.expand-row > td { display: block; padding: 0; border-bottom: none; }
   #global-search-input { width: 100%; }
+  #install-btn { display: none !important; }
+  .menu-toggle { margin-left: auto; }
 }
 
 /* Keep garage table as a horizontal-scroll table on mobile */
