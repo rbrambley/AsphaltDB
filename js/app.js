@@ -1167,22 +1167,33 @@
     const results = $('#farm-results');
     const careerBody = $('#farm-career-body');
     const eventsBody = $('#farm-events-body');
+    const masterCb = $('#farm-master');
 
-    [...cars].sort((a, b) => a.carName.localeCompare(b.carName)).forEach(c => {
-      sel.add(new Option(`${c.carName} (${c.class})`, c.carName));
-    });
+    function buildOptions(useMaster) {
+      const list = useMaster ? [...cars] : getGarage();
+      const sorted = list
+        .filter(c => c.carName && c.class)
+        .sort((a, b) => a.carName.localeCompare(b.carName))
+        .map(c => new Option(`${c.carName} (${c.class})`, c.carName));
+      sel.innerHTML = '<option value="">— Choose a car —</option>';
+      sorted.forEach(o => sel.add(o));
+    }
+    buildOptions(false);
+    if (masterCb) masterCb.addEventListener('change', () => buildOptions(masterCb.checked));
 
     sel.addEventListener('change', () => {
       const car = cars.find(c => c.carName === sel.value);
-      if (!car) {
+      const owned = getGarage().find(c => c.carName === sel.value);
+      const displayCar = car || owned;
+      if (!displayCar) {
         info.style.display = 'none';
         results.style.display = 'none';
         return;
       }
 
-      const bpInfo = car.blueprintCount ? ` — <strong>${fmt(car.blueprintCount)} blueprints</strong> total` : '';
-      const evoBadge = car.evoEligible ? ' <span class="badge badge-legendary">EVO</span>' : '';
-      info.innerHTML = `<strong>${car.carName}</strong> — Class ${car.class}, ${car.rarity || '—'}${bpInfo}${evoBadge}`;
+      const bpInfo = car && car.blueprintCount ? ` — <strong>${fmt(car.blueprintCount)} blueprints</strong> total` : '';
+      const evoBadge = car && car.evoEligible ? ' <span class="badge badge-legendary">EVO</span>' : '';
+      info.innerHTML = `<strong>${displayCar.carName}</strong> — Class ${displayCar.class}, ${car ? car.rarity || '—' : '—'}${bpInfo}${evoBadge}`;
       info.style.display = 'block';
 
       const carNameL = car.carName.toLowerCase();
