@@ -77,6 +77,7 @@
       <button class="btn tab-btn" data-tab="owned">Owned Cars</button>
       <button class="btn tab-btn" data-tab="add">Add / Edit</button>
       <button class="btn tab-btn" data-tab="import">Import / Export</button>
+      <button class="btn tab-btn" data-tab="hidden">Hidden</button>
     </div>
 
     <section class="card tab-panel" data-tab="owned">
@@ -145,6 +146,7 @@
       <div class="card-body">
         <p class="dashboard-intro">Use this form to add or update a car in your local garage. Manual entries are saved in this browser and overlay any imported data.</p>
         <form id="garage-form" class="garage-form">
+          <input id="garage-form-id" type="hidden" />
           <div>
             <label for="garage-form-car">Car</label>
             <input id="garage-form-car" list="garage-form-car-list" type="text" required placeholder="Select or type a car…" />
@@ -183,6 +185,14 @@
           </label>
         </div>
         <div id="garage-import-status" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"></div>
+      </div>
+    </section>
+
+    <section class="card tab-panel" data-tab="hidden">
+      <div class="card-header"><h2>Hidden Cars</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">These base/OCR records have been hidden. Restoring a record will make it reappear in the Owned Cars list.</p>
+        <div id="garage-removed-list"></div>
       </div>
     </section>
 
