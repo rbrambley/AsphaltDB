@@ -1,4 +1,4 @@
-const CACHE_NAME = 'asphalt-db-v39';
+const CACHE_NAME = 'asphalt-db-v40';
 const PRECACHE = [
   './',
   'index.html',
@@ -65,12 +65,12 @@ self.addEventListener('fetch', (e) => {
   }
 
   e.respondWith(
-    caches.match(e.request).then((cached) =>
-      cached || fetch(e.request).then((response) => {
+    fetch(e.request)
+      .then((response) => {
         const clone = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
         return response;
       })
-    )
+      .catch(() => caches.match(e.request))
   );
 });
