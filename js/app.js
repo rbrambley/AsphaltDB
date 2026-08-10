@@ -1236,8 +1236,11 @@
     const body = $('#roi-body');
     const count = $('#roi-count');
     const table = $('#roi-table');
+    const allCb = $('#roi-all');
     let sortKey = 'costPerRank';
     let sortDir = 1;
+    let showAll = false;
+    const ownedNames = new Set(getGarage().map(c => c.carName.toLowerCase()));
 
     function usable(c) {
       return c.totalUpgradeCost && c.rankStock != null && c.rankMax != null &&
@@ -1260,7 +1263,7 @@
       const cls = selClass.value;
       const rar = selRarity.value;
       const q = search.value.trim().toLowerCase();
-      let list = cars.filter(usable).map(enrich).filter(c =>
+      let list = cars.filter(usable).filter(c => showAll || ownedNames.has(c.carName.toLowerCase())).map(enrich).filter(c =>
         (!cls || c.class === cls) &&
         (!rar || c.rarity === rar) &&
         (!q || c.carName.toLowerCase().includes(q))
@@ -1293,6 +1296,7 @@
     selClass.addEventListener('change', render);
     selRarity.addEventListener('change', render);
     search.addEventListener('input', render);
+    if (allCb) allCb.addEventListener('change', () => { showAll = allCb.checked; render(); });
     render();
   }
 
