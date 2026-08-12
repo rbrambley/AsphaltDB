@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Manual Car Queue | Asphalt Legends Unite</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Asphalt DB
+      </a>
+      <div class="theme-switcher">
+        <label for="theme-select">Theme</label>
+        <select id="theme-select" aria-label="Theme">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+        <span class="hamburger" aria-hidden="true"></span>
+      </button>
+      <nav id="main-nav">
+        <div class="nav-group">
+          <button class="nav-group-title" aria-expanded="false" aria-controls="nav-reference">Reference</button>
+          <ul id="nav-reference" class="nav-group-list">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="cars.html">Cars</a></li>
+            <li><a href="tracks.html">Tracks</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="seasonpass.html">Season Pass</a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <button class="nav-group-title" aria-expanded="false" aria-controls="nav-tools">Tools</button>
+          <ul id="nav-tools" class="nav-group-list">
+            <li><a href="gauntlet.html">Gauntlet</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="evo.html">EVO</a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <button class="nav-group-title" aria-expanded="false" aria-controls="nav-plan">Plan</button>
+          <ul id="nav-plan" class="nav-group-list">
+            <li><a href="farming.html">Farming</a></li>
+            <li><a href="calendar.html">Calendar</a></li>
+            <li><a href="roster.html">Roster</a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <button class="nav-group-title" aria-expanded="false" aria-controls="nav-garage">Garage</button>
+          <ul id="nav-garage" class="nav-group-list">
+            <li><a href="garage.html">Garage</a></li>
+            <li><a href="upgrades.html">Upgrades</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="menu-backdrop" aria-hidden="true"></div>
+    </div>
+  </header>
+  <main>
+
+    <h1 class="page-title">Manual Car Queue</h1>
+    <p class="page-subtitle">Edit cars that could not be matched by the scraper. Once the tracked fields are filled, the car leaves the queue.</p>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="filters" style="align-items:flex-end;">
+          <div class="filter" style="margin-left:auto;">
+            <button id="manual-cars-export" class="btn" type="button">Export manual cars JSON</button>
+          </div>
+        </div>
+        <div class="count" id="manual-cars-count">0 cars need updates</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-sort="carName">Car Name</th>
+                <th data-sort="class">Class</th>
+                <th data-sort="manufacturer">Manufacturer</th>
+                <th>Missing Fields</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="manual-cars-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <dialog id="manual-car-dialog" class="card" style="border:none; max-width:90vw; width:600px; padding:0;">
+    <div class="card-header"><h3 id="dialog-car-name">Edit Car</h3><span class="toggle" id="dialog-close">−</span></div>
+    <div class="card-body">
+      <form id="manual-car-form" class="filters" style="flex-direction:column; align-items:stretch; gap:0.75rem;">
+        <input type="hidden" id="edit-car-name" />
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-rankStock">Rank Stock</label>
+            <input type="number" id="edit-rankStock" step="1" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-rankMax">Rank Max</label>
+            <input type="number" id="edit-rankMax" step="1" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-topSpeedStock">Top Speed Stock</label>
+            <input type="number" id="edit-topSpeedStock" step="0.1" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-topSpeedMax">Top Speed Max</label>
+            <input type="number" id="edit-topSpeedMax" step="0.1" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-accelerationStock">Acceleration Stock</label>
+            <input type="number" id="edit-accelerationStock" step="0.01" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-accelerationMax">Acceleration Max</label>
+            <input type="number" id="edit-accelerationMax" step="0.01" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-handlingStock">Handling Stock</label>
+            <input type="number" id="edit-handlingStock" step="0.01" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-handlingMax">Handling Max</label>
+            <input type="number" id="edit-handlingMax" step="0.01" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-nitroStock">Nitro Stock</label>
+            <input type="number" id="edit-nitroStock" step="0.1" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-nitroMax">Nitro Max</label>
+            <input type="number" id="edit-nitroMax" step="0.1" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-blueprintCount">Total Blueprints</label>
+            <input type="number" id="edit-blueprintCount" step="1" />
+          </div>
+          <div class="filter" style="flex-direction:column; align-items:flex-start;">
+            <label for="edit-totalUpgradeCost">Total Upgrade Cost</label>
+            <input type="number" id="edit-totalUpgradeCost" step="1" />
+          </div>
+        </div>
+
+        <div class="filter" style="justify-content:flex-end; gap:0.5rem; margin-top:0.5rem;">
+          <button type="button" id="edit-cancel" class="btn" style="background:transparent; color:var(--text);">Cancel</button>
+          <button type="submit" class="btn">Save Manual Update</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <footer>
+    Data sourced from <a href="https://asphalt.fandom.com/" target="_blank" rel="noopener">Asphalt Fandom</a> and <a href="https://asphalt9.info/" target="_blank" rel="noopener">Asphalt9.info</a> — compiled for gameplay optimization.<br>
+    Use this page to fill missing data for cars the scraper could not match.
+  </footer>
+  <script src="js/data.js"></script>
+  <script src="js/garage_data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

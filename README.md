@@ -65,6 +65,22 @@ python scripts/validate_data.py              # check for duplicates and broken l
 
 Run `python scripts/scrape_cars.py --help` for options such as `--class D`, `--force`, and `--refresh-slugs`.
 
+## Manually updating cars
+
+Cars that the scraper cannot match appear on the **Manual Cars** page (`manual_cars.html`):
+
+1. Open `manual_cars.html` in a browser.
+2. Click **Edit** for any car in the queue.
+3. Fill in the missing fields and save. The car leaves the queue once all tracked fields are populated.
+4. When finished, click **Export manual cars JSON** to download `manual_cars.json`.
+5. Merge the exported file into `js/data.js`:
+
+```bash
+python scripts/merge_manual_cars.py manual_cars.json
+```
+
+Use `--dry-run` to preview the merge without writing to `js/data.js`.
+
 ## Updating calendar data
 
 The calendar can be refreshed from the latest online sources:
