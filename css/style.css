@@ -599,27 +599,10 @@ footer a { color: var(--primary-light); }
 }
 .fav-btn.active { color: #fbbf24; }
 
-/* Mobile card view */
+/* Mobile layout tweaks */
 @media (max-width: 1024px) {
-  .table-wrap > table:not(.detail-table), .table-wrap > table:not(.detail-table) > thead, .table-wrap > table:not(.detail-table) > tbody, .table-wrap > table:not(.detail-table) > tbody > tr, .table-wrap > table:not(.detail-table) > tbody > tr > td { display: block; }
-  .table-wrap > table:not(.detail-table) > thead > tr > th { display: none; }
-  .table-wrap > table:not(.detail-table) > tbody > tr { margin-bottom: 0.75rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card); box-shadow: var(--shadow); }
-  .table-wrap > table:not(.detail-table) > tbody > tr > td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); }
-  .table-wrap > table:not(.detail-table) > tbody > tr > td:last-child { border-bottom: none; }
-  .table-wrap > table:not(.detail-table) > tbody > tr > td::before { content: attr(data-label); color: var(--muted); font-weight: 600; font-size: 0.8rem; margin-right: 1rem; }
-  .table-wrap > table:not(.detail-table) > tbody > tr.expand-row > td { display: block; padding: 0; border-bottom: none; }
   #install-btn { display: none !important; }
   .menu-toggle { margin-left: auto; }
-}
-
-/* Keep garage table as a horizontal-scroll table on mobile */
-@media (max-width: 1024px) {
-  #garage-table, #garage-table > thead, #garage-table > tbody { display: table !important; }
-  #garage-table > thead > tr > th { display: table-cell !important; }
-  #garage-table > tbody > tr { display: table-row !important; margin: 0; border: none; border-radius: 0; overflow: visible; box-shadow: none; }
-  #garage-table > tbody > tr > td { display: table-cell !important; justify-content: initial; align-items: initial; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); }
-  #garage-table > tbody > tr > td:last-child { border-bottom: 1px solid var(--border); }
-  #garage-table > tbody > tr > td::before { content: none; }
 }
 
 /* Dashboard pagination */
