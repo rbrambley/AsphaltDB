@@ -52,6 +52,19 @@ git push
 
 The `garage-screenshots/` folder should not be committed — screenshots stay local and are only used for OCR.
 
+## Updating car data
+
+Car stats, rarity, blueprint counts, and upgrade costs can be refreshed from [Asphalt9.info](https://asphalt9.info/):
+
+```bash
+pip install -r requirements.txt
+python scripts/scrape_cars.py --dry-run      # preview what will change
+python scripts/scrape_cars.py                # backfill missing fields
+python scripts/validate_data.py              # check for duplicates and broken links
+```
+
+Run `python scripts/scrape_cars.py --help` for options such as `--class D`, `--force`, and `--refresh-slugs`.
+
 ## Updating calendar data
 
 The calendar can be refreshed from the latest online sources:

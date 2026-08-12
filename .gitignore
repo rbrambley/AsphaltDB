@@ -21,3 +21,8 @@ build/
 *.tmp
 __pycache__/
 *.pyc
+scripts/.cache/
+scripts/*_report.json
+scripts/*_review.json
+garage-screenshots/
+garage_review.json
