@@ -72,8 +72,9 @@ Cars that the scraper cannot match appear on the **Manual Cars** page (`manual_c
 1. Open `manual_cars.html` in a browser.
 2. Click **Edit** for any car in the queue.
 3. Fill in the missing fields and save. The car leaves the queue once all tracked fields are populated.
-4. When finished, click **Export manual cars JSON** to download `manual_cars.json`.
-5. Merge the exported file into `js/data.js`:
+4. When finished, either:
+   - click **Download merged data.js** to get a complete `data.js` with your edits applied, or
+   - click **Export manual cars JSON** and run the merge command:
 
 ```bash
 python scripts/merge_manual_cars.py manual_cars.json

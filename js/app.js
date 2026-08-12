@@ -1949,6 +1949,23 @@
     const form = $('#manual-car-form');
     const carNameDisplay = $('#dialog-car-name');
     const exportBtn = $('#manual-cars-export');
+    const exportJsBtn = $('#manual-cars-export-js');
+
+    function buildMergedDataJs() {
+      const overrides = loadOverrides();
+      const mergedCars = cars.map(c => Object.assign({}, c, overrides[c.carName] || {}));
+      const arrays = {
+        cars: mergedCars,
+        tracks: typeof tracks !== 'undefined' ? tracks : [],
+        careerSeasons: typeof careerSeasons !== 'undefined' ? careerSeasons : [],
+        careerRaces: typeof careerRaces !== 'undefined' ? careerRaces : [],
+        events: typeof events !== 'undefined' ? events : [],
+        calendarEvents: typeof calendarEvents !== 'undefined' ? calendarEvents : []
+      };
+      return Object.entries(arrays)
+        .map(([name, arr]) => `const ${name} = ${JSON.stringify(arr, null, 2)};`)
+        .join('\n\n') + '\n';
+    }
 
     function render() {
       const queue = getQueue();
@@ -2018,6 +2035,17 @@
       a.click();
       URL.revokeObjectURL(a.href);
     });
+
+    if (exportJsBtn) {
+      exportJsBtn.addEventListener('click', () => {
+        const blob = new Blob([buildMergedDataJs()], { type: 'text/javascript' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'data.js';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    }
 
     render();
   }
