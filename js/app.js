@@ -116,7 +116,30 @@
   function initSortHeaders(table, onSort) {
     table.querySelectorAll('th[data-sort]').forEach(th => {
       th.classList.add('sortable');
+      th.setAttribute('tabindex', '0');
+      th.setAttribute('role', 'button');
+      th.setAttribute('aria-label', `Sort by ${th.textContent.trim()}`);
       th.addEventListener('click', () => onSort(th.dataset.sort));
+      th.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSort(th.dataset.sort);
+        }
+      });
+      let startX, startY;
+      th.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+      th.addEventListener('touchend', (e) => {
+        if (startX == null) return;
+        const t = e.changedTouches[0];
+        if (Math.abs(t.clientX - startX) < 10 && Math.abs(t.clientY - startY) < 10) {
+          e.preventDefault();
+          onSort(th.dataset.sort);
+        }
+        startX = startY = null;
+      }, { passive: false });
     });
   }
 

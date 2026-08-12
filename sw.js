@@ -1,4 +1,4 @@
-const CACHE_NAME = 'asphalt-db-v41';
+const CACHE_NAME = 'asphalt-db-v42';
 const PRECACHE = [
   './',
   'index.html',
@@ -32,7 +32,7 @@ const PRECACHE = [
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE))
+      .then((cache) => cache.addAll(PRECACHE.map(url => new Request(url, { cache: 'no-cache' }))))
       .then(() => self.skipWaiting())
   );
 });

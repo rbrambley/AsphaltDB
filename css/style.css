@@ -483,6 +483,7 @@ td.wrap { white-space: normal; min-width: 140px; }
 th.sortable {
   cursor: pointer;
   user-select: none;
+  touch-action: manipulation;
 }
 th.sortable:hover {
   background: var(--primary);
