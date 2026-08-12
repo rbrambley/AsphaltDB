@@ -1631,6 +1631,7 @@
     registerSW();
     initTheme();
     initNav();
+    addManualCarsNav();
     initCollapsible();
     initTooltips();
     initMobileCards();
@@ -1651,6 +1652,7 @@
     if ($('#cal-list')) initCalendar();
     if ($('#garage-body')) initGarage();
     if ($('#garage-form')) initGarageForm();
+    if ($('#manual-cars-body')) initManualCars();
     applySearchFromUrl();
     if (!$('#gp-predict-car')) initSearchableSelects();
     initInstallPrompt();
@@ -1911,6 +1913,143 @@
       });
     }
   }
+  function addManualCarsNav() {
+    const tools = $('#nav-tools');
+    if (!tools) return;
+    if (tools.querySelector('a[href="manual_cars.html"]')) return;
+    tools.insertAdjacentHTML('beforeend', '<li><a href="manual_cars.html">Manual Cars</a></li>');
+  }
+
+  function initManualCars() {
+    const STORAGE_KEY = 'manualCarOverrides';
+    const TRACKED = ['rankStock', 'rankMax', 'topSpeedStock', 'topSpeedMax', 'accelerationStock', 'accelerationMax', 'handlingStock', 'handlingMax', 'nitroStock', 'nitroMax', 'blueprintCount', 'totalUpgradeCost'];
+
+    function loadOverrides() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+    }
+    function saveOverrides(o) { localStorage.setItem(STORAGE_KEY, JSON.stringify(o)); }
+
+    function effective(car) {
+      const o = loadOverrides();
+      return Object.assign({}, car, o[car.carName] || {});
+    }
+
+    function missingFields(car) {
+      const e = effective(car);
+      return TRACKED.filter(f => e[f] == null || e[f] === '');
+    }
+
+    function getQueue() {
+      return cars.filter(c => missingFields(c).length > 0).sort((a, b) => a.carName.localeCompare(b.carName));
+    }
+
+    const tbody = $('#manual-cars-body');
+    const count = $('#manual-cars-count');
+    const dialog = $('#manual-car-dialog');
+    const form = $('#manual-car-form');
+    const carNameDisplay = $('#dialog-car-name');
+    const exportBtn = $('#manual-cars-export');
+    const exportJsBtn = $('#manual-cars-export-js');
+
+    function buildMergedDataJs() {
+      const overrides = loadOverrides();
+      const mergedCars = cars.map(c => Object.assign({}, c, overrides[c.carName] || {}));
+      const arrays = {
+        cars: mergedCars,
+        tracks: typeof tracks !== 'undefined' ? tracks : [],
+        careerSeasons: typeof careerSeasons !== 'undefined' ? careerSeasons : [],
+        careerRaces: typeof careerRaces !== 'undefined' ? careerRaces : [],
+        events: typeof events !== 'undefined' ? events : [],
+        calendarEvents: typeof calendarEvents !== 'undefined' ? calendarEvents : []
+      };
+      return Object.entries(arrays)
+        .map(([name, arr]) => `const ${name} = ${JSON.stringify(arr, null, 2)};`)
+        .join('\n\n') + '\n';
+    }
+
+    function render() {
+      const queue = getQueue();
+      tbody.innerHTML = '';
+      count.textContent = `${queue.length} car${queue.length === 1 ? '' : 's'} need manual updates`;
+      queue.forEach(car => {
+        const row = document.createElement('tr');
+        row.appendChild(makeCell(car.carName));
+        row.appendChild(makeCell(car.class));
+        row.appendChild(makeCell(car.manufacturer));
+        row.appendChild(makeCell(missingFields(car).join(', ')));
+        const actionTd = makeCell('');
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = 'Edit';
+        btn.addEventListener('click', () => openDialog(car));
+        actionTd.appendChild(btn);
+        row.appendChild(actionTd);
+        tbody.appendChild(row);
+      });
+    }
+
+    function openDialog(car) {
+      const e = effective(car);
+      $('#edit-car-name').value = car.carName;
+      carNameDisplay.textContent = car.carName;
+      TRACKED.forEach(f => {
+        const input = $(`#edit-${f}`);
+        if (input) input.value = e[f] == null ? '' : e[f];
+      });
+      dialog.showModal();
+    }
+
+    function closeDialog() { dialog.close(); }
+
+    $('#dialog-close').addEventListener('click', closeDialog);
+    $('#edit-cancel').addEventListener('click', closeDialog);
+    dialog.addEventListener('click', (ev) => { if (ev.target === dialog) closeDialog(); });
+
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const carName = $('#edit-car-name').value;
+      const overrides = loadOverrides();
+      overrides[carName] = overrides[carName] || {};
+      TRACKED.forEach(f => {
+        const input = $(`#edit-${f}`);
+        const raw = input.value.trim();
+        if (raw === '') {
+          overrides[carName][f] = null;
+        } else {
+          const num = Number(raw);
+          overrides[carName][f] = isNaN(num) ? raw : num;
+        }
+      });
+      saveOverrides(overrides);
+      closeDialog();
+      render();
+    });
+
+    exportBtn.addEventListener('click', () => {
+      const overrides = loadOverrides();
+      const data = Object.entries(overrides).map(([name, vals]) => ({ carName: name, ...vals }));
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'manual_cars.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    if (exportJsBtn) {
+      exportJsBtn.addEventListener('click', () => {
+        const blob = new Blob([buildMergedDataJs()], { type: 'text/javascript' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'data.js';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    }
+
+    render();
+  }
+
   window.makeSearchable = makeSearchable;
   window.initSearchableSelects = initSearchableSelects;
 })();
