@@ -70,6 +70,23 @@
     <p class="page-subtitle">Edit cars that could not be matched by the scraper. Once the tracked fields are filled, the car leaves the queue.</p>
 
     <div class="card">
+      <div class="card-header"><h2>How to use this page</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <ol>
+          <li>This page lists cars with missing stats the scraper could not fill.</li>
+          <li>Click <strong>Edit</strong> for a car, fill in the missing fields, and click <strong>Save Manual Update</strong>. The car leaves the queue once all tracked fields are populated.</li>
+          <li>When finished, choose one export option:
+            <ul>
+              <li><strong>Download merged data.js</strong> — generates a complete <code>data.js</code> with your edits. Save it over <code>js/data.js</code> in your repo.</li>
+              <li><strong>Export manual cars JSON</strong> — downloads <code>manual_cars.json</code>. Merge it with <code>python scripts/merge_manual_cars.py manual_cars.json</code>.</li>
+            </ul>
+          </li>
+          <li>Run <code>python scripts/validate_data.py</code> after merging to check for errors.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="card">
       <div class="card-body">
         <div class="filters" style="align-items:flex-end;">
           <div class="filter" style="margin-left:auto;">
