@@ -25,5 +25,6 @@ scripts/.cache/
 scripts/*_report.json
 scripts/*_review.json
 scripts/car_slugs.json
+scripts/asec_carsList.json
 garage-screenshots/
 garage_review.json
