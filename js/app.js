@@ -157,9 +157,18 @@
   }
 
   function registerSW() {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {});
-    }
+    if (!('serviceWorker' in navigator)) return;
+    fetch('sw.js', { cache: 'no-store' })
+      .then((res) => res.text())
+      .then((text) => {
+        const match = text.match(/CACHE_NAME\s*=\s*['"`]([^'"`]+)['"`]/);
+        const version = match ? match[1] : '';
+        const url = version ? `sw.js?${version}` : 'sw.js';
+        navigator.serviceWorker.register(url, { updateViaCache: 'none' }).catch(() => {});
+      })
+      .catch(() => {
+        navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {});
+      });
   }
 
   function getFavorites() {
