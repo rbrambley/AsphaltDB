@@ -23,6 +23,7 @@ __pycache__/
 *.pyc
 scripts/.cache/
 scripts/*_report.json
+!scripts/new_cars_report.json
 scripts/*_review.json
 scripts/car_slugs.json
 scripts/asec_carsList.json
