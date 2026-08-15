@@ -13,6 +13,7 @@ ARRAY_ORDER = [
     'careerRaces',
     'events',
     'calendarEvents',
+    'gameUpdates',
 ]
 
 

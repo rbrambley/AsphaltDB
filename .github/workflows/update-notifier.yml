@@ -1,0 +1,52 @@
+name: Update Notifier Sync
+
+on:
+  schedule:
+    - cron: '0 13 * * 1'  # Every Monday at 13:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-updates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Sync updates from Game Update Notifier
+        run: python scripts/update_from_gameupdatenotifier.py
+
+      - name: Validate data
+        run: python scripts/validate_data.py
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Sync Asphalt 9 update history from Game Update Notifier"
+          title: "Auto: new Asphalt 9 update(s) detected"
+          body: |
+            Automated weekly sync from [Game Update Notifier](https://gameupdatenotifier.com/g/asphalt-9-legends).
+
+            This adds any newly detected version/patch entries to `gameUpdates`, merges parsed season
+            events into `calendarEvents`, and (if applicable) reports unmatched new car names in
+            `scripts/new_cars_report.json` for manual follow-up on the Manual Cars page.
+
+            Please review the diff before merging — scraped data is not guaranteed to be perfectly parsed.
+          branch: auto/gameupdatenotifier-sync
+          delete-branch: true
+          add-paths: |
+            js/data.js
+            scripts/new_cars_report.json

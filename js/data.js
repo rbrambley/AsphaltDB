@@ -27424,6 +27424,28 @@ const events = [
 ];
 const calendarEvents = [
   {
+    "eventName": "EVO Ranked Chevrolet Corvette",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-01-01",
+    "endDate": "2025-01-08",
+    "rawDate": "(01/01 - 08/01) Our first competitive event of the year gives you a second chance with the ZR1.",
+    "featuredCars": "Our first competitive event of the year gives you a second chance with the ZR1.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Fly High",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-01-06",
+    "endDate": "2025-01-12",
+    "rawDate": "(06/01 - 12/01) Fly high aboard the Ford GT MKIV.",
+    "featuredCars": "Fly high aboard the Ford GT MKIV.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
     "eventName": "Easter Eggstravaganza",
     "type": "Spotlight",
     "format": "Standard",
@@ -27490,6 +27512,193 @@ const calendarEvents = [
     "notes": ""
   },
   {
+    "eventName": "Mercedes-Benz Sliver Lightning Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-08-20",
+    "endDate": "2025-09-03",
+    "rawDate": "(20/8 - 3/9) The new Silver Lightning sparks the track alongside the BMW M4 GT3, the Aston Martin DB12, the Aston Martin Vantage GT12, the Lamborghini Terzo Millenio, the De Tomaso P72, and the Bugatti Chiron (EVO car).",
+    "featuredCars": "The new Silver Lightning sparks the track alongside the BMW M4 GT3, the Aston Martin DB12, the Aston Martin Vantage GT12, the Lamborghini Terzo Millenio, the De Tomaso P72, and the Bugatti Chiron (EVO car).",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Starway McLaren Speetail",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-08-20",
+    "endDate": "2025-09-16",
+    "rawDate": "(20/8 - 16/9) The Starway this season features the McLaren Speedtail.",
+    "featuredCars": "The Starway this season features the McLaren Speedtail.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Asphalt X Porsche",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-20",
+    "endDate": "2025-08-31",
+    "rawDate": "(20/8 - 31/8) Race down the track aboard the Porsche 918 Spyder, while you ponder which design you'll be voting on for the Porsche Asphalt car!",
+    "featuredCars": "Race down the track aboard the Porsche 918 Spyder, while you ponder which design you'll be voting on for the Porsche Asphalt car!",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "LEGO Technic Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-08-21",
+    "endDate": "2025-09-17",
+    "rawDate": "(20/8 or 21/8 - 17/9) Featuring all LEGO Technic cars! Including the LEGO Technic Chevrolet Corvette Stingray, the LEGO Technic McLaren Senna GTR, the LEGO Technic Ferrari FXX K, the LEGO Technic Lamborghini Revuelto and the LEGO Technic Aston Martin Valkyrie.",
+    "featuredCars": "(20/8 or 21/8 - 17/9) Featuring all LEGO Technic cars! Including the LEGO Technic Chevrolet Corvette Stingray, the LEGO Technic McLaren Senna GTR, the LEGO Technic Ferrari FXX K, the LEGO Technic Lamborghini Revuelto and the LEGO Technic Aston Martin Valkyrie.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Car Hunts",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-21",
+    "endDate": "2025-09-02",
+    "rawDate": "We'll have 2 car hunts this season, featuring the Lamborghini Countach 25th Anniversary (21/8 - 2/9) and the Ferrari Enzo Ferrari (EVO car) (4/9 - 16/9)",
+    "featuredCars": "We'll have 2 car hunts this season, featuring the Lamborghini Countach 25th Anniversary  and the Ferrari Enzo Ferrari (EVO car)",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Seasonal Starway",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-08-22",
+    "endDate": "2025-09-18",
+    "rawDate": "(22/8 - 18/9) Featuring the best cars from last season including the Koenigsegg Regera, alongside the Arash Imperium, Pagani Zonda Cinque, the DS Survolt, and the LEGO Technic Lamborghini Revuelto.",
+    "featuredCars": "Featuring the best cars from last season including the Koenigsegg Regera, alongside the Arash Imperium, Pagani Zonda Cinque, the DS Survolt, and the LEGO Technic Lamborghini Revuelto.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "LEGO Tehnic Sets Event",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-22",
+    "endDate": "2025-09-02",
+    "rawDate": "(22/8 - 2/9) Compete for the chance to win a LEGO Technic Set of your favorite car!",
+    "featuredCars": "Compete for the chance to win a LEGO Technic Set of your favorite car!",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Summer Matsuri",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-25",
+    "endDate": "2025-08-31",
+    "rawDate": "(25/8 - 31/8) Enjoying racing in the sun down the streets of Osaka, aboard the Toyota GR Super Sport Concept.",
+    "featuredCars": "Enjoying racing in the sun down the streets of Osaka, aboard the Toyota GR Super Sport Concept.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "DS E-Tense Performance Grand Prix",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-08-26",
+    "endDate": "2025-09-11",
+    "rawDate": "(26/8 - 11/9) Time to compete with the souped up version of the DS E-Tense.",
+    "featuredCars": "Time to compete with the souped up version of the DS E-Tense.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Qixi Festival",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-28",
+    "endDate": "2025-08-31",
+    "rawDate": "(28/8 - 31/8) Celebrate the night of sevens alongside the Ferrari F8 Tributo.",
+    "featuredCars": "Celebrate the night of sevens alongside the Ferrari F8 Tributo.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Bugatti Divo Star Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-29",
+    "endDate": "2025-09-08",
+    "rawDate": "(29/8 - 8/9) Get yourself busy unlocking the Bugatti Divo before the Epic Hunt arrives!",
+    "featuredCars": "Get yourself busy unlocking the Bugatti Divo before the Epic Hunt arrives!",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Labor Day",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-09-01",
+    "endDate": "2025-09-04",
+    "rawDate": "(1/9 - 4/9) Remember to wear white while driving the Ford GT Frankie Edition.",
+    "featuredCars": "Remember to wear white while driving the Ford GT Frankie Edition.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Koenigsegg Jesko Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-09-04",
+    "endDate": "2025-09-18",
+    "rawDate": "(4/9 - 18/9) Feel the speed of the Jesko in this Special Event, alongside the Maserati MC20, the Porsche 918 Spyder, the Aston Martin Victor, the Vision 1789, the Pininfarina Teorema, and the Deus Vayanne.",
+    "featuredCars": "Feel the speed of the Jesko in this Special Event, alongside the Maserati MC20, the Porsche 918 Spyder, the Aston Martin Victor, the Vision 1789, the Pininfarina Teorema, and the Deus Vayanne.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Ferrari Asphalt Series Qualifiers",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-09-04",
+    "endDate": "2025-09-10",
+    "rawDate": "Time for some E-sports! We'll be holding 4 Qualifier events for this year's Ferrari Asphalt Series! Q1 (4/9 - 10/9) Q2 (11/9 - 17/9) Q3 (18/9 - 24/9) Q4 (25/9 - 1/10)",
+    "featuredCars": "Time for some E-sports! We'll be holding 4 Qualifier events for this year's Ferrari Asphalt Series! Q1  Q2  Q3  Q4",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "End of Summer Holidays",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-09-05",
+    "endDate": "2025-09-12",
+    "rawDate": "(5/9 - 12/9) Enjoy your last days of holidays with the Maserati MC20, the Aston Martin DBS Superleggera and the Chevrolet Corvette Grand Sport.",
+    "featuredCars": "Enjoy your last days of holidays with the Maserati MC20, the Aston Martin DBS Superleggera and the Chevrolet Corvette Grand Sport.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Bugatti Divo Epic Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-09-06",
+    "endDate": "2025-09-17",
+    "rawDate": "(6/9 - 17/9) Time to get some Epic Import parts for your Bugatti Divo!",
+    "featuredCars": "Time to get some Epic Import parts for your Bugatti Divo!",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Viva Mexico!",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-09-14",
+    "endDate": "2025-09-17",
+    "rawDate": "(14/9 - 17/9) Celebrate their National Day aboard the Citröen GT by Citröen.",
+    "featuredCars": "Celebrate their National Day aboard the Citröen GT by Citröen.",
+    "relatedUpdate": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
     "eventName": "Avenged Sevenfold",
     "type": "Spotlight",
     "format": "Special Event",
@@ -27534,6 +27743,204 @@ const calendarEvents = [
     "notes": ""
   },
   {
+    "eventName": "Lamborghini Murcielago LP 640 Roadster EVO SE",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-12-11",
+    "endDate": "2025-12-21",
+    "rawDate": "(11/12 - 21/12) A special event to help welcome our latest EVO car! Max it out to unlock the new options and start collecting EVO pieces.",
+    "featuredCars": "A special event to help welcome our latest EVO car! Max it out to unlock the new options and start collecting EVO pieces.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "EVO Ranked Ferrari SF90 Stradale",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-11",
+    "endDate": "2025-12-17",
+    "rawDate": "(11/12 - 17/12) Get competitive and test your builds aboard the Ferrari SF90 Stradale.",
+    "featuredCars": "Get competitive and test your builds aboard the Ferrari SF90 Stradale.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Car Hunts",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-11",
+    "endDate": "2025-12-23",
+    "rawDate": "And to top it all off, our car hunts for the season are - Legend Pass Exclusive: Toyota GR Supra 2023 (11/12 - 23/12) - Mercedes-Benz CLK-GTR (11/12 - 23/12) - Puritalia Berlinetta (25/12 -06/01) - Special Hunt (Key Hunt) Koenigsegg CCXR (29/12 - 12/01)",
+    "featuredCars": "And to top it all off, our car hunts for the season are - Legend Pass Exclusive: Toyota GR Supra 2023  - Mercedes-Benz CLK-GTR  - Puritalia Berlinetta  - Special Hunt (Key Hunt) Koenigsegg CCXR",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Best of 2025 #1",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-12",
+    "endDate": "2025-12-14",
+    "rawDate": "(12/12 - 14/12) We'll have 5 rapid-fire events, featuring the BEST of the BEST of 2025! First round will feature: the Kimera EVO37, the Porsche 911 50 Years Porsche Design, the Praga Bohema, the LEGO Technic Chevrolet Corvette Stingray, the FV Frangivento GT65, the Ferrari 499P Modificata, and the HTT Locus Plethore LC 750.",
+    "featuredCars": "We'll have 5 rapid-fire events, featuring the BEST of the BEST of 2025! First round will feature: the Kimera EVO37, the Porsche 911 50 Years Porsche Design, the Praga Bohema, the LEGO Technic Chevrolet Corvette Stingray, the FV Frangivento GT65, the Ferrari 499P Modificata, and the HTT Locus Plethore LC 750.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Mercedes AMG One Grand Prix",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-12-15",
+    "endDate": "2025-12-31",
+    "rawDate": "(15/12 - 31/12) Time to get competitive with the AMG One!",
+    "featuredCars": "Time to get competitive with the AMG One!",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Best of 2025 #2",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-15",
+    "endDate": "2025-12-17",
+    "rawDate": "(15/12 - 17/12) Our second event features the Toyota GR Supra 2023, the Hyundai IONIQ N5, the Toyota GT Super Sport Concept, the Ford GT MKIV, the Lexus Electrified Sport Concept, the Hyundai N Vision 74 and the SSC Tuatara Striker.",
+    "featuredCars": "Our second event features the Toyota GR Supra 2023, the Hyundai IONIQ N5, the Toyota GT Super Sport Concept, the Ford GT MKIV, the Lexus Electrified Sport Concept, the Hyundai N Vision 74 and the SSC Tuatara Striker.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Aston Martin One77 Star Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-15",
+    "endDate": "2025-12-25",
+    "rawDate": "(15/12 - 25/12) Get those stars up before the epic hunt comes!",
+    "featuredCars": "Get those stars up before the epic hunt comes!",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Drive Syndicate 13",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-12-16",
+    "endDate": "2026-01-18",
+    "rawDate": "(16/12 - 18/01) The next chapter in the Saga, this heavy hitting event will feature the Dodge Charger SRT Hellcat Redeye Widebody, the Nissan Z GT4, the McLaren Solus GT, the Zenvo Aurora Agil, the Bugatti Bolide and the Koenigsegg Chimera.",
+    "featuredCars": "The next chapter in the Saga, this heavy hitting event will feature the Dodge Charger SRT Hellcat Redeye Widebody, the Nissan Z GT4, the McLaren Solus GT, the Zenvo Aurora Agil, the Bugatti Bolide and the Koenigsegg Chimera.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Best of 2025 #3",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-18",
+    "endDate": "2025-12-20",
+    "rawDate": "(18/12 - 20/12) Featuring the Toyota GR Supra Racing Concept, the Nissan Z GT4, the Formula E Gen3 EVO Championship Edition, the Lego Technic McLaren Senna GTR, the Lego Technic Aston Martin Valkyrie, the Mercedes AMG One, and the SSC Ultmate Aero TT.",
+    "featuredCars": "Featuring the Toyota GR Supra Racing Concept, the Nissan Z GT4, the Formula E Gen3 EVO Championship Edition, the Lego Technic McLaren Senna GTR, the Lego Technic Aston Martin Valkyrie, the Mercedes AMG One, and the SSC Ultmate Aero TT.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "EVO Ranked Chevrolet Corvette",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-18",
+    "endDate": "2025-12-24",
+    "rawDate": "(18/12 - 24/12) Get the best time possible with your EVO build aboard the ZR1.",
+    "featuredCars": "Get the best time possible with your EVO build aboard the ZR1.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "December Solstice",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-19",
+    "endDate": "2025-12-22",
+    "rawDate": "(19/12 - 22/12) Race under the longest night of the year aboard the Pagani Huayra R.",
+    "featuredCars": "Race under the longest night of the year aboard the Pagani Huayra R.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Best of 2025 #4",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-21",
+    "endDate": "2025-12-23",
+    "rawDate": "(21/12 - 23/12) Featuring the DS Survolt, the Ferrari F12 Berlinetta, the LEGO Technic Lamborghini Revuelto, the LEGO Technic Ferrari FXXK, the Pagani Zonda Cinque, the Arash Imperium, the Mercedes-Benz Silver Lightning, and the Mosler Super GT5.",
+    "featuredCars": "Featuring the DS Survolt, the Ferrari F12 Berlinetta, the LEGO Technic Lamborghini Revuelto, the LEGO Technic Ferrari FXXK, the Pagani Zonda Cinque, the Arash Imperium, the Mercedes-Benz Silver Lightning, and the Mosler Super GT5.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Jingle all the Way Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-12-22",
+    "endDate": "2026-01-08",
+    "rawDate": "(22/12 - 08/01) Our merriest of Spotlights will feature the Bugatti Chiron Super Sport 300+, alongside the Trion Nemesis, the Glickenhaus 007S, the Porsche 911 turbo 50 years, and the Mercedes-Benz 2022 Showcar Vision AMG.",
+    "featuredCars": "Our merriest of Spotlights will feature the Bugatti Chiron Super Sport 300+, alongside the Trion Nemesis, the Glickenhaus 007S, the Porsche 911 turbo 50 years, and the Mercedes-Benz 2022 Showcar Vision AMG.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Best of 2025 #5",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-24",
+    "endDate": "2025-12-26",
+    "rawDate": "(24/12 - 26/12) Our final in the series, featuring the Lotus Emeya, the Aston Martin DBS 770 Ultimate, the BMW M Hybrid V8, the Pininfarina B95, the Ford Mustang RTR, the RAESR Aglaia and the Koenigsegg One:1",
+    "featuredCars": "Our final in the series, featuring the Lotus Emeya, the Aston Martin DBS 770 Ultimate, the BMW M Hybrid V8, the Pininfarina B95, the Ford Mustang RTR, the RAESR Aglaia and the Koenigsegg One:1",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Holiday Event",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-25",
+    "endDate": "2026-01-01",
+    "rawDate": "( 25/12 - 01/01) Celebrate the final stretch of the year with us in the anniversary track, aboard the McLaren 600LT Spider, alongside the W Motors Fenyr SuperSport and the Ferrari 812 Superfast Aston Martin One77",
+    "featuredCars": "Celebrate the final stretch of the year with us in the anniversary track, aboard the McLaren 600LT Spider, alongside the W Motors Fenyr SuperSport and the Ferrari 812 Superfast Aston Martin One77",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Epic Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-25",
+    "endDate": "2026-01-05",
+    "rawDate": "(25/12 - 05/01) Time to hunt those Epic Import Parts!",
+    "featuredCars": "Time to hunt those Epic Import Parts!",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "EVO Ranked Ferrari SF90 Stradale",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-25",
+    "endDate": "2025-12-31",
+    "rawDate": "(25/12 - 31/12) A second run to prove your stuff!",
+    "featuredCars": "A second run to prove your stuff!",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "eventName": "Drifting Away from 2025",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-12-30",
+    "endDate": "2026-01-07",
+    "rawDate": "(30/12 - 07/01) Welcome the new year aboard the Nissan GT-R Neon Edition.",
+    "featuredCars": "Welcome the new year aboard the Nissan GT-R Neon Edition.",
+    "relatedUpdate": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
     "eventName": "DragonForce",
     "type": "Spotlight",
     "format": "Special Event",
@@ -27545,6 +27952,160 @@ const calendarEvents = [
     "notes": ""
   },
   {
+    "eventName": "DragonForce Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-02-03",
+    "endDate": "2026-03-02",
+    "rawDate": "(3/2 - 2/3)(*) A brand new spotlight event which will have you racing to the beat alongside DragonForce classics and feature the Nilu27 NILU, the Porsche 935 Dragonforce Edition, the Porsche 911 GTS Coupe, the BXR Bailey Blade GT1 and the Lotus Evija.",
+    "featuredCars": "(*) A brand new spotlight event which will have you racing to the beat alongside DragonForce classics and feature the Nilu27 NILU, the Porsche 935 Dragonforce Edition, the Porsche 911 GTS Coupe, the BXR Bailey Blade GT1 and the Lotus Evija.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "EVO Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-02-03",
+    "endDate": "2026-02-13",
+    "rawDate": "(3/2 -13/2)(*) A new style of special event, aimed to helping you max out and unlock EVO options for our latest EVO additions: the Aston Martin Valkyrie and the Ford Shelby GT350R.",
+    "featuredCars": "(*) A new style of special event, aimed to helping you max out and unlock EVO options for our latest EVO additions: the Aston Martin Valkyrie and the Ford Shelby GT350R.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Seasonal Revving",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-02-03",
+    "endDate": "2026-03-03",
+    "rawDate": "(3/2 - 3/3)(*) Chase after the Bugatti Divo, while celebrating the best cars of last season, including the Zenvo Aurora Agil, the Mercedes-Benz C 63 AMG DTM, the Koenigsegg Chimera, and the Tushek Aeon E.",
+    "featuredCars": "(*) Chase after the Bugatti Divo, while celebrating the best cars of last season, including the Zenvo Aurora Agil, the Mercedes-Benz C 63 AMG DTM, the Koenigsegg Chimera, and the Tushek Aeon E.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Starway",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-02-03",
+    "endDate": "2026-03-02",
+    "rawDate": "Speedtail: (3/2 - 2/3)(*) Our seasonal Starway will allow you to chase the McLaren Speedtail with the Lamborghini Centenario, the Apollo N, the Arrinera Hussarya 33, the W Motors Lykan HyperSport, the Lamborghini Huracán EVO Spyder, and the Peugeot Onyx.",
+    "featuredCars": "Speedtail: (*) Our seasonal Starway will allow you to chase the McLaren Speedtail with the Lamborghini Centenario, the Apollo N, the Arrinera Hussarya 33, the W Motors Lykan HyperSport, the Lamborghini Huracán EVO Spyder, and the Peugeot Onyx.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Car Hunts",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-02-03",
+    "endDate": "2026-02-15",
+    "rawDate": "Last but not least, this season's car hunts in order are the Legend Pass exclusive: Ferrari F12 Berlinetta (3/2 - 15/2)(*), the Jaguar XJR-15 (3/2 - 15/2) and the Glickenhaus 004C (17/2 - 1/3).",
+    "featuredCars": "Last but not least, this season's car hunts in order are the Legend Pass exclusive: Ferrari F12 Berlinetta (*), the Jaguar XJR-15  and the Glickenhaus 004C .",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "American Football Day",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-02-06",
+    "endDate": "2026-02-09",
+    "rawDate": "(6/2 - 9/2) Get ready for American Football's greatest night aboard the Deus Vayanne.",
+    "featuredCars": "Get ready for American Football's greatest night aboard the Deus Vayanne.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Mercedes-Benz SLR McLaren Star Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-02-09",
+    "endDate": "2026-02-19",
+    "rawDate": "(9/2 - 19/2) The product of a collab born in F1, this classic supercar will be available in this season's Star Hunt.",
+    "featuredCars": "The product of a collab born in F1, this classic supercar will be available in this season's Star Hunt.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Drive Syndicate",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-02-10",
+    "endDate": "2026-03-10",
+    "rawDate": "Side Stories: (10/2 - 10/3)(*) This Drive Syndicate packs an electric punch, bringing the new Rimac Nevera R alongside the Lexus LFA Nürburgring Package, the Bentley Mulliner Bacalar, the FV Frangivento GT65, the Mercedes-Benz Silver Lightning, and the Bugatti Centodieci.",
+    "featuredCars": "Side Stories: (*) This Drive Syndicate packs an electric punch, bringing the new Rimac Nevera R alongside the Lexus LFA Nürburgring Package, the Bentley Mulliner Bacalar, the FV Frangivento GT65, the Mercedes-Benz Silver Lightning, and the Bugatti Centodieci.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Rio Festival 2026",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-02-12",
+    "endDate": "2026-02-20",
+    "rawDate": "(12/2 - 20/2) Celebrate Carnaval aboard the Aston Martin DBS Superleggera, the Drako GTE, and the Aston Martin DB12.",
+    "featuredCars": "Celebrate Carnaval aboard the Aston Martin DBS Superleggera, the Drako GTE, and the Aston Martin DB12.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "LEGO Technic Chevrolet Corvette Stingray Legendary Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-02-12",
+    "endDate": "2026-02-22",
+    "rawDate": "(12/2 - 22/2) Another chance at grabbing the missing pieces for your LEGO Stingray!",
+    "featuredCars": "Another chance at grabbing the missing pieces for your LEGO Stingray!",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Valentine's Day",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-02-13",
+    "endDate": "2026-02-17",
+    "rawDate": "(13/2 - 17/2) Can there be a more romantic car than the Citroën GT by Citroën? (Spoilers: Yes, but it sure is pretty)",
+    "featuredCars": "Can there be a more romantic car than the Citroën GT by Citroën? (Spoilers: Yes, but it sure is pretty)",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "DS E-TENSE Performance GP",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-02-16",
+    "endDate": "2026-03-05",
+    "rawDate": "(16/2 -5/3) The DS E-TENSE Performance returns to the GP, for a new round of performance based matchups.",
+    "featuredCars": "The DS E-TENSE Performance returns to the GP, for a new round of performance based matchups.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Festival of the Fire Horse Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-02-16",
+    "endDate": "2026-02-24",
+    "rawDate": "(16/2 - 24/2) We celebrate the new year of the Horse(power) with the W Motors Fenyr SuperSport and the Lamborghini SC18.",
+    "featuredCars": "We celebrate the new year of the Horse(power) with the W Motors Fenyr SuperSport and the Lamborghini SC18.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Crescent Moon",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-02-16",
+    "endDate": "2026-02-20",
+    "rawDate": "(16/2 - 20/2) Celebrate the start of Ramadan aboard the McLaren GT.",
+    "featuredCars": "Celebrate the start of Ramadan aboard the McLaren GT.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
     "eventName": "Festival of the Fire Horse",
     "type": "Spotlight",
     "format": "Standard",
@@ -27553,6 +28114,50 @@ const calendarEvents = [
     "rawDate": "February 17 – 25, 2026",
     "featuredCars": "W Motors Fenyr SuperSport & Lamborghini SC18",
     "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "Taj Mahotsav 2026",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-02-17",
+    "endDate": "2026-02-26",
+    "rawDate": "(17/2 - 26/2) Rejoice with the arts alongside the Aston Martin Vantage GT12.",
+    "featuredCars": "Rejoice with the arts alongside the Aston Martin Vantage GT12.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Mercedes-Benz SLR McLaren Epic Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-02-19",
+    "endDate": "2026-03-02",
+    "rawDate": "(19/2 - 2/3) As the Star hunt waines, the Epic hunt rises. Get yourself some Epic Import Parts!",
+    "featuredCars": "As the Star hunt waines, the Epic hunt rises. Get yourself some Epic Import Parts!",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Lotus E-R9 SE",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-02-20",
+    "endDate": "2026-03-06",
+    "rawDate": "(20/2 - 6/3)(*) The Lotus E-R9 returns for a special event, alongside the Lamborghini Miura Concept, Pagani Zonda HP Barchetta, the Lamborghini Reventon Roadster, the Toyota GR Super Sport Concept, the Zenvo TSR-S, and the Spania 2015 GTA Spano.",
+    "featuredCars": "(*) The Lotus E-R9 returns for a special event, alongside the Lamborghini Miura Concept, Pagani Zonda HP Barchetta, the Lamborghini Reventon Roadster, the Toyota GR Super Sport Concept, the Zenvo TSR-S, and the Spania 2015 GTA Spano.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Lamborghini Aventador J Special Hunt",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-02-25",
+    "endDate": "2026-03-11",
+    "rawDate": "(25/2 - 11/3) A special Car hunt arrives to help close the season.",
+    "featuredCars": "A special Car hunt arrives to help close the season.",
+    "relatedUpdate": "FLAMES OF FORTUNE - Patch Notes",
     "notes": ""
   },
   {
@@ -27578,6 +28183,72 @@ const calendarEvents = [
     "notes": ""
   },
   {
+    "eventName": "Porsche Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-03-31",
+    "endDate": "2026-04-28",
+    "rawDate": "(31/3 - 28/4) This is what it's all about! A spotlight focus for the new Porsche 918 Spyder Asphalt Edition, created by our community, and riding alongside the Porsche 918 Spyder, the Porsche Carrera GT, the Porsche Panamera Turbo S, and the Porsche 718 Cayman.",
+    "featuredCars": "This is what it's all about! A spotlight focus for the new Porsche 918 Spyder Asphalt Edition, created by our community, and riding alongside the Porsche 918 Spyder, the Porsche Carrera GT, the Porsche Panamera Turbo S, and the Porsche 718 Cayman.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "EVO Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-03-31",
+    "endDate": "2026-04-11",
+    "rawDate": "(31/3 - 11/4) A Special Event to help you max out the new EVO cars: The Lamborghini Centenario, the McLaren Senna GTR and the Acura NSX.",
+    "featuredCars": "A Special Event to help you max out the new EVO cars: The Lamborghini Centenario, the McLaren Senna GTR and the Acura NSX.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Seasonal Revving",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-03-31",
+    "endDate": "2026-04-28",
+    "rawDate": "(31/3 - 28/4) Celebrating the best cars from our last update, bringing back the Lexus LFA Nurburgring Package, the Nilu27 NILU, the Icona Vulcano Spyder, and the Rimac Nevera R, race to unlock the Mercedes-Benz AMG ONE.",
+    "featuredCars": "Celebrating the best cars from our last update, bringing back the Lexus LFA Nurburgring Package, the Nilu27 NILU, the Icona Vulcano Spyder, and the Rimac Nevera R, race to unlock the Mercedes-Benz AMG ONE.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Starway Akylone",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-03-31",
+    "endDate": "2026-04-28",
+    "rawDate": "(31/3 - 28/4) The Starway for the Genty Akylone arrives, with the Vencer Sarthe, the Ferrari F12tdf, the Porsche 918 Spyder, the Aston Martin DBS Superleggera, the Lamborghini Huracan EVO Spyder, and the Lamborghini Egoista.",
+    "featuredCars": "The Starway for the Genty Akylone arrives, with the Vencer Sarthe, the Ferrari F12tdf, the Porsche 918 Spyder, the Aston Martin DBS Superleggera, the Lamborghini Huracan EVO Spyder, and the Lamborghini Egoista.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "April Fools",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-03-31",
+    "endDate": "2026-04-05",
+    "rawDate": "(31/3 - 5/4) Is it really an event? Or is it a trap? Only one way to find out! Join and you might find the Jaguar XJ220S TWR waiting for you.",
+    "featuredCars": "Is it really an event? Or is it a trap? Only one way to find out! Join and you might find the Jaguar XJ220S TWR waiting for you.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Car Hunts",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-03-31",
+    "endDate": "2026-04-13",
+    "rawDate": "3 new car hunts join us for the season, featuring in order the Lotus Emeya (Legend Pass Exclusive 31/3 -13/4), the Porsche 911 50 Years Porsche Design (31/3 - 13/4), and the Bugatti EB110 (14/4 - 27/4)",
+    "featuredCars": "3 new car hunts join us for the season, featuring in order the Lotus Emeya (Legend Pass Exclusive 31/3 -13/4), the Porsche 911 50 Years Porsche Design , and the Bugatti EB110",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
     "eventName": "2026 Easter Eggstravaganza",
     "type": "Spotlight",
     "format": "Standard",
@@ -27586,6 +28257,127 @@ const calendarEvents = [
     "rawDate": "April 3 – 12, 2026",
     "featuredCars": "''Bugatti Chiron Pur Sport'' & ''Automobili Pininfarina Battista Edizione Nino Farina''",
     "relatedUpdate": "",
+    "notes": ""
+  },
+  {
+    "eventName": "Easter Eggstravaganza Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-04-03",
+    "endDate": "2026-04-12",
+    "rawDate": "(3/4 - 12/4) Now almost a yearly tradition, the Easter Eggstravaganza returns! Featuring the Bugatti Chiron Pur Sport and the Automibili Pininfarina Battista Edizione Nino Farina.",
+    "featuredCars": "Now almost a yearly tradition, the Easter Eggstravaganza returns! Featuring the Bugatti Chiron Pur Sport and the Automibili Pininfarina Battista Edizione Nino Farina.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Sin R1 550 Star Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-04-06",
+    "endDate": "2026-04-17",
+    "rawDate": "(6/4 - 17/4) Get ready to hunt those blueprints in our latest Star Hunt event, featuring the Sin R1 550.",
+    "featuredCars": "Get ready to hunt those blueprints in our latest Star Hunt event, featuring the Sin R1 550.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Drive Syndicate",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-04-07",
+    "endDate": "2026-05-13",
+    "rawDate": "Interlude (7/4 - 13/5) A new DS arrives featuring the new Ferrante Design Dose Elytron, alongside the Porsche 911 GT3 R Rennsport, the Aston Marin DBS 770, the Ford GT Frankie Edition, the Ferrari 12Cilindri, and the Koenigsegg CC850.",
+    "featuredCars": "Interlude  A new DS arrives featuring the new Ferrante Design Dose Elytron, alongside the Porsche 911 GT3 R Rennsport, the Aston Marin DBS 770, the Ford GT Frankie Edition, the Ferrari 12Cilindri, and the Koenigsegg CC850.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Ferrari 296 GTB Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-04-13",
+    "endDate": "2026-04-28",
+    "rawDate": "(13/4 - 28/4) The Ferrari 296 GTB makes a return along with the McLaren Artura, the Lamborghini Diablo GT, the Bugatti EB110, the Aston Martin V12 Vantage 2022, the McMurtry Spéirling, and the Jaguar C-X75.",
+    "featuredCars": "The Ferrari 296 GTB makes a return along with the McLaren Artura, the Lamborghini Diablo GT, the Bugatti EB110, the Aston Martin V12 Vantage 2022, the McMurtry Spéirling, and the Jaguar C-X75.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Gameloft Anniversary",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-04-13",
+    "endDate": "2026-04-21",
+    "rawDate": "(13/4 - 21/4) Celebrate our birthday aboard the Bugatti Chiron, the McLaren 570s Spider and the Ford Mustang Mach-E1400.",
+    "featuredCars": "Celebrate our birthday aboard the Bugatti Chiron, the McLaren 570s Spider and the Ford Mustang Mach-E1400.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Sin R1 500 Epic Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-04-16",
+    "endDate": "2026-04-28",
+    "rawDate": "(16/4 - 28/4) You've got the stars, now go for the parts for the Sin R1 550.",
+    "featuredCars": "You've got the stars, now go for the parts for the Sin R1 550.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Porsche 917 Living Legend Grand Prix",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-04-17",
+    "endDate": "2026-05-04",
+    "rawDate": "(17/4 - 4/5) Get competitive in our new Grand Prix to unlock the all-new Porsche 917 Living Legend!",
+    "featuredCars": "Get competitive in our new Grand Prix to unlock the all-new Porsche 917 Living Legend!",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Rimac Nevera Time Attack Special Hunt",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-04-20",
+    "endDate": "2026-05-05",
+    "rawDate": "(20/4 - 5/5) Looks like it's Rimac season! Join the new Special Hunt for another chance at adding the Rimac Nevera Time Attack to your garage.",
+    "featuredCars": "Looks like it's Rimac season! Join the new Special Hunt for another chance at adding the Rimac Nevera Time Attack to your garage.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Earth Day",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-04-21",
+    "endDate": "2026-04-26",
+    "rawDate": "(21/4 - 26/4) Go green above these electric dream cars: The Volkswagen Electirc R, the Lamborghini Terzo Millenio and the DS Survolt.",
+    "featuredCars": "Go green above these electric dream cars: The Volkswagen Electirc R, the Lamborghini Terzo Millenio and the DS Survolt.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Porsche 919 Street Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-04-24",
+    "endDate": "2026-05-09",
+    "rawDate": "(24/4 - 9/5) Another new Porsche for the season, the Porsche 919 Street comes with a guard of honor, featuring the Lamborghini Temerario, the Ferrari SF90 Stradale, the Lexus Electrified Sport Concept, the Automibili Pininfarina Battista, the Ferrari 499P Modificata and the Pininfarina B95.",
+    "featuredCars": "Another new Porsche for the season, the Porsche 919 Street comes with a guard of honor, featuring the Lamborghini Temerario, the Ferrari SF90 Stradale, the Lexus Electrified Sport Concept, the Automibili Pininfarina Battista, the Ferrari 499P Modificata and the Pininfarina B95.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Golden Week",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-04-27",
+    "endDate": "2026-05-05",
+    "rawDate": "(27/4 - 5/5) Celebrate Golden Week aboard the Ferrari SF90 Stradale, the Aston Martin Victor, and the Lamborghini Huracan Super Trofeo EVO.",
+    "featuredCars": "Celebrate Golden Week aboard the Ferrari SF90 Stradale, the Aston Martin Victor, and the Lamborghini Huracan Super Trofeo EVO.",
+    "relatedUpdate": "PORSCHE OF LEGENDS - Patch Notes",
     "notes": ""
   },
   {
@@ -27600,6 +28392,171 @@ const calendarEvents = [
     "notes": ""
   },
   {
+    "eventName": "hololive Final Encore Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-04-28",
+    "endDate": "2026-05-27",
+    "rawDate": "(28/4 - 27/5) Last chance to get your favorite emojis and decals! Ride aboard the Honda Civic Type-R, Vanda Electrics Dendrobium, Glickenhaus 003S, Porsche 911 GT3 RS, Noble M600 Speedster, Nissan GTR-50 Italdesign, and the Aspark Owl to collect all the music notes and claim your rewards!",
+    "featuredCars": "Last chance to get your favorite emojis and decals! Ride aboard the Honda Civic Type-R, Vanda Electrics Dendrobium, Glickenhaus 003S, Porsche 911 GT3 RS, Noble M600 Speedster, Nissan GTR-50 Italdesign, and the Aspark Owl to collect all the music notes and claim your rewards!",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Starway Vencer Sarthe",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-04-28",
+    "endDate": "2026-05-27",
+    "rawDate": "(28/4 - 27/5) The Starway this season will have you racing for the Vencer Sarthe, aboard the Dodge Viper ACR, the Ferrari Monza SP1, the Lamborghini Huracán Super Trofeo EVO, and the Lamborghini Countach 25th Anniversary.",
+    "featuredCars": "The Starway this season will have you racing for the Vencer Sarthe, aboard the Dodge Viper ACR, the Ferrari Monza SP1, the Lamborghini Huracán Super Trofeo EVO, and the Lamborghini Countach 25th Anniversary.",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Work Hard Play Hard",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-01",
+    "endDate": "2026-05-08",
+    "rawDate": "(1/05 - 8/5) Celebrate Worker’s Day aboard the Zenvo Aurora Tur.",
+    "featuredCars": "Celebrate Worker’s Day aboard the Zenvo Aurora Tur.",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Mayhem Event Ares Panther",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-05-05",
+    "endDate": "2026-05-28",
+    "rawDate": "(05/05 - 28/05) Time for some Mayhem! Get your hands on the brand-new Ares Panther, the McLaren 600LT Spider, the Pagani Zonda Cinque, the Aston Martin DBS GT Zagato, the McLaren 650s GT3, the Ford GT MK IV, and the Mercedes-Benz Mercedes-AMG ONE.",
+    "featuredCars": "Time for some Mayhem! Get your hands on the brand-new Ares Panther, the McLaren 600LT Spider, the Pagani Zonda Cinque, the Aston Martin DBS GT Zagato, the McLaren 650s GT3, the Ford GT MK IV, and the Mercedes-Benz Mercedes-AMG ONE.",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Cinco De Mayo",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-05",
+    "endDate": "2026-05-12",
+    "rawDate": "(5/5 - 12/5) Viva Mexico! A community favorite, the Lamborghini Revuelto, is here for the celebration!",
+    "featuredCars": "Viva Mexico! A community favorite, the Lamborghini Revuelto, is here for the celebration!",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Lamborghini Invencible Star Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-08",
+    "endDate": "2026-05-19",
+    "rawDate": "(8/5 - 19/5) Another Lambo is the star here as you hunt for BPs in the Lamborghini Invencible Star Hunt.",
+    "featuredCars": "Another Lambo is the star here as you hunt for BPs in the Lamborghini Invencible Star Hunt.",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Lamborghini Sterrato Grand Prix",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-05-11",
+    "endDate": "2026-05-28",
+    "rawDate": "(11/05 - 28/5) Think you have what it takes? Prove it on the track for a chance to get the key to a brand new Lamborghini!",
+    "featuredCars": "Think you have what it takes? Prove it on the track for a chance to get the key to a brand new Lamborghini!",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Int. Day of Families",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-12",
+    "endDate": "2026-05-19",
+    "rawDate": "(12/5 - 19/5) Come celebrate Dom’s favorite day aboard the Porsche 718 Cayman GT4 Clubsport, the Porsche 911 GT1 Evolution, and the Porsche Taycan Turbo S.",
+    "featuredCars": "Come celebrate Dom’s favorite day aboard the Porsche 718 Cayman GT4 Clubsport, the Porsche 911 GT1 Evolution, and the Porsche Taycan Turbo S.",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Car Hunts",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-12",
+    "endDate": "2026-05-25",
+    "rawDate": "For this season you’ll be chasing after the Aston Martin Valour (12/5 - 25/05) and the Jaguar C-X75 (28/4 - 10/5)",
+    "featuredCars": "For this season you’ll be chasing after the Aston Martin Valour  and the Jaguar C-X75",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "LEGO Technic Aston Martin Valkyrie Tour",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-14",
+    "endDate": "2026-05-28",
+    "rawDate": "(14/05 - 28/5) Another chance for you to collect any missing pieces to complete the set, this time with a Tour event!",
+    "featuredCars": "Another chance for you to collect any missing pieces to complete the set, this time with a Tour event!",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Pagani Imola Unleashed",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-05-18",
+    "endDate": "2026-06-02",
+    "rawDate": "(18/5 - 02/6) – Time for a new Unleashed, with the Pagani Imola, the Aston Martin Valhalla Concept Car, the Ferrari F8 Tributo, the Apollo EVO, and the Lamborghini Sesto Elemento.",
+    "featuredCars": "– Time for a new Unleashed, with the Pagani Imola, the Aston Martin Valhalla Concept Car, the Ferrari F8 Tributo, the Apollo EVO, and the Lamborghini Sesto Elemento.",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Lamborghini Invencible Epic Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-18",
+    "endDate": "2026-05-29",
+    "rawDate": "(18/5 - 29/5) The Hunt continues, this time for import parts!",
+    "featuredCars": "The Hunt continues, this time for import parts!",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Aglaia Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-05-19",
+    "endDate": "2026-06-03",
+    "rawDate": "(19/5 - 03/6) A special event full of heavy hitters, lead by the RAESR Aglaia, alongside the Dodge Charger SRT® Hellcat Redeye Widebody, the Aston Martin Valour, the Puritalia Berlinetta, the Lamborghini Essenza SCV12, the FV Frangivento Sorpasso GT3, and the Koenigsegg Jesko.",
+    "featuredCars": "A special event full of heavy hitters, lead by the RAESR Aglaia, alongside the Dodge Charger SRT® Hellcat Redeye Widebody, the Aston Martin Valour, the Puritalia Berlinetta, the Lamborghini Essenza SCV12, the FV Frangivento Sorpasso GT3, and the Koenigsegg Jesko.",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "World Bee Day",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-19",
+    "endDate": "2026-05-26",
+    "rawDate": "(19/5 - 26/5) Tell all your worries to buzz off for a bit and ride aboard the ARASH AF8 Falcon Edition, the McLaren Solus GT, and the Mercedes-Benz AMG GT S .",
+    "featuredCars": "Tell all your worries to buzz off for a bit and ride aboard the ARASH AF8 Falcon Edition, the McLaren Solus GT, and the Mercedes-Benz AMG GT S .",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "eventName": "Memorial Day",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-25",
+    "endDate": "2026-06-01",
+    "rawDate": "(25/5 - 01/6) Celebrate Memorial Day with an American inspired selection of cars, featuring the Ford GT MK II, the Cadillac Cien Concept, the Chevrolet Corvette ZR1, and the Trion Nemesis",
+    "featuredCars": "Celebrate Memorial Day with an American inspired selection of cars, featuring the Ford GT MK II, the Cadillac Cien Concept, the Chevrolet Corvette ZR1, and the Trion Nemesis",
+    "relatedUpdate": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
     "eventName": "Prototype Racing",
     "type": "Spotlight",
     "format": "rowspan=\"2\"|Special Event",
@@ -27608,6 +28565,193 @@ const calendarEvents = [
     "rawDate": "May 27 – June 23, 2026",
     "featuredCars": "Audi R18 e-tron quattro 2012, ''Glickenhaus 007S'', Peugeot 9x8, Lamborghini SC63 & BMW M Hybrid V8",
     "relatedUpdate": "rowspan=\"3\"|Audi Season Update",
+    "notes": ""
+  },
+  {
+    "eventName": "Prototype Racing Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-05-27",
+    "endDate": "2026-06-23",
+    "rawDate": "(27/5 - 23/6) It’s Audi’s grand debut! Get aboard the new Audi R18 e-tron performance quattro 2012 and race alongside the Glickenhaus 007S, the BMW M Hybrid V8, the Peugeot 9x8 and the Lamborghini SC63.",
+    "featuredCars": "It’s Audi’s grand debut! Get aboard the new Audi R18 e-tron performance quattro 2012 and race alongside the Glickenhaus 007S, the BMW M Hybrid V8, the Peugeot 9x8 and the Lamborghini SC63.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "EVO Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-05-27",
+    "endDate": "2026-06-07",
+    "rawDate": "(27/5 - 7/6) Unlock the EVO options for the W Motors Lykan Hypersport and the Italdesign Zerouno.",
+    "featuredCars": "Unlock the EVO options for the W Motors Lykan Hypersport and the Italdesign Zerouno.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Seasonal Revving",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-05-27",
+    "endDate": "2026-06-23",
+    "rawDate": "(27/5 - 23/6) Bring your garage out to shine and race for the Rimac Concept S aboard the Porsche 911 GT3 R Rennsport, the Porsche 918 Spyder Asphalt Edition, the Ares Panther and the DOSE Elytron.",
+    "featuredCars": "Bring your garage out to shine and race for the Rimac Concept S aboard the Porsche 911 GT3 R Rennsport, the Porsche 918 Spyder Asphalt Edition, the Ares Panther and the DOSE Elytron.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Starway Peugeot Onyx",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-05-27",
+    "endDate": "2026-06-23",
+    "rawDate": "(27/5 - 23/6) This Season’s Starway brings back the Peugeot Onyx and requires the Ferrari LaFerrari, the Team Fordzilla P1, the Chevrolet Corvette Grand Sport, the Ferrari FXX K, the Lamborghini Aventador SV Coupé, and the Icona Vulcano Titanium.",
+    "featuredCars": "This Season’s Starway brings back the Peugeot Onyx and requires the Ferrari LaFerrari, the Team Fordzilla P1, the Chevrolet Corvette Grand Sport, the Ferrari FXX K, the Lamborghini Aventador SV Coupé, and the Icona Vulcano Titanium.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Car Hunts",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-27",
+    "endDate": "2026-06-09",
+    "rawDate": "And we couldn’t forget our car hunts, as this season will bring the McLaren 750s Coupé (Legend Pass Exclusive) (27/5 - 9/6), the Toyota GR Supra 2023 (27/5 - 9/6) and the Drako GTE (9/6 - 22/6)",
+    "featuredCars": "And we couldn’t forget our car hunts, as this season will bring the McLaren 750s Coupé (Legend Pass Exclusive) , the Toyota GR Supra 2023  and the Drako GTE",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Volkswagen W12 Coupe Time Limited Event",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-05-29",
+    "endDate": "2026-06-04",
+    "rawDate": "(29/5 - 4/6) Get behind the wheel fast before the event passes you by!",
+    "featuredCars": "Get behind the wheel fast before the event passes you by!",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "BMW M4 GT3 Star Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-06-01",
+    "endDate": "2026-06-12",
+    "rawDate": "(1/6 - 12/6) Time to get some Blueprints before the Epic Hunt begins.",
+    "featuredCars": "Time to get some Blueprints before the Epic Hunt begins.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Drive Syndicate",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-06-02",
+    "endDate": "2026-07-08",
+    "rawDate": "Operation Cerberus: (2/6 - 8/7) Race alongside the Syndicate for a new target, the TVR Cerbera Speed 12. The Audi R8 Coupé V10 performance quattro, the De Tomaso P900, the Aston Martin One77, the Zenvo Aurora Agil, and the SSC Tuatara will also be joining the underground race.",
+    "featuredCars": "Operation Cerberus:  Race alongside the Syndicate for a new target, the TVR Cerbera Speed 12. The Audi R8 Coupé V10 performance quattro, the De Tomaso P900, the Aston Martin One77, the Zenvo Aurora Agil, and the SSC Tuatara will also be joining the underground race.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Running Green",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-06-05",
+    "endDate": "2026-06-11",
+    "rawDate": "(5/6 - 11/6) Celebrate World Environment Day aboard the DS E-Tense Performance.",
+    "featuredCars": "Celebrate World Environment Day aboard the DS E-Tense Performance.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Hyundai N Vision 74 GP",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-06-11",
+    "endDate": "2026-06-28",
+    "rawDate": "(11/6 - 28/6) Time to compete and claim your key!",
+    "featuredCars": "Time to compete and claim your key!",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "BMW M4 GT3 Epic Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-06-11",
+    "endDate": "2026-06-23",
+    "rawDate": "(11/6 - 23/6) You got your Blueprints, now it’s time to get those missing parts.",
+    "featuredCars": "You got your Blueprints, now it’s time to get those missing parts.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Endurance Showdown",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-06-12",
+    "endDate": "2026-06-19",
+    "rawDate": "(12/6 - 19/6) Buckle in for the long run aboard the Ferrari F50, the Chevrolet Corvette C7.R, and McLaren GT.",
+    "featuredCars": "Buckle in for the long run aboard the Ferrari F50, the Chevrolet Corvette C7.R, and McLaren GT.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Vision 1789 Special Hunt",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-06-15",
+    "endDate": "2026-06-30",
+    "rawDate": "(15/6 - 30/6) A revolution in itself, here’s a chance to add it to your garage.",
+    "featuredCars": "A revolution in itself, here’s a chance to add it to your garage.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Audi R8 LMP1 2000 Special Event",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-06-17",
+    "endDate": "2026-07-02",
+    "rawDate": "(17/6 - 2/7) Another chance to get behind the wheel of a brand new Audi, as the R8 LMP1 2000 races into the scene, alongside the McLaren Elva, the Maserati MC12, the FV Frangivento GT65, the Naran Hyper Coupe, the Mercedes-Benz Vision One-Eleven, and the Pininfarina Teorema.",
+    "featuredCars": "Another chance to get behind the wheel of a brand new Audi, as the R8 LMP1 2000 races into the scene, alongside the McLaren Elva, the Maserati MC12, the FV Frangivento GT65, the Naran Hyper Coupe, the Mercedes-Benz Vision One-Eleven, and the Pininfarina Teorema.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Sonic 35th Anniversary Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-06-18",
+    "endDate": "2026-07-21",
+    "rawDate": "(18/6 - 21/7) The Blue Blur is turning 35, so we couldn’t miss out in an Asphalt-Style Hommage. A new chance to get your favorite decals for the SSC Ultimate Aero TT, the Porsche 911 GT2 RS Clubsport, the Apex AP-0, the Nissan GT-R Neon Edition, the Donkervoort DB-GTO, the DS E-tense and featuring a brand new Amy Decal for the W Motors Lykan Neon Edition.",
+    "featuredCars": "The Blue Blur is turning 35, so we couldn’t miss out in an Asphalt-Style Hommage. A new chance to get your favorite decals for the SSC Ultimate Aero TT, the Porsche 911 GT2 RS Clubsport, the Apex AP-0, the Nissan GT-R Neon Edition, the Donkervoort DB-GTO, the DS E-tense and featuring a brand new Amy Decal for the W Motors Lykan Neon Edition.",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Dragon Boat",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-06-19",
+    "endDate": "2026-06-26",
+    "rawDate": "(19/6 -26/6) Are you faster than a Dragon Boat? Prove it aboard the Lamborghini SC20 and the Lamborghini Huracan STO",
+    "featuredCars": "Are you faster than a Dragon Boat? Prove it aboard the Lamborghini SC20 and the Lamborghini Huracan STO",
+    "relatedUpdate": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Summer Solstice",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-06-22",
+    "endDate": "2026-07-03",
+    "rawDate": "(22/6 - 3/7) Longest day of the year? More time for racing! Enjoy racing the sun aboard the Lamborghini Aventador J.",
+    "featuredCars": "Longest day of the year? More time for racing! Enjoy racing the sun aboard the Lamborghini Aventador J.",
+    "relatedUpdate": "Audi Season – Patch Notes",
     "notes": ""
   },
   {
@@ -27809,6 +28953,17 @@ const calendarEvents = [
     "notes": ""
   },
   {
+    "eventName": "Car Hunts",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2026-07-21",
+    "endDate": "2026-08-03",
+    "rawDate": "And as always, we finish with our Car Hunts for the Ferrari F40 (21/7 - 3/8), the Lexus LFA Nurburgring Performance Package (Legend Pass Exclusive) (21/7 - 3/8), the Pagani Zonda HP Barchetta (Key hunt) (4/8 - 17/8), and the Kepler Motion (10/8 - 23/8).",
+    "featuredCars": "And as always, we finish with our Car Hunts for the Ferrari F40 , the Lexus LFA Nurburgring Performance Package (Legend Pass Exclusive) , the Pagani Zonda HP Barchetta (Key hunt) , and the Kepler Motion .",
+    "relatedUpdate": "TOUGE MASTERS SEASON - PATCH NOTES",
+    "notes": ""
+  },
+  {
     "eventName": "EVO Lamborghini Murcielago LP 64 Special Event",
     "type": "Special Event",
     "format": "",
@@ -27861,6 +29016,17 @@ const calendarEvents = [
     "rawDate": "28/7 - 8/8",
     "featuredCars": "Get your missing blueprints before the Epic Hunt starts.",
     "relatedUpdate": "Touge Masters",
+    "notes": ""
+  },
+  {
+    "eventName": "Drive Syndicate 17 - Midnight Division",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2026-07-28",
+    "endDate": "2026-09-02",
+    "rawDate": "(28/7 - 2/9) The story continues as we join the Syndicate at Mount Fuji, aboard the Tushek Aeon R, the Jannarelly AElla-60, the Mercedes-AMG C63 DTM, the Formula E Gen 3 EVO Championship Edition, the Hennessy Venom GT, and the Lamborghini Countach LPI 800-4.",
+    "featuredCars": "The story continues as we join the Syndicate at Mount Fuji, aboard the Tushek Aeon R, the Jannarelly AElla-60, the Mercedes-AMG C63 DTM, the Formula E Gen 3 EVO Championship Edition, the Hennessy Venom GT, and the Lamborghini Countach LPI 800-4.",
+    "relatedUpdate": "TOUGE MASTERS SEASON - PATCH NOTES",
     "notes": ""
   },
   {
@@ -27949,6 +29115,168 @@ const calendarEvents = [
     "rawDate": "14/8 - 19/8",
     "featuredCars": "Make that two with a W Motors Fenyr SuperSport.",
     "relatedUpdate": "Touge Masters",
+    "notes": ""
+  }
+];
+const gameUpdates = [
+  {
+    "version": "52.1.2a",
+    "versionDate": "2026-07-24",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "52.1.2a",
+    "notes": ""
+  },
+  {
+    "version": "TOUGE MASTERS SEASON - PATCH NOTES",
+    "versionDate": "2026-07-22",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/touge-masters-season-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": true,
+    "newCarsMentioned": [],
+    "title": "TOUGE MASTERS SEASON - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "version": "Audi Season – Patch Notes",
+    "versionDate": "2026-05-27",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/audi-season-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": true,
+    "newCarsMentioned": [],
+    "title": "Audi Season – Patch Notes",
+    "notes": ""
+  },
+  {
+    "version": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "versionDate": "2026-04-22",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/road-to-glory-patch-notes-hotfix",
+    "hasPatchNotes": true,
+    "calendarSynced": true,
+    "newCarsMentioned": [],
+    "title": "ROAD TO GLORY: PATCH NOTES + HOTFIX",
+    "notes": ""
+  },
+  {
+    "version": "PORSCHE OF LEGENDS - Patch Notes",
+    "versionDate": "2026-03-31",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/porsche-of-legends-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": true,
+    "newCarsMentioned": [],
+    "title": "PORSCHE OF LEGENDS - Patch Notes",
+    "notes": ""
+  },
+  {
+    "version": "50.0.6a",
+    "versionDate": "2026-03-24",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "50.0.6a",
+    "notes": ""
+  },
+  {
+    "version": "49.2.1a",
+    "versionDate": "2026-03-05",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "49.2.1a",
+    "notes": ""
+  },
+  {
+    "version": "49.1.2a",
+    "versionDate": "2026-02-05",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "49.1.2a",
+    "notes": ""
+  },
+  {
+    "version": "FLAMES OF FORTUNE - Patch Notes",
+    "versionDate": "2026-02-03",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/flames-of-fortune-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": true,
+    "newCarsMentioned": [],
+    "title": "FLAMES OF FORTUNE - Patch Notes",
+    "notes": ""
+  },
+  {
+    "version": "49.0.9a",
+    "versionDate": "2026-01-28",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "49.0.9a",
+    "notes": ""
+  },
+  {
+    "version": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "versionDate": "2025-12-11",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/holiday-overdrive-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": true,
+    "newCarsMentioned": [],
+    "title": "HOLIDAY OVERDRIVE - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "version": "48.0.5a",
+    "versionDate": "2025-12-02",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "48.0.5a",
+    "notes": ""
+  },
+  {
+    "version": "47.1.0a",
+    "versionDate": "2025-10-24",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "47.1.0a",
+    "notes": ""
+  },
+  {
+    "version": "47.0.8a",
+    "versionDate": "2025-10-03",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "47.0.8a",
+    "notes": ""
+  },
+  {
+    "version": "46.1.1a",
+    "versionDate": "2025-09-01",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "46.1.1a",
+    "notes": ""
+  },
+  {
+    "version": "Heatwave: Afterburn - Patch Notes",
+    "versionDate": "2025-08-21",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/heatwave-afterburn-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": true,
+    "newCarsMentioned": [],
+    "title": "Heatwave: Afterburn - Patch Notes",
     "notes": ""
   }
 ];

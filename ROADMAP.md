@@ -130,10 +130,10 @@ This roadmap turns the ideas in `FEATURES.md` into a practical, phased plan. The
 3. **Global search** — *[done]*.
 4. **Tooltips** — *[done]*.
 5. **PWA / offline support** — *[done]*.
-6. **Automated data refresh** — *Partial.* Calendar has a manual GitHub Action; car data still requires `scrape_cars.py`.
+6. **Automated data refresh** — *Partial.* A weekly GitHub Action (`update-notifier.yml`) scrapes Game Update Notifier and opens a PR with new updates/calendar events; the season calendar can still be triggered manually via `update-calendar.yml`, and car data still requires `scrape_cars.py`.
 7. **Data validation CI** — *Partial.* `validate.yml` runs `validate_data.py`; JS syntax and broken-link checks are not yet added.
 8. **Contribution links** — *Not yet.* "Report issue / Suggest edit" links to GitHub.
-9. **Changelog / update log** — *Not yet.*
+9. **Changelog / update log** — *[done]*. `updates.html`, backed by `scripts/update_from_gameupdatenotifier.py` and the weekly `update-notifier.yml` workflow.
 10. **Loading skeletons / spinners** — *Not yet.*
 11. **Keyboard shortcuts** — *Not yet.*
 12. **Breadcrumb navigation** — *Not yet.*

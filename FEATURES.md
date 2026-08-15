@@ -65,7 +65,7 @@ A living list of possible enhancements. Items marked **Done** are already implem
 
 ## Community & maintenance
 - [ ] "Report issue / Suggest edit" link per page.
-- [ ] Changelog / update log tied to game patches.
-- [~] Automated data refresh pipeline from Fandom / asphaltlegends.com — *Manual GitHub Actions workflow for the calendar exists (`update-calendar.yml`); car data is still refreshed manually via `scrape_cars.py`.*
+- [x] Changelog / update log tied to game patches. — *`updates.html` lists version history from Game Update Notifier, with parsed patch notes synced into `calendarEvents` and unmatched new cars flagged for manual review.*
+- [~] Automated data refresh pipeline from Fandom / asphaltlegends.com — *`update-notifier.yml` runs weekly and opens a PR with new updates/calendar events from Game Update Notifier; the original calendar workflow (`update-calendar.yml`) is still manual, and car stat data is still refreshed manually via `scrape_cars.py`.*
 - [~] Data validation checks (missing ranks, duplicate cars, broken links) — *`validate_data.py` and `validate.yml` run on CI; the report currently shows 11 warnings for missing career-race track links and ~750 strict-mode warnings for missing optional car fields (mostly `releaseYear`). Generic broken-link and JS-syntax checks are not yet wired.*
 - [ ] GitHub Actions CI to verify links and JS syntax on every commit.

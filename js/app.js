@@ -2015,6 +2015,7 @@
     initTheme();
     initNav();
     addManualCarsNav();
+    addUpdatesNav();
     initCollapsible();
     initTooltips();
     initMobileCards();
@@ -2033,6 +2034,7 @@
     if ($('#roster-event')) initEventRoster();
     if ($('#compare-car-1')) initCompare();
     if ($('#cal-list')) initCalendar();
+    if ($('#upd-list')) initUpdates();
     if ($('#garage-body')) initGarage();
     if ($('#garage-form')) initGarageForm();
     if ($('#manual-cars-body')) initManualCars();
@@ -2107,6 +2109,56 @@
     }
 
     selStatus.addEventListener('change', render);
+    selType.addEventListener('change', render);
+    search.addEventListener('input', render);
+    render();
+  }
+
+  // ---------- Updates / changelog ----------
+  function initUpdates() {
+    const selType = $('#upd-type');
+    const search = $('#upd-search');
+    const list = $('#upd-list');
+    const count = $('#upd-count');
+    const updates = typeof gameUpdates !== 'undefined' ? gameUpdates : [];
+
+    function fmtDate(d) {
+      if (!d) return '—';
+      return new Date(d).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function render() {
+      const type = selType.value;
+      const q = search.value.trim().toLowerCase();
+
+      const filtered = updates.filter(u => {
+        if (type === 'patch-notes' && !u.hasPatchNotes) return false;
+        if (type === 'source' && u.hasPatchNotes) return false;
+        if (q && !u.version.toLowerCase().includes(q)) return false;
+        return true;
+      }).sort((a, b) => (b.versionDate || '').localeCompare(a.versionDate || ''));
+
+      count.textContent = `${filtered.length} update${filtered.length === 1 ? '' : 's'}`;
+      if (!filtered.length) {
+        list.innerHTML = '<p class="empty-state">No updates match your filters.</p>';
+        return;
+      }
+      list.innerHTML = filtered.map(u => {
+        const linkLabel = u.hasPatchNotes ? 'Patch Notes' : 'Source';
+        const syncBadge = u.hasPatchNotes
+          ? (u.calendarSynced ? '<span class="badge badge-epic">Synced to calendar</span>' : '<span class="badge badge-common">No events parsed</span>')
+          : '';
+        const newCars = (u.newCarsMentioned || []).length
+          ? `<p><strong>New cars mentioned (not yet in roster):</strong> ${u.newCarsMentioned.join(', ')} — see <a href="manual_cars.html">Manual Cars</a>.</p>`
+          : '';
+        return `<div class="cal-card">
+          <div class="cal-header"><h4>${u.version}</h4>${syncBadge}</div>
+          <div class="cal-meta"><span>${fmtDate(u.versionDate)}</span> &middot; <a href="${u.sourceUrl}" target="_blank" rel="noopener">${linkLabel}</a></div>
+          ${newCars}
+        </div>`;
+      }).join('');
+    }
+
     selType.addEventListener('change', render);
     search.addEventListener('input', render);
     render();
@@ -2412,6 +2464,17 @@
     tools.insertAdjacentHTML('beforeend', '<li><a href="manual_cars.html">Manual Cars</a></li>');
   }
 
+  function addUpdatesNav() {
+    const plan = $('#nav-plan');
+    if (!plan) return;
+    if (plan.querySelector('a[href="updates.html"]')) return;
+    const calLink = plan.querySelector('a[href="calendar.html"]');
+    const li = document.createElement('li');
+    li.innerHTML = '<a href="updates.html">Updates</a>';
+    if (calLink) calLink.closest('li').insertAdjacentElement('afterend', li);
+    else plan.insertAdjacentElement('beforeend', li);
+  }
+
   function initManualCars() {
     const STORAGE_KEY = 'manualCarOverrides';
     const TRACKED = ['rankStock', 'rankMax', 'topSpeedStock', 'topSpeedMax', 'accelerationStock', 'accelerationMax', 'handlingStock', 'handlingMax', 'nitroStock', 'nitroMax', 'blueprintCount', 'totalUpgradeCost'];
@@ -2452,7 +2515,8 @@
         careerSeasons: typeof careerSeasons !== 'undefined' ? careerSeasons : [],
         careerRaces: typeof careerRaces !== 'undefined' ? careerRaces : [],
         events: typeof events !== 'undefined' ? events : [],
-        calendarEvents: typeof calendarEvents !== 'undefined' ? calendarEvents : []
+        calendarEvents: typeof calendarEvents !== 'undefined' ? calendarEvents : [],
+        gameUpdates: typeof gameUpdates !== 'undefined' ? gameUpdates : []
       };
       return Object.entries(arrays)
         .map(([name, arr]) => `const ${name} = ${JSON.stringify(arr, null, 2)};`)

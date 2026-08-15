@@ -97,6 +97,23 @@ Or run locally:
 python scripts/update_calendar.py --season-url https://asphaltlegends.com/news/touge-masters --spotlight
 ```
 
+## Updates / changelog
+
+The **Updates** page (`updates.html`) tracks Asphalt 9 version history from [Game Update Notifier](https://gameupdatenotifier.com/g/asphalt-9-legends). When a version has a "Patch Notes" write-up, the script also parses its Special Events / Time Limited Events into `calendarEvents` and cross-checks any newly mentioned cars against the local roster.
+
+Run it locally with:
+
+```bash
+python scripts/update_from_gameupdatenotifier.py --backfill-months 12   # initial/large backfill
+python scripts/update_from_gameupdatenotifier.py                        # incremental refresh
+```
+
+Options: `--dry-run` (preview without writing), `--limit N` (cap Patch Notes subpages fetched per run), `--delay` (seconds between requests).
+
+New car names mentioned in patch notes that don't match an existing roster entry are written to `scripts/new_cars_report.json` for manual review — they are not added to `js/data.js` automatically.
+
+A scheduled GitHub Action (`.github/workflows/update-notifier.yml`) runs this weekly and opens a pull request with any changes for review.
+
 ## Hosting
 
 This is a plain static site. To publish:
