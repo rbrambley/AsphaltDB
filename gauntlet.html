@@ -97,6 +97,27 @@
         </div>
         <div id="gp-result" class="table-wrap" style="display:none; margin-top:1rem;"></div>
         <div id="gp-summary" class="lineup-summary"></div>
+
+        <div id="gp-lineup" class="lineup-editor" style="display:none; margin-top:1rem;">
+          <h3 style="margin-top:0;">Your Lineup</h3>
+          <p class="dashboard-intro" style="font-size:0.85rem;">Adjust any slot to override the optimizer. Already-picked cars are removed from other dropdowns so the same car cannot fill two slots.</p>
+          <div id="gp-lineup-slots" class="filters" style="align-items:flex-start;"></div>
+          <div id="gp-lineup-actions" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
+            <button id="gp-use-recommended" class="btn" type="button">Use recommended</button>
+            <button id="gp-lock-lineup" class="btn" type="button">Lock lineup & record times</button>
+          </div>
+        </div>
+
+        <div id="gp-session" style="display:none; margin-top:1rem;">
+          <h3>Record Session Times</h3>
+          <p class="dashboard-intro" style="font-size:0.85rem;">Enter the actual lap time each car ran. Saving records all five as race logs and re-runs calibration automatically.</p>
+          <div id="gp-session-slots" class="filters" style="align-items:flex-start;"></div>
+          <div style="margin-top:0.75rem;">
+            <button id="gp-save-session" class="btn" type="button">Save session & calibrate</button>
+            <button id="gp-cancel-session" class="btn" type="button" style="margin-left:0.5rem;">Cancel</button>
+          </div>
+          <div id="gp-session-status" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"></div>
+        </div>
       </div>
     </section>
 
@@ -106,6 +127,8 @@
         <div class="filters">
           <div class="filter"><label for="gp-predict-track">Track</label><select id="gp-predict-track"><option value="">— Select track —</option></select></div>
           <div class="filter"><label for="gp-predict-car">Car</label><select id="gp-predict-car"><option value="">— Select car —</option></select></div>
+          <div class="filter"><label for="gp-predict-car-class">Car class</label><select id="gp-predict-car-class"><option value="all">All classes</option></select></div>
+          <div class="filter"><label for="gp-predict-min-rank">Min rank</label><input id="gp-predict-min-rank" type="number" min="0" value="0" /></div>
           <label style="display:flex;align-items:center;gap:0.25rem;cursor:pointer;white-space:nowrap;">
             <input id="gp-predict-master" type="checkbox" /> Use master catalog
           </label>
@@ -212,9 +235,25 @@
   let predictUseCatalog = false;
   let logs = [];
   let cal = {};
+  let currentRecommendation = [];
+  let lockedSession = null;
 
   function slug(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''); }
   function esc(s) { return String(s || '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function resetSearchable(select) {
+    const wrapper = select.closest('.searchable-select');
+    if (wrapper) {
+      const input = wrapper.querySelector('.searchable-select-input');
+      if (input && input.value) {
+        input.value = '';
+        input.dispatchEvent(new Event('input'));
+      }
+    }
+  }
+  function refreshSearchable(select) {
+    if (typeof makeSearchable === 'function' && select.options.length >= 15) makeSearchable(select);
+  }
 
   function getGarage() {
     let local = [];
@@ -387,6 +426,7 @@
     const rows = [];
     let totalRank = 0;
     let totalTime = 0;
+    currentRecommendation = [];
     for (let i = 0; i < 5; i++) {
       const carIdx = assignment[i];
       if (carIdx < 0) { rows.push(`<tr><td>${i+1}</td><td>${esc(selected[i].display_name)}</td><td colspan="3">No car assigned</td></tr>`); continue; }
@@ -395,11 +435,172 @@
       totalRank += car.rank;
       totalTime += p.time;
       rows.push(`<tr><td>${i+1}</td><td>${esc(selected[i].display_name)}</td><td>${esc(car.name)}${car.owned ? '' : ' [catalog]'} (${car.car_class})</td><td class="num">${FMT(p.time)} ± ${FMT(p.ci)}</td><td class="num">${Number(car.rank).toLocaleString()}</td></tr>`);
+      currentRecommendation.push({ track: selected[i], car, predictedTime: p.time });
     }
     const result = $('#gp-result');
     result.innerHTML = `<table class="detail-table"><thead><tr><th>Slot</th><th>Track</th><th>Car</th><th class="num">Predicted (s)</th><th class="num">Rank</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
     result.style.display = 'block';
     $('#gp-summary').textContent = `Combined max rank: ${totalRank.toLocaleString()} · Combined predicted time: ${FMT(totalTime)} s`;
+    renderLineup();
+  }
+
+  function getLineup() {
+    return currentRecommendation.map((rec, i) => {
+      const sel = $(`#gp-lineup-car-${i}`);
+      const carId = sel && sel.value ? sel.value : rec.car.id;
+      const car = gCars.find((c) => c.id === carId) || rec.car;
+      return { track: rec.track, car, predictedTime: predict(car, rec.track).time };
+    });
+  }
+
+  function getSelectedLineupCars() {
+    const selected = [];
+    for (let i = 0; i < currentRecommendation.length; i++) {
+      const sel = $(`#gp-lineup-car-${i}`);
+      selected[i] = sel ? sel.value : '';
+    }
+    return selected;
+  }
+
+  function populateLineupCarSelect(sel, track, pool, ownSelected, allSelected) {
+    const options = pool
+      .filter((c) => c.id === ownSelected || !allSelected.includes(c.id))
+      .map((c) => ({ c, pred: predict(c, track).time }))
+      .sort((a, b) => a.pred - b.pred || b.c.rank - a.c.rank);
+    const html = options.map(({ c, pred }) => `<option value="${esc(c.id)}">${esc(c.name)}${c.owned ? '' : ' [catalog]'} (${c.car_class}, ${Number(c.rank).toLocaleString()}) — ${FMT(pred)}s</option>`).join('');
+    sel.innerHTML = `<option value="">— Select car —</option>${html}`;
+    sel.value = ownSelected;
+  }
+
+  function updateAlternatives(i, track, pool) {
+    const sel = $(`#gp-lineup-car-${i}`);
+    if (!sel) return;
+    const own = sel.value;
+    const alternatives = pool
+      .filter((c) => c.id !== own)
+      .map((c) => ({ c, pred: predict(c, track).time }))
+      .sort((a, b) => a.pred - b.pred)
+      .slice(0, 3);
+    const div = sel.closest('.filter').querySelector('.lineup-alternatives');
+    if (!alternatives.length) { div.textContent = ''; return; }
+    div.innerHTML = 'Top alternatives: ' + alternatives.map(({ c, pred }) => `<strong>${esc(c.name)}</strong> ${FMT(pred)}s`).join(', ');
+  }
+
+  function updateLineupOptions() {
+    const pool = filterCars();
+    const selected = getSelectedLineupCars();
+    for (let i = 0; i < currentRecommendation.length; i++) {
+      const sel = $(`#gp-lineup-car-${i}`);
+      if (!sel) continue;
+      const track = currentRecommendation[i].track;
+      const own = selected[i];
+      populateLineupCarSelect(sel, track, pool, own, selected);
+      // Re-apply any active searchable filter
+      const wrapper = sel.closest('.searchable-select');
+      if (wrapper) {
+        const input = wrapper.querySelector('.searchable-select-input');
+        if (input && input.value) input.dispatchEvent(new Event('input'));
+      }
+      updateAlternatives(i, track, pool);
+    }
+  }
+
+  function renderLineup() {
+    const container = $('#gp-lineup-slots');
+    container.innerHTML = '';
+    if (!currentRecommendation.length) {
+      $('#gp-lineup').style.display = 'none';
+      return;
+    }
+    const pool = filterCars();
+    currentRecommendation.forEach((rec, i) => {
+      const div = document.createElement('div');
+      div.className = 'filter';
+      div.innerHTML = `<label for="gp-lineup-car-${i}">Slot ${i + 1}: ${esc(rec.track.display_name)}</label>` +
+        `<select id="gp-lineup-car-${i}"><option value="">— Select car —</option></select>` +
+        `<div class="lineup-alternatives" style="font-size:0.8rem;color:var(--muted);margin-top:0.25rem;"></div>`;
+      container.appendChild(div);
+      const sel = $(`#gp-lineup-car-${i}`);
+      const selected = getSelectedLineupCars();
+      selected[i] = rec.car.id;
+      populateLineupCarSelect(sel, rec.track, pool, rec.car.id, selected);
+      refreshSearchable(sel);
+      updateAlternatives(i, rec.track, pool);
+      sel.addEventListener('change', () => { updateLineupOptions(); });
+    });
+    $('#gp-lineup').style.display = 'block';
+    $('#gp-session').style.display = 'none';
+    lockedSession = null;
+  }
+
+  function useRecommended() {
+    renderLineup();
+  }
+
+  function lockLineup() {
+    const lineup = getLineup();
+    if (lineup.some((l) => !l.car || !l.car.id)) {
+      const existing = $('#gp-lineup-error');
+      if (existing) existing.remove();
+      $('#gp-lineup-actions').insertAdjacentHTML('beforeend', '<span id="gp-lineup-error" style="color:var(--danger);font-size:0.85rem;margin-left:0.5rem;">Select a car for every slot first.</span>');
+      setTimeout(() => { const el = $('#gp-lineup-error'); if (el) el.remove(); }, 3000);
+      return;
+    }
+    lockedSession = lineup;
+    renderSessionInputs();
+  }
+
+  function renderSessionInputs() {
+    const container = $('#gp-session-slots');
+    container.innerHTML = '';
+    if (!lockedSession) return;
+    lockedSession.forEach((slot, i) => {
+      const div = document.createElement('div');
+      div.className = 'filter';
+      div.innerHTML = `<label for="gp-session-time-${i}">${esc(slot.car.name)} on ${esc(slot.track.display_name)}</label>` +
+        `<input id="gp-session-time-${i}" type="number" step="0.01" min="0" placeholder="${FMT(slot.predictedTime)}" />` +
+        `<div style="font-size:0.8rem;color:var(--muted);margin-top:0.25rem;">Predicted: ${FMT(slot.predictedTime)} s</div>`;
+      container.appendChild(div);
+    });
+    $('#gp-lineup').style.display = 'none';
+    $('#gp-session').style.display = 'block';
+    $('#gp-session-status').textContent = '';
+  }
+
+  function cancelSession() {
+    lockedSession = null;
+    $('#gp-session').style.display = 'none';
+    $('#gp-lineup').style.display = 'block';
+    $('#gp-session-status').textContent = '';
+  }
+
+  function saveSession() {
+    if (!lockedSession) return;
+    const entries = [];
+    let valid = true;
+    const sessionId = 'sess_' + Date.now();
+    for (let i = 0; i < lockedSession.length; i++) {
+      const time = Number($(`#gp-session-time-${i}`).value);
+      if (!time || time <= 0) { valid = false; break; }
+      const slot = lockedSession[i];
+      entries.push({
+        timestamp: new Date().toISOString(),
+        track_id: slot.track.id,
+        car_id: slot.car.id,
+        actual_time_sec: time,
+        predicted_time_sec: slot.predictedTime,
+        notes: `session:${sessionId}`,
+        session_id: sessionId
+      });
+    }
+    if (!valid) { $('#gp-session-status').textContent = 'Enter a positive time for every slot.'; return; }
+    logs.unshift(...entries);
+    saveLogs();
+    renderLogs();
+    renderStatus();
+    runCalibrate();
+    $('#gp-session-status').textContent = `Session saved with ${entries.length} logs. Calibration updated.`;
+    lockedSession = null;
   }
 
   function runPredict() {
@@ -558,6 +759,7 @@
       div.innerHTML = `<label for="gp-track-${i}">Track ${i+1}</label><select id="gp-track-${i}"><option value="">— Select track —</option>${options}</select>`;
       container.appendChild(div);
       if (shortTracks[i]) $(`#gp-track-${i}`).value = shortTracks[i].id;
+      refreshSearchable($(`#gp-track-${i}`));
     }
   }
 
@@ -568,13 +770,38 @@
     $('#gp-predict-car').innerHTML = `<option value="">— Select car —</option>${cOpts}`;
     $('#gp-log-track').innerHTML = `<option value="">— Track —</option>${tOpts}`;
     $('#gp-log-car').innerHTML = `<option value="">— Car —</option>${cOpts}`;
+    resetSearchable($('#gp-predict-track'));
+    refreshSearchable($('#gp-predict-track'));
+    resetSearchable($('#gp-predict-car'));
+    refreshSearchable($('#gp-predict-car'));
+    resetSearchable($('#gp-log-track'));
+    refreshSearchable($('#gp-log-track'));
+    resetSearchable($('#gp-log-car'));
+    refreshSearchable($('#gp-log-car'));
+  }
+
+  function filterPredictCars() {
+    const cls = $('#gp-predict-car-class').value;
+    const minRank = Number($('#gp-predict-min-rank').value) || 0;
+    const useCatalog = $('#gp-predict-master').checked;
+    return gCars.filter((c) => (cls === 'all' || c.car_class === cls) && c.rank >= minRank && (useCatalog || c.owned));
   }
 
   function renderPredictCars() {
-    const list = gCars.filter((c) => c.owned || predictUseCatalog);
+    const list = filterPredictCars();
     const cOpts = list.map((c) => `<option value="${c.id}">${esc(c.name)}${c.owned ? '' : ' [catalog]'} (${c.car_class}, ${Number(c.rank).toLocaleString()})</option>`).join('');
     $('#gp-predict-car').innerHTML = `<option value="">— Select car —</option>${cOpts}`;
     $('#gp-predict-result').innerHTML = '';
+    resetSearchable($('#gp-predict-car'));
+    refreshSearchable($('#gp-predict-car'));
+  }
+
+  function renderPredictClassFilter() {
+    const classes = [...new Set(gCars.map((c) => c.car_class))].sort();
+    const opts = classes.map((c) => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    $('#gp-predict-car-class').innerHTML = `<option value="all">All classes</option>${opts}`;
+    resetSearchable($('#gp-predict-car-class'));
+    refreshSearchable($('#gp-predict-car-class'));
   }
 
   function renderClassFilter() {
@@ -582,6 +809,8 @@
     const opts = classes.map((c) => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
     $('#gp-car-class').innerHTML = `<option value="all">All classes</option>${opts}`;
     $('#gp-car-count').textContent = `${gCars.length} cars available`;
+    resetSearchable($('#gp-car-class'));
+    refreshSearchable($('#gp-car-class'));
   }
 
   function renderLogs() {
@@ -615,6 +844,8 @@
     const catalog = gCars.filter((c) => !c.owned).sort((a, b) => a.name.localeCompare(b.name));
     const opts = catalog.map((c) => `<option value="${c.id}">${esc(c.name)} (${c.car_class}, ${Number(c.rank).toLocaleString()})</option>`).join('');
     $('#gp-add-car-select').innerHTML = `<option value="">— Select catalog car —</option>${opts}`;
+    resetSearchable($('#gp-add-car-select'));
+    refreshSearchable($('#gp-add-car-select'));
   }
 
   function addToGarage() {
@@ -722,10 +953,13 @@
     renderTrackSelectors();
     renderSelectors();
     renderPredictCars();
+    renderPredictClassFilter();
     renderClassFilter();
     renderAddGarage();
     const stOpts = gTracks.map((t) => `<option value="${t.id}">${esc(t.display_name)} (${t.track_length})</option>`).join('');
     $('#gp-seed-track').innerHTML = `<option value="">— Select track —</option>${stOpts}`;
+    resetSearchable($('#gp-seed-track'));
+    refreshSearchable($('#gp-seed-track'));
     initTabs();
     if (typeof initSearchableSelects !== 'undefined') initSearchableSelects();
     renderLogs();
@@ -738,10 +972,20 @@
     $('#gp-calibrate').addEventListener('click', runCalibrate);
     $('#gp-seed-track').addEventListener('change', loadSeedTrack);
     $('#gp-save-seed').addEventListener('click', saveSeed);
-    $('#gp-car-class').addEventListener('change', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
-    $('#gp-min-rank').addEventListener('input', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
-    $('#gp-use-catalog').addEventListener('change', () => { $('#gp-car-count').textContent = `${filterCars().length} cars eligible`; });
+    const updateCountAndLineup = () => {
+      $('#gp-car-count').textContent = `${filterCars().length} cars eligible`;
+      if ($('#gp-lineup').style.display !== 'none') updateLineupOptions();
+    };
+    $('#gp-car-class').addEventListener('change', updateCountAndLineup);
+    $('#gp-min-rank').addEventListener('input', updateCountAndLineup);
+    $('#gp-use-catalog').addEventListener('change', updateCountAndLineup);
     $('#gp-predict-master').addEventListener('change', () => { predictUseCatalog = $('#gp-predict-master').checked; renderPredictCars(); });
+    $('#gp-predict-car-class').addEventListener('change', renderPredictCars);
+    $('#gp-predict-min-rank').addEventListener('input', renderPredictCars);
+    $('#gp-use-recommended').addEventListener('click', useRecommended);
+    $('#gp-lock-lineup').addEventListener('click', lockLineup);
+    $('#gp-save-session').addEventListener('click', saveSession);
+    $('#gp-cancel-session').addEventListener('click', cancelSession);
   }
 
   document.addEventListener('DOMContentLoaded', init);

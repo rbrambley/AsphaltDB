@@ -1564,7 +1564,7 @@
   }
 
   function makeSearchable(select) {
-    if (select.dataset.searchable === 'done' || select.options.length < 15 || select.multiple || select.size > 1) return;
+    if (select.dataset.searchable === 'done' || select.multiple || select.size > 1) return;
     const all = [...select.options].map(o => ({ value: o.value, text: o.textContent, selected: o.selected }));
     const wrapper = document.createElement('div');
     wrapper.className = 'searchable-select';
