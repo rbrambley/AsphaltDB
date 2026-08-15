@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <title>Asphalt Legends Unite Database | Dashboard</title>
+  <title>Home | Asphalt Legends Unite Database</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 <body>
   <header>
@@ -14,13 +15,16 @@
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         Asphalt DB
       </a>
-      <div class="theme-switcher">
-        <label for="theme-select">Theme</label>
-        <select id="theme-select" aria-label="Theme">
-          <option value="system">System</option>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
+      <div class="theme-switcher" role="group" aria-label="Theme">
+        <button type="button" class="theme-btn" data-theme-value="system" aria-label="System theme" aria-pressed="false">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="1.5"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg>
+        </button>
+        <button type="button" class="theme-btn" data-theme-value="light" aria-label="Light theme" aria-pressed="false">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+        </button>
+        <button type="button" class="theme-btn" data-theme-value="dark" aria-label="Dark theme" aria-pressed="false">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        </button>
       </div>
       <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
         <span class="hamburger" aria-hidden="true"></span>
@@ -29,7 +33,7 @@
         <div class="nav-group">
           <button class="nav-group-title" aria-expanded="false" aria-controls="nav-reference">Reference</button>
           <ul id="nav-reference" class="nav-group-list">
-            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="index.html">Home</a></li>
             <li><a href="cars.html">Cars</a></li>
             <li><a href="tracks.html">Tracks</a></li>
             <li><a href="career.html">Career</a></li>
@@ -69,7 +73,7 @@
 
     <section class="hero">
       <h1>Asphalt Legends Unite Database</h1>
-      <p>A community-driven, mobile-first reference for cars, tracks, career seasons and recurring events. All data is embedded so the site works offline after the first load.</p>
+      <p>Your command center for cars, tracks, career seasons, and events. Search across the whole database, see what's active now, and get personalized suggestions once you import your garage.</p>
     </section>
 
     <section id="home-stats" class="stats-grid">
@@ -80,36 +84,63 @@
       <div class="stat-card"><span class="num" id="stat-classes">—</span><span class="label">Classes</span></div>
     </section>
 
-    <section class="card">
-      <div class="card-header"><h2>Unified Dashboard</h2><span class="toggle">−</span></div>
-      <div class="card-body">
-        <p class="dashboard-intro">Search or filter to cross-reference cars, tracks, career seasons and recurring events. Results work in a table on desktop and as cards on mobile.</p>
-        <div class="filters">
-          <div class="filter filter-wide"><label for="dash-search">Search</label><input type="search" id="dash-search" placeholder="Car, manufacturer, track, event, season…" /></div>
-          <div class="filter"><label for="dash-class">Car Class</label><select id="dash-class"><option value="All">All</option></select></div>
-          <div class="filter"><label for="dash-manufacturer">Manufacturer</label><select id="dash-manufacturer"><option value="All">All</option></select></div>
-          <div class="filter"><label for="dash-rarity">Rarity</label><select id="dash-rarity"><option value="All">All</option></select></div>
-          <div class="filter"><label for="dash-evo">EVO</label><select id="dash-evo"><option value="All">All</option><option value="yes">EVO only</option><option value="no">Non-EVO</option></select></div>
-          <div class="filter"><label for="dash-owned">Garage</label><select id="dash-owned"><option value="All">All cars</option><option value="owned">Owned only</option></select></div>
-          <div class="filter"><label for="dash-track">Track</label><select id="dash-track"><option value="All">All</option></select></div>
-          <div class="filter"><label for="dash-event">Event</label><select id="dash-event"><option value="All">All</option></select></div>
-        </div>
-        <div class="count" id="dash-count">Showing all cars. Use the search or filters above to narrow results.</div>
-        <div class="legend">
-          <span><span class="swatch swatch-legendary"></span> Legendary</span>
-          <span><span class="swatch swatch-highrank"></span> High rank (>3500)</span>
-          <span><span class="swatch swatch-rareevent"></span> Rare event link</span>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th data-sort="carName">Car Name</th><th data-sort="class">Class</th><th data-sort="manufacturer">Manufacturer</th><th data-sort="rarity">Rarity</th><th data-sort="rankMax" data-sort-type="num">Rank Max</th><th data-sort="items" data-sort-type="num">Linked Items</th><th>Actions</th></tr>
-            </thead>
-            <tbody id="dash-body"><tr><td colspan="7" class="empty-state">Loading dashboard…</td></tr></tbody>
-          </table>
-        </div>
-        <div class="dash-pagination" id="dash-pagination"></div>
+    <section class="card global-search">
+      <div class="dash-card-header" style="border-radius: 12px 12px 0 0;">
+        <h2>Search the Database</h2>
       </div>
+      <div class="dash-card-body" style="position: relative;">
+        <span class="global-search-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </span>
+        <input type="search" id="global-search" class="global-search-input" placeholder="Search cars, tracks, events, career seasons, or calendar events…" autocomplete="off" />
+        <div id="global-search-results" class="global-search-results" style="display: none;"></div>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="dash-card">
+        <div class="dash-card-header">
+          <h2>Active & Upcoming Events</h2>
+          <a href="calendar.html">View calendar</a>
+        </div>
+        <div class="dash-card-body">
+          <div class="dash-count" id="dash-events-count">Loading…</div>
+          <ul id="dash-events-list" class="dash-list"></ul>
+        </div>
+      </article>
+
+      <article class="dash-card">
+        <div class="dash-card-header">
+          <h2>Events You Can Enter Today</h2>
+          <a href="roster.html">Full roster</a>
+        </div>
+        <div class="dash-card-body">
+          <div class="dash-count" id="dash-enter-count">Loading…</div>
+          <ul id="dash-enter-list" class="dash-list"></ul>
+        </div>
+      </article>
+
+      <article class="dash-card">
+        <div class="dash-card-header">
+          <h2>Best Upgrade ROI</h2>
+          <a href="upgrades.html">Calculator</a>
+        </div>
+        <div class="dash-card-body">
+          <div class="dash-count" id="dash-roi-count">Loading…</div>
+          <ul id="dash-roi-list" class="dash-list"></ul>
+        </div>
+      </article>
+
+      <article class="dash-card dash-card-wide">
+        <div class="dash-card-header">
+          <h2>Blueprint Farming Targets</h2>
+          <a href="farming.html">Planner</a>
+        </div>
+        <div class="dash-card-body">
+          <div class="dash-count" id="dash-farm-count">Loading…</div>
+          <ul id="dash-farm-list" class="dash-list"></ul>
+        </div>
+      </article>
     </section>
   </main>
   <footer>

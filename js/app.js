@@ -78,13 +78,21 @@
   function initTheme() {
     const stored = localStorage.getItem('theme') || 'system';
     document.documentElement.setAttribute('data-theme', stored);
-    const select = $('#theme-select');
-    if (select) {
-      select.value = stored;
-      select.addEventListener('change', () => {
-        const val = select.value;
-        document.documentElement.setAttribute('data-theme', val);
-        localStorage.setItem('theme', val);
+    const buttons = $$('.theme-btn');
+    if (buttons.length) {
+      const setActive = (val) => {
+        buttons.forEach((btn) => {
+          btn.setAttribute('aria-pressed', String(btn.dataset.themeValue === val));
+        });
+      };
+      setActive(stored);
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const val = btn.dataset.themeValue;
+          document.documentElement.setAttribute('data-theme', val);
+          localStorage.setItem('theme', val);
+          setActive(val);
+        });
       });
     }
   }
@@ -318,15 +326,394 @@
     });
   }
 
+  // ---------- Home / command center helpers ----------
+  function debounce(fn, wait) {
+    let t;
+    return (...args) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    };
+  }
+
+  function todayMidnight() {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  function formatIsoDate(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  function eventStatus(e, today) {
+    const todayStr = formatIsoDate(today);
+    if (!e.startDate || !e.endDate) return 'unknown';
+    if (todayStr < e.startDate) return 'upcoming';
+    if (todayStr >= e.startDate && todayStr <= e.endDate) return 'active';
+    return 'past';
+  }
+
+  function getActiveCalendarEvents(today) {
+    return calendarEvents.filter(e => eventStatus(e, today) === 'active')
+      .sort((a, b) => String(a.endDate).localeCompare(String(b.endDate)));
+  }
+
+  function getUpcomingCalendarEvents(today, limit = 3) {
+    return calendarEvents.filter(e => eventStatus(e, today) === 'upcoming')
+      .sort((a, b) => String(a.startDate).localeCompare(String(b.startDate)))
+      .slice(0, limit);
+  }
+
+  function getTodaysWeeklyCups() {
+    const dayMap = {
+      1: 'Monday Class-D Cup',
+      2: 'Tuesday Class-C Cup',
+      3: 'Wednesday Class-B Cup',
+      4: 'Thursday Class-A Cup',
+      5: 'Friday Class-S Cup'
+    };
+    const name = dayMap[new Date().getDay()];
+    if (!name) return [];
+    const ev = events.find(e => e.eventName === name);
+    return ev ? [ev] : [];
+  }
+
+  function qualifiesForEvent(car, event) {
+    const el = (event.eligibleCars || '').toLowerCase();
+    if (el.includes('all classes')) return true;
+    if (el.includes('class ' + (car.class || '').toLowerCase())) return true;
+    if (el.includes((car.carName || '').toLowerCase())) return true;
+    return false;
+  }
+
+  function enrichRoi(car) {
+    const rankGain = (car.rankMax != null && car.rankStock != null) ? car.rankMax - car.rankStock : 0;
+    const statGain = [car.topSpeedMax, car.accelerationMax, car.handlingMax, car.nitroMax].every(v => v != null)
+      ? (car.topSpeedMax - (car.topSpeedStock || 0)) +
+        (car.accelerationMax - (car.accelerationStock || 0)) +
+        (car.handlingMax - (car.handlingStock || 0)) +
+        (car.nitroMax - (car.nitroStock || 0))
+      : 0;
+    return Object.assign({}, car, {
+      rankGain,
+      costPerRank: rankGain > 0 && car.totalUpgradeCost ? Math.round(car.totalUpgradeCost / rankGain) : Infinity,
+      costPerStat: statGain > 0 && car.totalUpgradeCost ? Math.round(car.totalUpgradeCost / statGain) : Infinity
+    });
+  }
+
+  function isRoiUsable(car) {
+    return car.totalUpgradeCost &&
+      car.rankStock != null && car.rankMax != null &&
+      car.topSpeedStock != null && car.accelerationStock != null && car.handlingStock != null && car.nitroStock != null &&
+      car.topSpeedMax != null && car.accelerationMax != null && car.handlingMax != null && car.nitroMax != null;
+  }
+
+  function carFarmingSources(car) {
+    const nameL = (car.carName || '').toLowerCase();
+    const classL = 'class ' + (car.class || '').toLowerCase();
+    const career = careerSeasons.filter(s => {
+      const stage = (s.stage || '').toLowerCase();
+      return stage.includes(nameL) || stage.includes(classL);
+    });
+    const eventSources = events.filter(e => {
+      const el = (e.eligibleCars || '').toLowerCase();
+      return el.includes('all classes') || el.includes(classL) || el.includes(nameL);
+    });
+    return { career, events: eventSources };
+  }
+
+  function scoreFarmingTarget(car) {
+    const sources = carFarmingSources(car);
+    let score = sources.career.length + sources.events.length;
+    if (car.evoEligible) score += 0.5;
+    return score;
+  }
+
+  function getFarmingTargets(seedCars, limit = 5) {
+    return seedCars
+      .map(c => ({ car: c, sources: carFarmingSources(c), score: scoreFarmingTarget(c) }))
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score || (b.car.rankMax || 0) - (a.car.rankMax || 0))
+      .slice(0, limit);
+  }
+
+  function renderDashList(container, items, emptyHtml, buildItemFn) {
+    if (!container) return;
+    container.innerHTML = '';
+    if (!items.length) {
+      container.innerHTML = emptyHtml;
+      return;
+    }
+    items.forEach(item => container.appendChild(buildItemFn(item)));
+  }
+
+  function makeDashRow(titleHtml, metaHtml, tagsHtml = '', href = '') {
+    const li = document.createElement('li');
+    if (href) {
+      const a = document.createElement('a');
+      a.href = href;
+      a.innerHTML = titleHtml;
+      li.appendChild(a);
+    } else {
+      const span = document.createElement('span');
+      span.innerHTML = titleHtml;
+      li.appendChild(span);
+    }
+    if (metaHtml) {
+      const meta = document.createElement('span');
+      meta.className = 'meta';
+      meta.innerHTML = metaHtml;
+      li.appendChild(meta);
+    }
+    if (tagsHtml) {
+      const tags = document.createElement('div');
+      tags.className = 'tags';
+      tags.innerHTML = tagsHtml;
+      li.appendChild(tags);
+    }
+    return li;
+  }
+
+  function ownedCarsWithMaster() {
+    const masterMap = new Map(cars.map(c => [c.carName.toLowerCase(), c]));
+    return getGarage().map(g => {
+      const master = masterMap.get((g.carName || '').toLowerCase());
+      return master ? Object.assign({}, master, { _garage: g }) : null;
+    }).filter(Boolean);
+  }
+
+  function isCarMaxed(carOrGarage) {
+    const g = carOrGarage._garage || carOrGarage;
+    if (g && g.blueprintCurrent != null && g.blueprintMax != null) return g.blueprintCurrent >= g.blueprintMax;
+    return false;
+  }
+
   // ---------- Home ----------
   function initHome() {
     const byClass = {};
     cars.forEach(c => { byClass[c.class] = (byClass[c.class] || 0) + 1; });
-    $('#stat-cars').textContent = cars.length;
-    $('#stat-tracks').textContent = tracks.length;
-    $('#stat-seasons').textContent = careerSeasons.length;
-    $('#stat-events').textContent = events.length;
-    $('#stat-classes').textContent = Object.keys(byClass).length;
+    const statCars = $('#stat-cars');
+    const statTracks = $('#stat-tracks');
+    const statSeasons = $('#stat-seasons');
+    const statEvents = $('#stat-events');
+    const statClasses = $('#stat-classes');
+    if (statCars) statCars.textContent = cars.length.toLocaleString();
+    if (statTracks) statTracks.textContent = tracks.length.toLocaleString();
+    if (statSeasons) statSeasons.textContent = careerSeasons.length.toLocaleString();
+    if (statEvents) statEvents.textContent = events.length.toLocaleString();
+    if (statClasses) statClasses.textContent = Object.keys(byClass).length.toLocaleString();
+
+    const today = todayMidnight();
+    const owned = ownedCarsWithMaster();
+    const hasGarage = owned.length > 0;
+
+    // Active & upcoming events
+    const active = getActiveCalendarEvents(today);
+    const upcoming = getUpcomingCalendarEvents(today, 3);
+    const eventList = $('#dash-events-list');
+    const eventCount = $('#dash-events-count');
+    if (eventCount) eventCount.textContent = `${active.length} active · ${upcoming.length} upcoming`;
+    renderDashList(eventList, [...active, ...upcoming], '<li class="empty-prompt">No active or upcoming calendar events.</li>', e => {
+      const status = eventStatus(e, today);
+      const tag = status === 'active' ? '<span class="tag tag-active">Active</span>' : '<span class="tag tag-upcoming">Upcoming</span>';
+      const dateText = `${e.startDate || '—'} – ${e.endDate || '—'}`;
+      return makeDashRow(esc(e.eventName), esc(`${e.type || 'Event'} · ${dateText}`), tag, 'calendar.html');
+    });
+
+    // Events you can enter today
+    const cups = getTodaysWeeklyCups();
+    const enterList = $('#dash-enter-list');
+    const enterCount = $('#dash-enter-count');
+    let enterItems = [];
+    cups.forEach(cup => {
+      const matchClass = (cup.eligibleCars || '').match(/Class\s+([A-Z])/i);
+      const cls = matchClass ? matchClass[1] : null;
+      const eligible = cls ? owned.filter(c => c.class === cls) : [];
+      const meta = hasGarage
+        ? `${eligible.length} owned car${eligible.length === 1 ? '' : 's'} qualify`
+        : 'Import your garage to see which cars qualify';
+      enterItems.push({ title: esc(cup.eventName), meta, tag: '<span class="tag tag-active">Today</span>', href: 'roster.html' });
+    });
+    active.forEach(e => {
+      const featured = (e.featuredCars || '').split(/,\s*|\s+&\s+/).map(s => s.replace(/^\'*|'*$/g, '').trim()).filter(Boolean);
+      const ownedFeatured = hasGarage ? owned.filter(c => featured.some(f => c.carName.toLowerCase() === f.toLowerCase())) : [];
+      const meta = hasGarage
+        ? `${ownedFeatured.length} featured car${ownedFeatured.length === 1 ? '' : 's'} owned`
+        : 'Featured: ' + (featured.slice(0, 3).join(', ') + (featured.length > 3 ? '…' : '') || '—');
+      enterItems.push({ title: esc(e.eventName), meta, tag: '<span class="tag tag-active">Active</span>', href: 'calendar.html' });
+    });
+    if (!enterItems.length) {
+      enterItems.push({ title: 'No weekly cup today', meta: 'Check the calendar for active limited-time events.', tag: '<span class="tag">Rest day</span>', href: 'calendar.html' });
+    }
+    if (enterCount) enterCount.textContent = hasGarage ? `${cups.length} weekly cup${cups.length === 1 ? '' : 's'} · ${active.length} active event${active.length === 1 ? '' : 's'}` : `${cups.length} weekly cup${cups.length === 1 ? '' : 's'} · ${active.length} active event${active.length === 1 ? '' : 's'} (import garage to personalize)`;
+    renderDashList(enterList, enterItems, '<li class="empty-prompt">No events available today.</li>', item => makeDashRow(item.title, item.meta, item.tag, item.href));
+
+    // Best upgrade ROI
+    const roiList = $('#dash-roi-list');
+    const roiCount = $('#dash-roi-count');
+    const roiSeed = hasGarage ? owned : cars;
+    const roiCars = roiSeed.filter(isRoiUsable).map(enrichRoi).sort((a, b) => a.costPerRank - b.costPerRank).slice(0, 5);
+    if (roiCount) roiCount.textContent = hasGarage ? `Top ${roiCars.length} owned cars` : `Top ${roiCars.length} cars in database`;
+    renderDashList(roiList, roiCars, '<li class="empty-prompt">No cars with complete upgrade data.</li>', c => {
+      const label = hasGarage && c._garage ? `${esc(c.carName)} <span style="color:var(--muted);font-size:0.8rem;">(${esc(c.class)})</span>` : esc(`${c.carName} (${c.class})`);
+      return makeDashRow(label, `Cost/rank: ${c.costPerRank === Infinity ? '—' : c.costPerRank.toLocaleString()} · Rank gain: ${c.rankGain.toLocaleString()}`, '<span class="tag tag-roi">Best value</span>', 'upgrades.html');
+    });
+
+    // Blueprint farming targets
+    const farmList = $('#dash-farm-list');
+    const farmCount = $('#dash-farm-count');
+    let farmSeed = hasGarage ? owned.filter(c => !isCarMaxed(c)) : cars;
+    if (hasGarage && !farmSeed.length) farmSeed = owned;
+    const farmTargets = getFarmingTargets(farmSeed, 5);
+    if (farmCount) farmCount.textContent = hasGarage ? `${farmTargets.length} suggested targets from owned cars` : `${farmTargets.length} cars with the most farmable sources`;
+    renderDashList(farmList, farmTargets, '<li class="empty-prompt">No farmable targets found.</li>', x => {
+      const sources = `${x.sources.career.length} career · ${x.sources.events.length} event`;
+      const tag = hasGarage && x.car._garage ? '<span class="tag tag-farm">Owned</span>' : '<span class="tag tag-farm">Farmable</span>';
+      return makeDashRow(esc(`${x.car.carName} (${x.car.class})`), esc(sources), tag, `farming.html`);
+    });
+
+    // Garage import prompt when none exists
+    if (!hasGarage) {
+      const existingPrompt = document.getElementById('dash-garage-prompt');
+      if (!existingPrompt) {
+        const prompt = document.createElement('section');
+        prompt.id = 'dash-garage-prompt';
+        prompt.className = 'card';
+        prompt.style.marginTop = '1.5rem';
+        prompt.innerHTML = `
+          <div class="dash-card-header"><h2>Personalize this page</h2><a href="garage.html">Import garage</a></div>
+          <div class="dash-card-body">
+            <p style="margin:0;color:var(--muted);">Import your garage from screenshots on the <a href="garage.html">Garage page</a> to see which events you can enter, your best upgrade ROI, and targeted blueprint farming.</p>
+          </div>
+        `;
+        document.querySelector('main').appendChild(prompt);
+      }
+    }
+  }
+
+  // ---------- Global search (home) ----------
+  function initGlobalSearch() {
+    const input = $('#global-search');
+    const results = $('#global-search-results');
+    if (!input || !results) return;
+
+    function normalize(s) {
+      return String(s || '').toLowerCase();
+    }
+
+    function highlight(text, q) {
+      if (!q) return esc(text);
+      const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+      return esc(text).replace(re, '<mark>$1</mark>');
+    }
+
+    function searchAll(q) {
+      const m = normalize(q);
+      if (!m) return [];
+      const out = [];
+
+      // Cars
+      const carsMatch = cars.filter(c =>
+        normalize(c.carName).includes(m) ||
+        normalize(c.manufacturer).includes(m) ||
+        normalize(c.class).includes(m) ||
+        normalize(c.rarity).includes(m)
+      ).slice(0, 5);
+      if (carsMatch.length) out.push({ type: 'Cars', href: 'cars.html', queryParam: 'search', items: carsMatch.map(c => ({ title: c.carName, meta: `${c.class} · ${c.manufacturer} · ${c.rarity || '—'}`, obj: c })) });
+
+      // Tracks
+      const tracksMatch = tracks.filter(t =>
+        normalize(t.trackName).includes(m) ||
+        normalize(t.environment).includes(m) ||
+        normalize(t.length).includes(m)
+      ).slice(0, 5);
+      if (tracksMatch.length) out.push({ type: 'Tracks', href: 'tracks.html', queryParam: 'search', items: tracksMatch.map(t => ({ title: t.trackName, meta: `${t.environment} · ${t.length || '—'}`, obj: t })) });
+
+      // Events
+      const eventsMatch = events.filter(e =>
+        normalize(e.eventName).includes(m) ||
+        normalize(e.eligibleCars).includes(m) ||
+        normalize(e.track).includes(m) ||
+        normalize(e.rewards).includes(m)
+      ).slice(0, 5);
+      if (eventsMatch.length) out.push({ type: 'Events', href: 'events.html', queryParam: 'search', items: eventsMatch.map(e => ({ title: e.eventName, meta: `${e.frequency || '—'} · ${e.track || '—'}`, obj: e })) });
+
+      // Career seasons
+      const seasonMatch = careerSeasons.filter(s =>
+        normalize(s.stage).includes(m) ||
+        normalize(s.chapter).includes(m)
+      ).slice(0, 5);
+      if (seasonMatch.length) out.push({ type: 'Career Seasons', href: 'career.html', queryParam: 'search', items: seasonMatch.map(s => ({ title: s.stage, meta: s.chapter, obj: s })) });
+
+      // Calendar events
+      const calMatch = calendarEvents.filter(e =>
+        normalize(e.eventName).includes(m) ||
+        normalize(e.featuredCars).includes(m) ||
+        normalize(e.type).includes(m)
+      ).slice(0, 5);
+      if (calMatch.length) out.push({ type: 'Calendar', href: 'calendar.html', queryParam: 'search', items: calMatch.map(e => ({ title: e.eventName, meta: `${e.type || '—'} · ${e.startDate || '—'}`, obj: e })) });
+
+      return out;
+    }
+
+    function renderResults(groups) {
+      results.innerHTML = '';
+      if (!groups.length) {
+        results.innerHTML = '<div class="search-empty">No results found. Try a different search.</div>';
+        results.style.display = 'block';
+        return;
+      }
+      groups.forEach(g => {
+        const group = document.createElement('div');
+        group.className = 'result-group';
+        group.innerHTML = `<h4>${g.icon ? g.icon + ' ' : ''}${esc(g.type)}</h4>`;
+        g.items.forEach(item => {
+          const row = document.createElement('a');
+          row.className = 'result-row';
+          const q = input.value.trim();
+          row.href = `${g.href}?${g.queryParam}=${encodeURIComponent(item.title)}`;
+          row.innerHTML = `<span class="name">${highlight(item.title, q)}</span><span class="meta">${highlight(item.meta, q)}</span>`;
+          group.appendChild(row);
+        });
+        if (g.items.length === 5) {
+          const more = document.createElement('a');
+          more.className = 'result-more';
+          more.href = `${g.href}?${g.queryParam}=${encodeURIComponent(input.value.trim())}`;
+          more.textContent = `View all ${g.type.toLowerCase()} results`;
+          group.appendChild(more);
+        }
+        results.appendChild(group);
+      });
+      results.style.display = 'block';
+    }
+
+    const doSearch = debounce(() => {
+      const q = input.value.trim();
+      if (!q) {
+        results.innerHTML = '';
+        results.style.display = 'none';
+        return;
+      }
+      renderResults(searchAll(q));
+    }, 150);
+
+    input.addEventListener('input', doSearch);
+    input.addEventListener('focus', () => {
+      if (input.value.trim()) doSearch();
+    });
+    document.addEventListener('click', (e) => {
+      if (!input.closest('.global-search') || !e.target.closest('.global-search')) {
+        results.style.display = 'none';
+      }
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        results.style.display = 'none';
+      }
+    });
   }
 
   // ---------- Cars ----------
@@ -698,7 +1085,9 @@
     render();
   }
 
-  // ---------- Dashboard ----------
+  // ---------- Dashboard (DEPRECATED) ----------
+  // The old unified-dashboard table has been replaced by the Home command center.
+  // These functions are retained only for reference and can be removed in a future cleanup pass.
   function filterCars(classFilter, manufacturerFilter) {
     return cars.filter(c => (classFilter === 'All' || c.class === classFilter) &&
                             (manufacturerFilter === 'All' || c.manufacturer === manufacturerFilter));
@@ -1649,12 +2038,12 @@
     initMobileCards();
     initEmptyStates();
     if ($('#home-stats')) initHome();
+    if ($('#global-search')) initGlobalSearch();
     if ($('#cars-body')) initCars();
     if ($('#tracks-body')) initTracks();
     if ($('#career-race-body')) initCareer();
     if ($('#sp-solve')) initSeasonPass();
     if ($('#events-body')) initEvents();
-    if ($('#dash-body')) initDashboard();
     if ($('#gauntlet-lineup')) initGauntlet();
     if ($('#evo-body')) initEvo();
     if ($('#farm-car')) initFarming();
