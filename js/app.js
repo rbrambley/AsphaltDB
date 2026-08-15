@@ -361,12 +361,6 @@
       .sort((a, b) => String(a.endDate).localeCompare(String(b.endDate)));
   }
 
-  function getUpcomingCalendarEvents(today, limit = 3) {
-    return calendarEvents.filter(e => eventStatus(e, today) === 'upcoming')
-      .sort((a, b) => String(a.startDate).localeCompare(String(b.startDate)))
-      .slice(0, limit);
-  }
-
   function getTodaysWeeklyCups() {
     const dayMap = {
       1: 'Monday Class-D Cup',
@@ -509,19 +503,7 @@
     const today = todayMidnight();
     const owned = ownedCarsWithMaster();
     const hasGarage = owned.length > 0;
-
-    // Active & upcoming events
     const active = getActiveCalendarEvents(today);
-    const upcoming = getUpcomingCalendarEvents(today, 3);
-    const eventList = $('#dash-events-list');
-    const eventCount = $('#dash-events-count');
-    if (eventCount) eventCount.textContent = `${active.length} active · ${upcoming.length} upcoming`;
-    renderDashList(eventList, [...active, ...upcoming], '<li class="empty-prompt">No active or upcoming calendar events.</li>', e => {
-      const status = eventStatus(e, today);
-      const tag = status === 'active' ? '<span class="tag tag-active">Active</span>' : '<span class="tag tag-upcoming">Upcoming</span>';
-      const dateText = `${e.startDate || '—'} – ${e.endDate || '—'}`;
-      return makeDashRow(esc(e.eventName), esc(`${e.type || 'Event'} · ${dateText}`), tag, 'calendar.html');
-    });
 
     // Events you can enter today
     const cups = getTodaysWeeklyCups();
