@@ -75,6 +75,7 @@
       <button class="btn tab-btn" data-tab="predict">Predict</button>
       <button class="btn tab-btn" data-tab="addcar">Add Car</button>
       <button class="btn tab-btn" data-tab="calibrate">Calibrate</button>
+      <button class="btn tab-btn" data-tab="sessions">Sessions</button>
     </div>
 
     <section class="card tab-panel active" data-tab="defense">
@@ -117,6 +118,10 @@
             <button id="gp-cancel-session" class="btn" type="button" style="margin-left:0.5rem;">Cancel</button>
           </div>
           <div id="gp-session-status" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"></div>
+          <div id="gp-session-add-prompt" style="display:none; margin-top:0.75rem; padding:0.75rem; border:1px solid var(--border); border-radius:6px; background:var(--card-bg);">
+            <div style="font-size:0.85rem; margin-bottom:0.5rem;">Some cars in this session are not in your garage yet:</div>
+            <div id="gp-session-add-list" style="display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -202,6 +207,29 @@
         </div>
         <button id="gp-save-seed" class="btn" style="margin-bottom:0.5rem;">Save Seed</button>
         <div id="gp-seed-status" style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;"></div>
+      </div>
+    </section>
+
+    <section class="card tab-panel" data-tab="sessions">
+      <div class="card-header"><h2>Sessions</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">History of every 5-race Gauntlet lineup you have recorded, with predicted-vs-actual totals and calibration accuracy.</p>
+        <div id="gp-sessions-summary" style="margin-bottom:1rem;"></div>
+        <div class="table-wrap">
+          <table class="detail-table">
+            <thead><tr><th>Date</th><th>Tracks</th><th>Cars</th><th class="num">Predicted</th><th class="num">Actual</th><th class="num">Error</th><th></th></tr></thead>
+            <tbody id="gp-sessions-body"><tr><td colspan="7" class="empty-state">No sessions recorded yet</td></tr></tbody>
+          </table>
+        </div>
+        <div id="gp-session-detail" style="margin-top:1rem;display:none;">
+          <h4>Session Detail</h4>
+          <div class="table-wrap">
+            <table class="detail-table">
+              <thead><tr><th>Slot</th><th>Track</th><th>Car</th><th class="num">Predicted</th><th class="num">Actual</th><th class="num">Error</th></tr></thead>
+              <tbody id="gp-session-detail-body"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -565,6 +593,8 @@
     $('#gp-lineup').style.display = 'none';
     $('#gp-session').style.display = 'block';
     $('#gp-session-status').textContent = '';
+    $('#gp-session-add-prompt').style.display = 'none';
+    $('#gp-session-add-list').innerHTML = '';
   }
 
   function cancelSession() {
@@ -572,6 +602,8 @@
     $('#gp-session').style.display = 'none';
     $('#gp-lineup').style.display = 'block';
     $('#gp-session-status').textContent = '';
+    $('#gp-session-add-prompt').style.display = 'none';
+    $('#gp-session-add-list').innerHTML = '';
   }
 
   function saveSession() {
@@ -598,9 +630,146 @@
     saveLogs();
     renderLogs();
     renderStatus();
+    renderSessions();
     runCalibrate();
     $('#gp-session-status').textContent = `Session saved with ${entries.length} logs. Calibration updated.`;
+    promptAddMissingGarageCars(entries);
     lockedSession = null;
+  }
+
+  function promptAddMissingGarageCars(entries) {
+    const garageIds = new Set(getGarage().map((c) => c.id));
+    const missing = [];
+    const seen = new Set();
+    entries.forEach((e) => {
+      const car = gCars.find((c) => c.id === e.car_id);
+      if (!car || car.owned || seen.has(car.id)) return;
+      seen.add(car.id);
+      missing.push(car);
+    });
+    const container = $('#gp-session-add-prompt');
+    const list = $('#gp-session-add-list');
+    if (!missing.length) {
+      container.style.display = 'none';
+      list.innerHTML = '';
+      return;
+    }
+    list.innerHTML = missing.map((c) => `<button class="btn" data-add-car="${esc(c.id)}">Add ${esc(c.name)}</button>`).join('');
+    list.querySelectorAll('button[data-add-car]').forEach((b) => b.addEventListener('click', (e) => addSessionCarToGarage(e.target.dataset.addCar)));
+    container.style.display = 'block';
+  }
+
+  function addSessionCarToGarage(id) {
+    const car = gCars.find((c) => c.id === id);
+    if (!car || car.owned) return;
+    const raw = (typeof cars !== 'undefined' ? cars : []).find((c) => slug(c.carName) === id);
+    const entry = {
+      id: car.id,
+      carName: car.name,
+      matchedCar: car.name,
+      class: car.car_class,
+      rankCurrent: car.rank,
+      rankMax: car.rank,
+      stars: 5,
+      topSpeed: car.top_speed,
+      acceleration: car.acceleration,
+      handling: car.handling,
+      nitro: car.nitro,
+      blueprintCurrent: 0,
+      blueprintMax: raw ? (raw.blueprintCount || null) : null,
+      blueprintStatus: raw ? ('0 / ' + (raw.blueprintCount || '-')) : null,
+      capturedAt: new Date().toISOString()
+    };
+    let local = [];
+    try { local = JSON.parse(localStorage.getItem('localGarage') || '[]'); } catch {}
+    local = local.filter((c) => slug(c.id || c.carName) !== car.id);
+    local.push(entry);
+    localStorage.setItem('localGarage', JSON.stringify(local));
+    gCars = buildCars();
+    normalize(gCars);
+    renderSelectors();
+    renderPredictCars();
+    renderPredictClassFilter();
+    renderClassFilter();
+    renderAddGarage();
+    if ($('#gp-result').style.display !== 'none') runOptimize();
+    runPredict();
+    renderSessions();
+    const btn = $(`button[data-add-car="${id}"]`);
+    if (btn) { btn.textContent = 'Added'; btn.disabled = true; }
+    if (!$('#gp-session-add-list').querySelector('button:not([disabled])')) $('#gp-session-add-prompt').style.display = 'none';
+  }
+
+  function groupLogsBySession() {
+    const groups = new Map();
+    logs.forEach((l) => {
+      if (!l.session_id) return;
+      if (!groups.has(l.session_id)) groups.set(l.session_id, []);
+      groups.get(l.session_id).push(l);
+    });
+    const sessions = [];
+    groups.forEach((entries, sessionId) => {
+      entries.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+      sessions.push({ sessionId, entries, timestamp: entries[0].timestamp });
+    });
+    sessions.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+    return sessions;
+  }
+
+  function renderSessions() {
+    const sessions = groupLogsBySession();
+    const summary = $('#gp-sessions-summary');
+    const tbody = $('#gp-sessions-body');
+    const detail = $('#gp-session-detail');
+    if (!sessions.length) {
+      summary.textContent = '';
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No sessions recorded yet</td></tr>';
+      detail.style.display = 'none';
+      return;
+    }
+    const carMap = Object.fromEntries(gCars.map((c) => [c.id, c]));
+    const trackMap = Object.fromEntries(gTracks.map((t) => [t.id, t]));
+    let totalPredicted = 0, totalActual = 0, totalLogs = 0;
+    logs.forEach((l) => { totalPredicted += l.predicted_time_sec; totalActual += l.actual_time_sec; totalLogs++; });
+    const avgError = totalLogs ? (totalActual - totalPredicted) / totalLogs : 0;
+    summary.innerHTML = `<strong>${sessions.length}</strong> session${sessions.length === 1 ? '' : 's'} · <strong>${totalLogs}</strong> log${totalLogs === 1 ? '' : 's'} · Average error: <strong>${avgError > 0 ? '+' : ''}${FMT(avgError)} s</strong> (actual ${avgError > 0 ? 'slower' : avgError < 0 ? 'faster' : 'equal'} than predicted)`;
+    tbody.innerHTML = sessions.map((s) => {
+      const pred = s.entries.reduce((a, l) => a + l.predicted_time_sec, 0);
+      const actual = s.entries.reduce((a, l) => a + l.actual_time_sec, 0);
+      const err = actual - pred;
+      const date = new Date(s.timestamp).toLocaleString();
+      const tracks = s.entries.map((l) => esc((trackMap[l.track_id] || {}).display_name || l.track_id)).join(', ');
+      const cars = s.entries.map((l) => esc((carMap[l.car_id] || {}).name || l.car_id)).join(', ');
+      return `<tr><td>${esc(date)}</td><td>${tracks}</td><td>${cars}</td><td class="num">${FMT(pred)}</td><td class="num">${FMT(actual)}</td><td class="num">${err > 0 ? '+' : ''}${FMT(err)}</td><td><button class="btn" data-session-detail="${esc(s.sessionId)}">Detail</button> <button class="btn" data-session-del="${esc(s.sessionId)}">Delete</button></td></tr>`;
+    }).join('');
+    tbody.querySelectorAll('button[data-session-detail]').forEach((b) => b.addEventListener('click', (e) => showSessionDetail(e.target.dataset.sessionDetail)));
+    tbody.querySelectorAll('button[data-session-del]').forEach((b) => b.addEventListener('click', (e) => deleteSession(e.target.dataset.sessionDel)));
+  }
+
+  function showSessionDetail(sessionId) {
+    const sessions = groupLogsBySession();
+    const session = sessions.find((s) => s.sessionId === sessionId);
+    if (!session) return;
+    const carMap = Object.fromEntries(gCars.map((c) => [c.id, c]));
+    const trackMap = Object.fromEntries(gTracks.map((t) => [t.id, t]));
+    const tbody = $('#gp-session-detail-body');
+    tbody.innerHTML = session.entries.map((l, i) => {
+      const t = trackMap[l.track_id] || {};
+      const c = carMap[l.car_id] || {};
+      const err = l.actual_time_sec - l.predicted_time_sec;
+      return `<tr><td>${i + 1}</td><td>${esc(t.display_name || l.track_id)}</td><td>${esc(c.name || l.car_id)}</td><td class="num">${FMT(l.predicted_time_sec)}</td><td class="num">${FMT(l.actual_time_sec)}</td><td class="num">${err > 0 ? '+' : ''}${FMT(err)}</td></tr>`;
+    }).join('');
+    $('#gp-session-detail').style.display = 'block';
+  }
+
+  function deleteSession(sessionId) {
+    if (!confirm('Delete this entire session and its race logs?')) return;
+    logs = logs.filter((l) => l.session_id !== sessionId);
+    saveLogs();
+    renderLogs();
+    renderStatus();
+    renderSessions();
+    runCalibrate();
   }
 
   function runPredict() {
@@ -635,7 +804,7 @@
     $('#gp-log-status').textContent = `Logged ${esc(c.name)} on ${esc(t.display_name)}.`;
   }
 
-  function deleteLog(idx) { logs.splice(idx, 1); saveLogs(); renderLogs(); renderStatus(); }
+  function deleteLog(idx) { logs.splice(idx, 1); saveLogs(); renderLogs(); renderStatus(); renderSessions(); }
 
   function linearReg(xs, ys) {
     const n = xs.length;
@@ -964,6 +1133,7 @@
     if (typeof initSearchableSelects !== 'undefined') initSearchableSelects();
     renderLogs();
     renderStatus();
+    renderSessions();
     $('#gp-optimize').addEventListener('click', runOptimize);
     $('#gp-predict-track').addEventListener('change', runPredict);
     $('#gp-predict-car').addEventListener('change', runPredict);

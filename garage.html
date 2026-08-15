@@ -75,6 +75,7 @@
     <div class="tab-bar" id="garage-tab-bar">
       <button class="btn tab-btn active" data-tab="stats">Stats</button>
       <button class="btn tab-btn" data-tab="owned">Owned Cars</button>
+      <button class="btn tab-btn" data-tab="gauntlet">Gauntlet</button>
       <button class="btn tab-btn" data-tab="add">Add / Edit</button>
       <button class="btn tab-btn" data-tab="import">Import / Export</button>
     </div>
@@ -129,6 +130,45 @@
         <div class="stats-grid" id="garage-stats"></div>
         <div style="margin-top:1rem;">
           <a href="gauntlet.html" class="btn">Find Gauntlet candidates</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card tab-panel" data-tab="gauntlet">
+      <div class="card-header"><h2>Gauntlet Performance</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Track how your owned cars have performed in recorded Gauntlet sessions.</p>
+        <div class="count" id="garage-gauntlet-count">0 cars with logs</div>
+        <div class="garage-filters" style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin:0.75rem 0;">
+          <input id="garage-gauntlet-filter-text" type="text" placeholder="Search name or class…" style="min-width:12rem;" />
+          <select id="garage-gauntlet-filter-class" style="min-width:5rem;">
+            <option value="">All classes</option>
+            <option value="D">D</option>
+            <option value="C">C</option>
+            <option value="B">B</option>
+            <option value="A">A</option>
+            <option value="S">S</option>
+            <option value="R">R</option>
+          </select>
+          <button id="garage-gauntlet-filter-clear" type="button" class="btn">Clear</button>
+        </div>
+        <div class="table-wrap">
+          <table id="garage-gauntlet-table">
+            <thead>
+              <tr>
+                <th data-sort="carName">Car</th>
+                <th data-sort="class">Class</th>
+                <th data-sort="sessions" data-sort-type="num">Sessions</th>
+                <th data-sort="logs" data-sort-type="num">Logs</th>
+                <th data-sort="tracks" data-sort-type="num">Tracks</th>
+                <th data-sort="lastUsed" data-sort-type="num">Last Used</th>
+                <th data-sort="avgError" data-sort-type="num">Avg Error</th>
+                <th data-sort="bestTrack">Best Track</th>
+                <th data-sort="worstTrack">Worst Track</th>
+              </tr>
+            </thead>
+            <tbody id="garage-gauntlet-body"></tbody>
+          </table>
         </div>
       </div>
     </section>

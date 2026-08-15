@@ -201,6 +201,9 @@
   }
   function saveLocalGarage(list) { localStorage.setItem('localGarage', JSON.stringify(list)); }
   function getGarage() { return getLocalGarage(); }
+  function getGauntletLogs() {
+    try { return JSON.parse(localStorage.getItem('gauntletRaceLogs') || '[]'); } catch { return []; }
+  }
 
   function applySearchFromUrl() {
     const params = new URLSearchParams(location.search);
@@ -1921,7 +1924,116 @@
         reader.readAsText(file);
       });
     }
+
+    initGarageGauntlet();
   }
+
+  function initGarageGauntlet() {
+    const table = $('#garage-gauntlet-body').closest('table');
+    if (!table) return;
+    let sortKey = '', sortDir = 1;
+    let filterText = '', filterClass = '';
+
+    function slugify(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''); }
+
+    function buildCarStats() {
+      const logs = getGauntletLogs();
+      const trackList = (typeof tracks !== 'undefined' ? tracks : []);
+      const carMap = new Map();
+      logs.forEach((l) => {
+        const carId = l.car_id;
+        if (!carMap.has(carId)) carMap.set(carId, { sessions: new Set(), logs: 0, tracks: new Set(), lastUsed: null, totalError: 0, trackTimes: new Map() });
+        const s = carMap.get(carId);
+        if (l.session_id) s.sessions.add(l.session_id);
+        s.logs++;
+        s.tracks.add(l.track_id);
+        if (!s.lastUsed || l.timestamp > s.lastUsed) s.lastUsed = l.timestamp;
+        s.totalError += (l.actual_time_sec - l.predicted_time_sec);
+        const existing = s.trackTimes.get(l.track_id);
+        if (!existing || l.actual_time_sec < existing.time) s.trackTimes.set(l.track_id, { time: l.actual_time_sec });
+      });
+      const garage = getGarage();
+      return garage.map((g) => {
+        const s = carMap.get(g.id);
+        if (!s) return null;
+        const sortedTracks = [...s.trackTimes.entries()].sort((a, b) => a[1].time - b[1].time);
+        const best = sortedTracks[0];
+        const worst = sortedTracks[sortedTracks.length - 1];
+        const trackName = (id) => (trackList.find(t => slugify(t.trackName) === id) || {}).trackName || id;
+        return {
+          id: g.id,
+          carName: g.carName,
+          class: g.class,
+          sessions: s.sessions.size,
+          logs: s.logs,
+          tracks: s.tracks.size,
+          lastUsed: s.lastUsed,
+          avgError: s.logs ? s.totalError / s.logs : 0,
+          bestTrack: best ? trackName(best[0]) : '—',
+          worstTrack: worst ? trackName(worst[0]) : '—'
+        };
+      }).filter(Boolean);
+    }
+
+    let data = [];
+    function filterData() {
+      const q = filterText.trim().toLowerCase();
+      return data.filter(c => {
+        if (filterClass && c.class !== filterClass) return false;
+        if (!q) return true;
+        return (c.carName || '').toLowerCase().includes(q) || (c.class || '').toLowerCase().includes(q);
+      });
+    }
+
+    function render() {
+      data = buildCarStats();
+      $('#garage-gauntlet-count').textContent = `${data.length} car${data.length === 1 ? '' : 's'} with logs`;
+      const filtered = filterData();
+      if (sortKey) filtered.sort((a, b) => compareValues(a[sortKey], b[sortKey], sortDir));
+      if (!filtered.length) {
+        $('#garage-gauntlet-body').innerHTML = '<tr><td colspan="9" class="empty-state">No Gauntlet logs for owned cars yet. Record sessions on the Gauntlet page.</td></tr>';
+        setSortIndicators(table, sortKey, sortDir);
+        return;
+      }
+      renderTable('garage-gauntlet-body', filtered, (c, row) => {
+        row.appendChild(makeCell(c.carName));
+        row.appendChild(makeCell(c.class));
+        row.appendChild(makeCell(c.sessions, 'num'));
+        row.appendChild(makeCell(c.logs, 'num'));
+        row.appendChild(makeCell(c.tracks, 'num'));
+        row.appendChild(makeCell(c.lastUsed ? new Date(c.lastUsed).toLocaleDateString() : '—', 'num'));
+        row.appendChild(makeCell(c.avgError > 0 ? `+${fmt(c.avgError)}` : fmt(c.avgError), 'num'));
+        row.appendChild(makeCell(c.bestTrack));
+        row.appendChild(makeCell(c.worstTrack));
+      });
+      setSortIndicators(table, sortKey, sortDir);
+    }
+
+    initSortHeaders(table, key => {
+      sortDir = sortKey === key ? -sortDir : 1;
+      sortKey = key;
+      render();
+    });
+
+    const filterTextInput = $('#garage-gauntlet-filter-text');
+    const filterClassSelect = $('#garage-gauntlet-filter-class');
+    const filterClearBtn = $('#garage-gauntlet-filter-clear');
+    function onFilterChange() {
+      filterText = filterTextInput ? filterTextInput.value : '';
+      filterClass = filterClassSelect ? filterClassSelect.value : '';
+      render();
+    }
+    if (filterTextInput) filterTextInput.addEventListener('input', onFilterChange);
+    if (filterClassSelect) filterClassSelect.addEventListener('change', onFilterChange);
+    if (filterClearBtn) filterClearBtn.addEventListener('click', () => {
+      if (filterTextInput) filterTextInput.value = '';
+      if (filterClassSelect) filterClassSelect.value = '';
+      onFilterChange();
+    });
+
+    render();
+  }
+
   function addManualCarsNav() {
     const tools = $('#nav-tools');
     if (!tools) return;
