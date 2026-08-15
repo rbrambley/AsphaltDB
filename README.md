@@ -2,7 +2,7 @@
 
 A static, multi-page reference site for **Asphalt Legends Unite**.
 
-- **Cars Database** – full car roster (328 cars, classes D–S) with stock/max ranks from Asphalt Wiki and performance stats from Asphalt9.info where available.
+- **Cars Database** – full car roster (374 cars, classes D–S) with stock/max ranks from Asphalt Wiki and performance stats from Asphalt9.info / ASEC, with most values backfilled.
 - **Tracks Reference** – 208 routes/locations with length, difficulty and hazards.
 - **Career Progression** – all 6 chapters, 90 seasons and 1,076 race entries.
 - **Recurring Events** – daily, weekly and special limited-time events.
@@ -14,7 +14,7 @@ A static, multi-page reference site for **Asphalt Legends Unite**.
 - Career & track data: [Asphalt9.info](https://asphalt9.info/) and [Asphalt Fandom](https://asphalt.fandom.com/)
 - Calendar events: [Asphalt Fandom](https://asphalt.fandom.com/) and [asphaltlegends.com](https://asphaltlegends.com/)
 
-Rarity, blueprint source, unlock method, upgrade cost and recommended tracks are baseline placeholders derived from class; they should be reviewed and improved by the community.
+Most performance stats, blueprint counts, and upgrade costs are now backfilled from Asphalt9.info / ASEC. Rarity, release year, blueprint source details, and a small number of cost/fuel fields are still placeholders or incomplete; see `FEATURES.md` and `ROADMAP.md` for the current data-quality status.
 
 ## My Garage (OCR from screenshots)
 
