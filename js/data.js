@@ -27501,6 +27501,160 @@ const calendarEvents = [
     "notes": ""
   },
   {
+    "eventName": "20th Anniversary Spotlight",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-07-24",
+    "endDate": "2025-08-20",
+    "rawDate": "(24/7 - 20/8) Celebrate the Asphalt Anniversary with (takes a deep breath) the Mitsubishi Lancer, the Alfa Romeo Giulia GTAm, the Lamborghini Huracan Super Trofeo EVO, the Volkswagen Electric R, the Dodge Viper ACR, the McLaren GT, the Ferrari Daytona SP3, the Arrinera Hussarya 33, the Lamborghini Asterion, the McLaren Solus GT, the Ferrari 488 Challenge EVO, the Pagani Huayra R, the Aston Martin Vulcan, the Ferrari F8 Tributo, the Jaguar XJR-9, the De Tomaso P72, the Lamborghini Centenario, the Bugatti Centodieci, the Deus Vayanne, and the Bugatti Chiron.",
+    "featuredCars": "Celebrate the Asphalt Anniversary with (takes a deep breath) the Mitsubishi Lancer, the Alfa Romeo Giulia GTAm, the Lamborghini Huracan Super Trofeo EVO, the Volkswagen Electric R, the Dodge Viper ACR, the McLaren GT, the Ferrari Daytona SP3, the Arrinera Hussarya 33, the Lamborghini Asterion, the McLaren Solus GT, the Ferrari 488 Challenge EVO, the Pagani Huayra R, the Aston Martin Vulcan, the Ferrari F8 Tributo, the Jaguar XJR-9, the De Tomaso P72, the Lamborghini Centenario, the Bugatti Centodieci, the Deus Vayanne, and the Bugatti Chiron.",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Formula E",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-07-24",
+    "endDate": "2025-07-29",
+    "rawDate": "(24/7 - 29/7)The Final event! Rush to the track and claim your FREE Team Andretti Decal!",
+    "featuredCars": "The Final event! Rush to the track and claim your FREE Team Andretti Decal!",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Car Hunts",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-07-24",
+    "endDate": "2025-08-05",
+    "rawDate": "This season you'll be tracking the Porsche 911 Turbo 50 Years (24/7 - 5/8 - Legend Pass Exclusive), the Italdesign DaVinci (24/7 - 5/8) and the Jaguar XE SV Project 8 (7/8 - 19/8)",
+    "featuredCars": "This season you'll be tracking the Porsche 911 Turbo 50 Years (24/7 - 5/8 - Legend Pass Exclusive), the Italdesign DaVinci  and the Jaguar XE SV Project 8",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "LEGO Technic Lamborghini Revuelto Tour",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-07-25",
+    "endDate": "2025-08-06",
+    "rawDate": "(25/7 - 6/8) LEGO Technic is back! This time you can take their spin on the Revuelto for a… spin?",
+    "featuredCars": "LEGO Technic is back! This time you can take their spin on the Revuelto for a… spin?",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Drive Syndicate 12",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-07-28",
+    "endDate": "2025-08-25",
+    "rawDate": "(28/7 - 25/8)The next episode in the saga, featuring the allmighty Arash Imperium, the Citröen DS Survolt, the Apollo IE, the McLaren 600LT Spider, the Pagani Zonda Cinque, and the Koenigsegg Jesko Absolut.",
+    "featuredCars": "The next episode in the saga, featuring the allmighty Arash Imperium, the Citröen DS Survolt, the Apollo IE, the McLaren 600LT Spider, the Pagani Zonda Cinque, and the Koenigsegg Jesko Absolut.",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Aston Martin V12 Vantage 2022 GP",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-07-29",
+    "endDate": "2025-08-14",
+    "rawDate": "(29/7 - 14/8) The Vantage is finally back within the Grand Prix!",
+    "featuredCars": "The Vantage is finally back within the Grand Prix!",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Friends Unite",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-07-30",
+    "endDate": "2025-08-02",
+    "rawDate": "(30/7 - 2/8) Celebrate National Friendship Day with the McLaren 765LT, the Lamborghini Murcielago LP 640 Roadster, and the Ferrari F40.",
+    "featuredCars": "Celebrate National Friendship Day with the McLaren 765LT, the Lamborghini Murcielago LP 640 Roadster, and the Ferrari F40.",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Zenvo TS1 GT Anniversary Star Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-07-31",
+    "endDate": "2025-08-10",
+    "rawDate": "(31/7 -10/8) No, it's not an Anniversary Star Hunt, it's just the name of the car.",
+    "featuredCars": "No, it's not an Anniversary Star Hunt, it's just the name of the car.",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "LEGO Technic Ferrari FXX K Tour",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-07",
+    "endDate": "2025-08-21",
+    "rawDate": "(7/8 - 21/8) The final LEGO tour brings a Legendary Ferrari to the table!",
+    "featuredCars": "The final LEGO tour brings a Legendary Ferrari to the table!",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Summer Sports",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-08",
+    "endDate": "2025-08-12",
+    "rawDate": "(8/8 - 12/8) Catch a breeze on these sporty cars, featuring the Porsche 911 Turbo 50 Years, the Porsche Taycan Turbo S, and the Porsche 718 Cayman GT4 Clubsport.",
+    "featuredCars": "Catch a breeze on these sporty cars, featuring the Porsche 911 Turbo 50 Years, the Porsche Taycan Turbo S, and the Porsche 718 Cayman GT4 Clubsport.",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Zenvo TS1 GT Anniversary Epic Hunt",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-10",
+    "endDate": "2025-08-20",
+    "rawDate": "(10/8 - 20/8) As the Star Hunt falls, the Epic Hunt rises. Time to get those Zenvo EIPs!",
+    "featuredCars": "As the Star Hunt falls, the Epic Hunt rises. Time to get those Zenvo EIPs!",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "The Beautiful Game",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-11",
+    "endDate": "2025-08-14",
+    "rawDate": "(11/8 - 14/8) Celebrate National Football Day (not soccer) with the Porsche Mission R, the Pagani Huayra R, and the McLaren Senna GTR.",
+    "featuredCars": "Celebrate National Football Day (not soccer) with the Porsche Mission R, the Pagani Huayra R, and the McLaren Senna GTR.",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "Lamborghini SC 18 Special Hunt",
+    "type": "Special Event",
+    "format": "",
+    "startDate": "2025-08-12",
+    "endDate": "2025-08-28",
+    "rawDate": "(12/8 - 28/8) A new special hunt to round up the season.",
+    "featuredCars": "A new special hunt to round up the season.",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "eventName": "I ndia Summer",
+    "type": "Time Limited Event",
+    "format": "",
+    "startDate": "2025-08-15",
+    "endDate": "2025-08-19",
+    "rawDate": "(15/8 - 19/8) Take a break and a trip down south with the Koenigsegg CCXR.",
+    "featuredCars": "Take a break and a trip down south with the Koenigsegg CCXR.",
+    "relatedUpdate": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
     "eventName": "Lego Technic",
     "type": "Spotlight",
     "format": "Special Event",
@@ -29277,6 +29431,286 @@ const gameUpdates = [
     "calendarSynced": true,
     "newCarsMentioned": [],
     "title": "Heatwave: Afterburn - Patch Notes",
+    "notes": ""
+  },
+  {
+    "version": "46.0.5a",
+    "versionDate": "2025-08-13",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "46.0.5a",
+    "notes": ""
+  },
+  {
+    "version": "Legacy of Speed - Patch Notes",
+    "versionDate": "2025-07-24",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/legacy-of-speed-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": true,
+    "newCarsMentioned": [],
+    "title": "Legacy of Speed - Patch Notes",
+    "notes": ""
+  },
+  {
+    "version": "45.0.9a",
+    "versionDate": "2025-07-17",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "45.0.9a",
+    "notes": ""
+  },
+  {
+    "version": "24.6.1a",
+    "versionDate": "2025-06-03",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.6.1a",
+    "notes": ""
+  },
+  {
+    "version": "24.6.0h",
+    "versionDate": "2025-05-26",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.6.0h",
+    "notes": ""
+  },
+  {
+    "version": "24.5.1a",
+    "versionDate": "2025-04-25",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.5.1a",
+    "notes": ""
+  },
+  {
+    "version": "Korean Spring Season Update",
+    "versionDate": "2025-04-04",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/korean-spring-season-update",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "Korean Spring Season Update",
+    "notes": ""
+  },
+  {
+    "version": "24.5.0m",
+    "versionDate": "2025-03-28",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.5.0m",
+    "notes": ""
+  },
+  {
+    "version": "24.4.0h",
+    "versionDate": "2025-01-29",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.4.0h",
+    "notes": ""
+  },
+  {
+    "version": "24.3.0j",
+    "versionDate": "2024-12-05",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.3.0j",
+    "notes": ""
+  },
+  {
+    "version": "24.2.0f",
+    "versionDate": "2024-11-01",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.2.0f",
+    "notes": ""
+  },
+  {
+    "version": "24.1.2b",
+    "versionDate": "2024-10-08",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.1.2b",
+    "notes": ""
+  },
+  {
+    "version": "24.1.2a",
+    "versionDate": "2024-10-03",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.1.2a",
+    "notes": ""
+  },
+  {
+    "version": "Speed Parade, Haunted Wheels & Black Friday Patch Notes",
+    "versionDate": "2024-09-27",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/speed-parade-haunted-wheels-black-friday-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "Speed Parade, Haunted Wheels & Black Friday Patch Notes",
+    "notes": ""
+  },
+  {
+    "version": "24.1.0c",
+    "versionDate": "2024-09-22",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.1.0c",
+    "notes": ""
+  },
+  {
+    "version": "24.0.6a",
+    "versionDate": "2024-08-26",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
+    "hasPatchNotes": false,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "24.0.6a",
+    "notes": ""
+  },
+  {
+    "version": "Asphalt Legends Unite – Patch Notes",
+    "versionDate": "2024-07-17",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/asphalt-legends-unite-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "Asphalt Legends Unite – Patch Notes",
+    "notes": ""
+  },
+  {
+    "version": "SUPERCHARGED SUMMER I & II PATCH NOTES",
+    "versionDate": "2024-05-23",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/supercharged-summer-i-ii-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "SUPERCHARGED SUMMER I & II PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "version": "WEST TO EAST & EURO BLOOM SEASON PATCH NOTES",
+    "versionDate": "2024-04-08",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/west-to-east-euro-bloom-season-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "WEST TO EAST & EURO BLOOM SEASON PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "version": "ITALIAN REVOLUTION I & II SEASON PATCH NOTES",
+    "versionDate": "2024-02-12",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/italian-revolution-i-ii-season-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "ITALIAN REVOLUTION I & II SEASON PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "version": "FESTIVE SPARKS & DRAGON RACE SEASONS PATCH NOTES",
+    "versionDate": "2023-12-04",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/festive-sparks-dragon-race-seasons-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "FESTIVE SPARKS & DRAGON RACE SEASONS PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "version": "NEW TECH, NEW TECH RELOADED, AND BLACK FRIDAY SEASONS PATCH NOTES",
+    "versionDate": "2023-09-21",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/new-tech-new-tech-reloaded-and-black-friday-seasons-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "NEW TECH, NEW TECH RELOADED, AND BLACK FRIDAY SEASONS PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "version": "RACING THROUGH FIRE AND HALL OF FLAMES PATCH NOTES",
+    "versionDate": "2023-09-05",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/racing-through-fire-and-hall-of-flames-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "RACING THROUGH FIRE AND HALL OF FLAMES PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "version": "ASPHALT 9 - EUROPEAN SEASON PATCH NOTES!",
+    "versionDate": "2023-04-11",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/asphalt-9-european-season-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "ASPHALT 9 - EUROPEAN SEASON PATCH NOTES!",
+    "notes": ""
+  },
+  {
+    "version": "Disney Speedstorm Launches in Early Access on April 18",
+    "versionDate": "2023-03-16",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/disney-speedstorm-launches-in-early-access-on-april-18",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "Disney Speedstorm Launches in Early Access on April 18",
+    "notes": ""
+  },
+  {
+    "version": "PATCH NOTES - WINTERFEST",
+    "versionDate": "2022-12-13",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/patch-notes-winterfest",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "PATCH NOTES - WINTERFEST",
+    "notes": ""
+  },
+  {
+    "version": "Asphalt 9 - Steam launch stream!",
+    "versionDate": "2022-08-02",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/asphalt-9-steam-launch-stream",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "Asphalt 9 - Steam launch stream!",
+    "notes": ""
+  },
+  {
+    "version": "Steam Release: August 2022",
+    "versionDate": "2022-07-11",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/steam-release-august-2022",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "Steam Release: August 2022",
     "notes": ""
   }
 ];
