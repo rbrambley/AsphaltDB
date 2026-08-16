@@ -2454,7 +2454,8 @@
       }
 
       function findMissing() {
-        const logs = getGauntletLogs();
+        try {
+          const logs = getGauntletLogs();
         const garageIds = new Set(getGarage().map((g) => slug(g.id || g.carName)));
         const seen = new Set();
         const missing = [];
@@ -2485,10 +2486,15 @@
             <span>${esc(c.carName)} (${esc(c.class)}, ${Number(c.rankMax).toLocaleString()})</span>
           </label>`;
         }).join('');
+      } catch (err) {
+        status.textContent = 'Error checking logs: ' + err.message;
+        console.error(err);
+      }
       }
 
       function addCars(ids) {
-        let local = getLocalGarage();
+        try {
+          let local = getLocalGarage();
         let added = 0;
         ids.forEach((id) => {
           const entry = buildEntry(id);
@@ -2501,6 +2507,10 @@
         render();
         status.textContent = added ? `Added ${added} car(s) to your garage.` : 'No cars added.';
         findMissing();
+      } catch (err) {
+        status.textContent = 'Error adding cars: ' + err.message;
+        console.error(err);
+      }
       }
 
       findBtn.addEventListener('click', findMissing);
