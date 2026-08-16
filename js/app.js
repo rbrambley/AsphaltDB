@@ -9,6 +9,7 @@
     'Common': 'badge-common', 'Uncommon': 'badge-uncommon', 'Rare': 'badge-rare',
     'Epic': 'badge-epic', 'Legendary': 'badge-legendary'
   };
+  function slug(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''); }
 
   function makeCell(text, cls = '') {
     const td = document.createElement('td');
@@ -2421,6 +2422,101 @@
     }
 
     initGarageGauntlet();
+
+    function initGauntletImport() {
+      const findBtn = $('#garage-gauntlet-import-find');
+      const list = $('#garage-gauntlet-import-list');
+      const status = $('#garage-gauntlet-import-status');
+      const addSelectedBtn = $('#garage-gauntlet-import-add');
+      const addAllBtn = $('#garage-gauntlet-import-add-all');
+      if (!findBtn || !list || !status || !addSelectedBtn || !addAllBtn) return;
+
+      function buildEntry(carId) {
+        const raw = (typeof cars !== 'undefined' ? cars : []).find((c) => slug(c.carName) === carId);
+        if (!raw) return null;
+        return {
+          id: carId,
+          carName: raw.carName,
+          matchedCar: raw.carName,
+          class: raw.class,
+          rankCurrent: raw.rankMax,
+          rankMax: raw.rankMax,
+          stars: 5,
+          topSpeed: raw.topSpeedMax,
+          acceleration: raw.accelerationMax,
+          handling: raw.handlingMax,
+          nitro: raw.nitroMax,
+          blueprintCurrent: 0,
+          blueprintMax: raw.blueprintCount || null,
+          blueprintStatus: raw.blueprintCount ? ('0 / ' + raw.blueprintCount) : null,
+          capturedAt: new Date().toISOString()
+        };
+      }
+
+      function findMissing() {
+        const logs = getGauntletLogs();
+        const garageIds = new Set(getGarage().map((g) => slug(g.id || g.carName)));
+        const seen = new Set();
+        const missing = [];
+        logs.forEach((l) => {
+          const id = l.car_id;
+          if (!id || seen.has(id)) return;
+          seen.add(id);
+          if (garageIds.has(id)) return;
+          const raw = (typeof cars !== 'undefined' ? cars : []).find((c) => slug(c.carName) === id);
+          if (!raw) return;
+          missing.push(raw);
+        });
+        if (!missing.length) {
+          list.innerHTML = '';
+          addSelectedBtn.style.display = 'none';
+          addAllBtn.style.display = 'none';
+          status.textContent = 'No missing cars found in Gauntlet logs.';
+          return;
+        }
+        missing.sort((a, b) => a.carName.localeCompare(b.carName));
+        status.textContent = `Found ${missing.length} car(s) in Gauntlet logs that are not in your garage. Select the ones you own.`;
+        addSelectedBtn.style.display = 'inline-block';
+        addAllBtn.style.display = 'inline-block';
+        list.innerHTML = missing.map((c) => {
+          const id = slug(c.carName);
+          return `<label style="display:flex;align-items:center;gap:0.5rem;margin:0.25rem 0;cursor:pointer;">
+            <input type="checkbox" class="gauntlet-import-cb" data-id="${esc(id)}" checked />
+            <span>${esc(c.carName)} (${esc(c.class)}, ${Number(c.rankMax).toLocaleString()})</span>
+          </label>`;
+        }).join('');
+      }
+
+      function addCars(ids) {
+        let local = getLocalGarage();
+        let added = 0;
+        ids.forEach((id) => {
+          const entry = buildEntry(id);
+          if (!entry) return;
+          local = local.filter((c) => slug(c.id || c.carName) !== id);
+          local.push(entry);
+          added++;
+        });
+        if (added) saveLocalGarage(local);
+        render();
+        status.textContent = added ? `Added ${added} car(s) to your garage.` : 'No cars added.';
+        findMissing();
+      }
+
+      findBtn.addEventListener('click', findMissing);
+      addSelectedBtn.addEventListener('click', () => {
+        const checked = $$('.gauntlet-import-cb:checked', list);
+        const ids = checked.map((cb) => cb.dataset.id);
+        addCars(ids);
+      });
+      addAllBtn.addEventListener('click', () => {
+        const all = $$('.gauntlet-import-cb', list);
+        const ids = all.map((cb) => cb.dataset.id);
+        addCars(ids);
+      });
+    }
+
+    initGauntletImport();
   }
 
   function initGarageGauntlet() {

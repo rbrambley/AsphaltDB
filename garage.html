@@ -81,6 +81,7 @@
       <button class="btn tab-btn" data-tab="gauntlet">Gauntlet</button>
       <button class="btn tab-btn" data-tab="add">Add / Edit</button>
       <button class="btn tab-btn" data-tab="import">Import / Export</button>
+      <button class="btn tab-btn" data-tab="gauntlet-import">From Gauntlet</button>
     </div>
 
     <section class="card tab-panel" data-tab="owned">
@@ -220,6 +221,20 @@
           </label>
         </div>
         <div id="garage-import-status" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"></div>
+      </div>
+    </section>
+
+    <section class="card tab-panel" data-tab="gauntlet-import">
+      <div class="card-header"><h2>From Gauntlet</h2><span class="toggle">−</span></div>
+      <div class="card-body">
+        <p class="dashboard-intro">Add cars you have used in recorded Gauntlet sessions to your garage. Only cars not already in your garage are shown.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.75rem;">
+          <button id="garage-gauntlet-import-find" class="btn">Find missing cars</button>
+          <button id="garage-gauntlet-import-add" class="btn" style="display:none;">Add selected</button>
+          <button id="garage-gauntlet-import-add-all" class="btn" style="display:none;">Add all</button>
+        </div>
+        <div id="garage-gauntlet-import-list"></div>
+        <div id="garage-gauntlet-import-status" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"></div>
       </div>
     </section>
 
