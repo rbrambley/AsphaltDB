@@ -46,15 +46,25 @@ self.addEventListener('activate', (e) => {
   );
 });
 
+self.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
+  const scopeRoot = new URL('./', self.location.href).pathname;
   const dataFiles = ['js/data.js', 'js/garage_data.js', 'js/missions.js'];
-  const isData = dataFiles.some((p) => url.pathname.endsWith(p));
+  const isData = dataFiles.some((p) => url.pathname.endsWith('/' + p) || url.pathname.endsWith(p));
+  const isPrecached = PRECACHE.some((p) => {
+    if (p === './') return url.pathname === scopeRoot;
+    return url.pathname.endsWith('/' + p) || url.pathname.endsWith(p);
+  });
+  const fetchRequest = (isData || isPrecached) ? new Request(e.request, { cache: 'no-cache' }) : e.request;
 
   if (isData) {
     e.respondWith(
-      fetch(e.request)
+      fetch(fetchRequest)
         .then((response) => {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
@@ -66,7 +76,7 @@ self.addEventListener('fetch', (e) => {
   }
 
   e.respondWith(
-    fetch(e.request)
+    fetch(fetchRequest)
       .then((response) => {
         const clone = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));

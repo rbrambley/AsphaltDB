@@ -165,6 +165,19 @@
     document.head.appendChild(meta);
   }
 
+  function showReloadPrompt(worker) {
+    if ($('#sw-reload-prompt')) return;
+    const div = document.createElement('div');
+    div.id = 'sw-reload-prompt';
+    div.style.cssText = 'position:fixed;bottom:1rem;right:1rem;left:1rem;max-width:28rem;margin:0 auto;z-index:1000;padding:0.75rem 1rem;background:var(--card-bg);border:1px solid var(--border);border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.2);display:flex;justify-content:space-between;align-items:center;gap:0.5rem;';
+    div.innerHTML = '<span>A new version is available.</span><button class="btn" id="sw-reload-btn">Reload</button>';
+    document.body.appendChild(div);
+    $('#sw-reload-btn').addEventListener('click', () => {
+      worker.postMessage({ type: 'SKIP_WAITING' });
+      location.reload();
+    });
+  }
+
   function registerSW() {
     if (!('serviceWorker' in navigator)) return;
     fetch('sw.js', { cache: 'no-store' })
@@ -173,10 +186,30 @@
         const match = text.match(/CACHE_NAME\s*=\s*['"`]([^'"`]+)['"`]/);
         const version = match ? match[1] : '';
         const url = version ? `sw.js?${version}` : 'sw.js';
-        navigator.serviceWorker.register(url, { updateViaCache: 'none' }).catch(() => {});
+        navigator.serviceWorker.register(url, { updateViaCache: 'none' }).then((registration) => {
+          registration.addEventListener('updatefound', () => {
+            const worker = registration.installing;
+            if (!worker) return;
+            worker.addEventListener('statechange', () => {
+              if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+                showReloadPrompt(worker);
+              }
+            });
+          });
+        }).catch(() => {});
       })
       .catch(() => {
-        navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {});
+        navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then((registration) => {
+          registration.addEventListener('updatefound', () => {
+            const worker = registration.installing;
+            if (!worker) return;
+            worker.addEventListener('statechange', () => {
+              if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+                showReloadPrompt(worker);
+              }
+            });
+          });
+        }).catch(() => {});
       });
   }
 
