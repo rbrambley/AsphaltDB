@@ -576,11 +576,62 @@
     }
   }
 
+  function initDashAccordion() {
+    const grid = $('.dashboard-grid');
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll('.dash-card'));
+    if (!cards.length) return;
+
+    function setMobile(mobile) {
+      cards.forEach((card, i) => {
+        card.classList.toggle('expanded', !mobile || i === 0);
+      });
+    }
+
+    const mql = window.matchMedia('(max-width: 640px)');
+    function onChange() { setMobile(mql.matches); }
+    onChange();
+    if (mql.addEventListener) mql.addEventListener('change', onChange);
+    else if (mql.addListener) mql.addListener(onChange);
+
+    cards.forEach(card => {
+      const header = card.querySelector('.dash-card-header');
+      if (!header) return;
+      header.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        if (window.innerWidth > 640) return;
+        card.classList.toggle('expanded');
+      });
+    });
+  }
+
   // ---------- Global search (home) ----------
   function initGlobalSearch() {
     const input = $('#global-search');
     const results = $('#global-search-results');
-    if (!input || !results) return;
+    const section = input ? input.closest('.global-search') : null;
+    if (!input || !results || !section) return;
+
+    function openSearch() {
+      section.classList.add('open');
+      results.style.display = 'block';
+    }
+    function closeSearch() {
+      section.classList.remove('open');
+      results.style.display = 'none';
+    }
+
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'global-search-close';
+    closeBtn.setAttribute('aria-label', 'Close search');
+    closeBtn.textContent = '✕';
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeSearch();
+    });
+    const header = section.querySelector('.dash-card-header');
+    if (header) header.appendChild(closeBtn);
 
     function normalize(s) {
       return String(s || '').toLowerCase();
@@ -645,7 +696,7 @@
       results.innerHTML = '';
       if (!groups.length) {
         results.innerHTML = '<div class="search-empty">No results found. Try a different search.</div>';
-        results.style.display = 'block';
+        openSearch();
         return;
       }
       groups.forEach(g => {
@@ -669,14 +720,14 @@
         }
         results.appendChild(group);
       });
-      results.style.display = 'block';
+      openSearch();
     }
 
     const doSearch = debounce(() => {
       const q = input.value.trim();
       if (!q) {
         results.innerHTML = '';
-        results.style.display = 'none';
+        closeSearch();
         return;
       }
       renderResults(searchAll(q));
@@ -688,12 +739,12 @@
     });
     document.addEventListener('click', (e) => {
       if (!input.closest('.global-search') || !e.target.closest('.global-search')) {
-        results.style.display = 'none';
+        closeSearch();
       }
     });
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        results.style.display = 'none';
+        closeSearch();
       }
     });
   }
@@ -2009,18 +2060,39 @@
     window.addEventListener('appinstalled', () => { btn.style.display = 'none'; deferredPrompt = null; });
   }
 
+  function initBottomNav() {
+    if ($('.bottom-nav')) return;
+    const current = location.pathname.split('/').pop() || 'index.html';
+    const items = [
+      { label: 'Home', href: 'index.html' },
+      { label: 'Cars', href: 'cars.html' },
+      { label: 'Tracks', href: 'tracks.html' },
+      { label: 'Events', href: 'events.html' },
+      { label: 'Garage', href: 'garage.html' }
+    ];
+    const nav = document.createElement('nav');
+    nav.className = 'bottom-nav';
+    nav.setAttribute('aria-label', 'Quick navigation');
+    nav.innerHTML = items.map(i => {
+      const active = (i.href === current || (current === '' && i.href === 'index.html')) ? ' class="active"' : '';
+      return `<a href="${esc(i.href)}"${active}>${esc(i.label)}</a>`;
+    }).join('');
+    document.body.appendChild(nav);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     addManifestLink();
     registerSW();
     initTheme();
     initNav();
+    initBottomNav();
     addManualCarsNav();
     addUpdatesNav();
     initCollapsible();
     initTooltips();
     initMobileCards();
     initEmptyStates();
-    if ($('#home-stats')) initHome();
+    if ($('#home-stats')) { initHome(); initDashAccordion(); }
     if ($('#global-search')) initGlobalSearch();
     if ($('#cars-body')) initCars();
     if ($('#tracks-body')) initTracks();
