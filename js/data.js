@@ -29274,6 +29274,26 @@ const calendarEvents = [
 ];
 const gameUpdates = [
   {
+    "version": "SUNSET SPEEDAWAY - PATCH NOTES",
+    "versionDate": "2026-09-16",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/sunset-speedaway-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "SUNSET SPEEDAWAY - PATCH NOTES",
+    "notes": ""
+  },
+  {
+    "version": "PIXEL PURSUIT SEASON - PATCH NOTES",
+    "versionDate": "2026-08-17",
+    "sourceUrl": "https://gameupdatenotifier.com/g/asphalt-9-legends/v/pixel-pursuit-season-patch-notes",
+    "hasPatchNotes": true,
+    "calendarSynced": false,
+    "newCarsMentioned": [],
+    "title": "PIXEL PURSUIT SEASON - PATCH NOTES",
+    "notes": ""
+  },
+  {
     "version": "52.1.2a",
     "versionDate": "2026-07-24",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM",
